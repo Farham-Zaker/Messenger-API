@@ -1,0 +1,176 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model users {
+    userId         String               @id @default(uuid()) @db.VarChar(55)
+    firstName      String               @db.VarChar(55)
+    lastName       String               @db.VarChar(55)
+    phoneNumber    String               @db.VarChar(10)
+    preNumber      String               @db.VarChar(5)
+    bio            String?              @db.VarChar(255)
+    email          String?              @db.VarChar(255)
+    images         user_images[]
+    password       String?              @db.VarChar(60)
+    createdAt      DateTime             @default(now())
+    blockerUsers   blocked_users[]      @relation("blockerUsers")
+    blockedUsers   blocked_users[]      @relation("blockedUsers")
+    userContacts   user_contacts[]      @relation("user")
+    contacts       user_contacts[]      @relation("contacts")
+    messages       messages[]
+    privateChats   user_private_chats[]
+    groupOwner     groups[]
+    joinedGroups   groups_members[]
+    admin_groups   admins_groups[]
+    channelOwner   channels[]
+    joinedChannels channels_members[]
+    adminChannels  admins_channels[]
+    pinned_items   pinned_items[]
+}
+
+model user_images {
+    imageId   String   @id @default(uuid()) @db.VarChar(55)
+    imagePath String   @db.VarChar(255)
+    createdAt DateTime @default(now())
+    user      users    @relation(fields: [userId], references: [userId])
+    userId    String   @db.VarChar(55)
+}
+
+model user_contacts {
+    contactId     String @id @default(uuid()) @db.VarChar(55)
+    user          users? @relation("user", fields: [userId], references: [userId])
+    userId        String @db.VarChar(55)
+    contacts      users  @relation("contacts", fields: [contactUserId], references: [userId])
+    contactUserId String @db.VarChar(55)
+}
+
+model blocked_users {
+    bloskedId     String   @id @default(uuid()) @db.VarChar(55)
+    blockerUser   users    @relation("blockerUsers", fields: [blockerUserId], references: [userId])
+    blockerUserId String   @db.VarChar(55)
+    blockedUser   users    @relation("blockedUsers", fields: [blockedUserId], references: [userId])
+    blockedUserId String   @db.VarChar(55)
+    createdAt     DateTime @default(now())
+}
+
+model private_chats {
+    privateChatId String               @id @default(uuid()) @db.VarChar(55)
+    updatedAt     DateTime
+    cratedAt      DateTime             @default(now())
+    privateChats  user_private_chats[]
+    messages      messages[]
+    pinned       pinned_items[]
+}
+
+model user_private_chats {
+    id            String        @id @default(uuid()) @db.VarChar(55)
+    user          users         @relation(fields: [userId], references: [userId])
+    userId        String        @db.VarChar(55)
+    chat          private_chats @relation(fields: [privateChatId], references: [privateChatId])
+    privateChatId String        @db.VarChar(55)
+}
+
+model messages {
+    messageId     String         @id @default(uuid()) @db.VarChar(55)
+    text          String         @db.VarChar(1000)
+    sender        users          @relation(fields: [senderId], references: [userId])
+    senderId      String         @db.VarChar(55)
+    createdAt     DateTime       @default(now())
+    messages      messages[]     @relation("messages")
+    replies       messages?      @relation("messages", fields: [replyOf], references: [messageId])
+    replyOf       String?        @db.VarChar(55)
+    media         medias?        @relation(fields: [mediaId], references: [mediaId])
+    mediaId       String?        @unique @db.VarChar(55)
+    privateChats  private_chats? @relation(fields: [privateChatId], references: [privateChatId])
+    privateChatId String?        @db.VarChar(55)
+    group         groups?        @relation(fields: [groupId], references: [groupId])
+    groupId       String?        @db.VarChar(55)
+    pinned       pinned_items[]
+}
+
+model medias {
+    mediaId  String    @id @default(uuid()) @db.VarChar(55)
+    filePath String    @db.VarChar(255)
+    fileType String    @db.VarChar(10)
+    message  messages?
+}
+
+model groups {
+    groupId   String          @id @default(uuid()) @db.VarChar(55)
+    title     String          @db.VarChar(55)
+    bio       String          @db.VarChar(255)
+    owner     users           @relation(fields: [owenerId], references: [userId])
+    owenerId  String          @db.VarChar(55)
+    imagePath String          @db.VarChar(255)
+    updatedAt DateTime
+    createdAt DateTime        @default(now())
+    messages  messages[]
+    members   groups_members[]
+    admins    admins_groups[]
+    pinneds   pinned_items[]
+}
+
+model groups_members {
+    member  String @id @default(uuid()) @db.VarChar(55)
+    users   users  @relation(fields: [userId], references: [userId])
+    userId  String @db.VarChar(55)
+    groups  groups @relation(fields: [groupId], references: [groupId])
+    groupId String @db.VarChar(55)
+}
+
+model admins_groups {
+    adminId String @id @default(uuid()) @db.VarChar(55)
+    users   users  @relation(fields: [userId], references: [userId])
+    userId  String @db.VarChar(55)
+    groups  groups @relation(fields: [groupId], references: [groupId])
+    groupId String @db.VarChar(55)
+}
+
+model channels {
+    channelId       String            @id @default(uuid()) @db.VarChar(55)
+    title           String            @db.VarChar(255)
+    bio             String            @db.VarChar(255)
+    owner           users             @relation(fields: [ownerId], references: [userId])
+    ownerId         String            @db.VarChar(55)
+    imagePath       String            @db.VarChar(255)
+    updatedAt       DateTime
+    createdAt       DateTime          @default(now())
+    channels_members channels_members[]
+    adminChannels   admins_channels[]
+    pinned         pinned_items[]
+}
+
+model admins_channels {
+    adminId   String   @id @default(uuid()) @db.VarChar(55)
+    user      users    @relation(fields: [userId], references: [userId])
+    userId    String   @db.VarChar(55)
+    channel   channels @relation(fields: [channelId], references: [channelId])
+    channelId String   @db.VarChar(55)
+}
+
+model channels_members {
+    memberId  String   @id @default(uuid()) @db.VarChar(55)
+    users     users    @relation(fields: [userId], references: [userId])
+    userId    String   @db.VarChar(55)
+    channels  channels @relation(fields: [channelId], references: [channelId])
+    channelId String   @db.VarChar(55)
+}
+
+model pinned_items {
+    itemId        String         @id @default(uuid()) @db.VarChar(55)
+    users         users          @relation(fields: [userId], references: [userId])
+    userId        String         @db.VarChar(55)
+    privateChat   private_chats? @relation(fields: [privateChatId], references: [privateChatId])
+    privateChatId String?        @db.VarChar(55)
+    group         groups?        @relation(fields: [groupId], references: [groupId])
+    groupId       String?        @db.VarChar(55)
+    channel       channels?      @relation(fields: [channelId], references: [channelId])
+    channelId     String?        @db.VarChar(55)
+    messages      messages?      @relation(fields: [messageId], references: [messageId])
+    messageId     String?        @db.VarChar(55)
+}
