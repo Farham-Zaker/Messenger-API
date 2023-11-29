@@ -1,6 +1,9 @@
 import Fastify from "fastify";
 const server = Fastify({ logger: false });
 
+import projectConfigs from "./projectConfigs"
+projectConfigs(server)
+
 import roots from "./root";
 server.register(roots);
 
