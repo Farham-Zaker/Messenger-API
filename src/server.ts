@@ -4,8 +4,8 @@ const server = Fastify({ logger: false });
 import projectConfigs from "./projectConfigs"
 projectConfigs(server)
 
-import roots from "./root";
-server.register(roots);
+import plugin from "./routes/index";
+server.register(plugin);
 
 import config from "./config/index";
 try {
