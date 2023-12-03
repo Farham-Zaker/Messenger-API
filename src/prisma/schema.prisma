@@ -12,7 +12,7 @@ model users {
     firstName      String               @db.VarChar(55)
     lastName       String               @db.VarChar(55)
     phoneNumber    String               @db.VarChar(10)
-    preNumber      String               @db.VarChar(5)
+    areaCode       String               @db.VarChar(5)
     bio            String?              @db.VarChar(255)
     email          String?              @db.VarChar(255)
     images         user_images[]
@@ -64,7 +64,7 @@ model private_chats {
     cratedAt      DateTime             @default(now())
     privateChats  user_private_chats[]
     messages      messages[]
-    pinned       pinned_items[]
+    pinned        pinned_items[]
 }
 
 model user_private_chats {
@@ -90,7 +90,7 @@ model messages {
     privateChatId String?        @db.VarChar(55)
     group         groups?        @relation(fields: [groupId], references: [groupId])
     groupId       String?        @db.VarChar(55)
-    pinned       pinned_items[]
+    pinned        pinned_items[]
 }
 
 model medias {
@@ -101,14 +101,14 @@ model medias {
 }
 
 model groups {
-    groupId   String          @id @default(uuid()) @db.VarChar(55)
-    title     String          @db.VarChar(55)
-    bio       String          @db.VarChar(255)
-    owner     users           @relation(fields: [owenerId], references: [userId])
-    owenerId  String          @db.VarChar(55)
-    imagePath String          @db.VarChar(255)
+    groupId   String           @id @default(uuid()) @db.VarChar(55)
+    title     String           @db.VarChar(55)
+    bio       String           @db.VarChar(255)
+    owner     users            @relation(fields: [owenerId], references: [userId])
+    owenerId  String           @db.VarChar(55)
+    imagePath String           @db.VarChar(255)
     updatedAt DateTime
-    createdAt DateTime        @default(now())
+    createdAt DateTime         @default(now())
     messages  messages[]
     members   groups_members[]
     admins    admins_groups[]
@@ -132,17 +132,17 @@ model admins_groups {
 }
 
 model channels {
-    channelId       String            @id @default(uuid()) @db.VarChar(55)
-    title           String            @db.VarChar(255)
-    bio             String            @db.VarChar(255)
-    owner           users             @relation(fields: [ownerId], references: [userId])
-    ownerId         String            @db.VarChar(55)
-    imagePath       String            @db.VarChar(255)
-    updatedAt       DateTime
-    createdAt       DateTime          @default(now())
+    channelId        String             @id @default(uuid()) @db.VarChar(55)
+    title            String             @db.VarChar(255)
+    bio              String             @db.VarChar(255)
+    owner            users              @relation(fields: [ownerId], references: [userId])
+    ownerId          String             @db.VarChar(55)
+    imagePath        String             @db.VarChar(255)
+    updatedAt        DateTime
+    createdAt        DateTime           @default(now())
     channels_members channels_members[]
-    adminChannels   admins_channels[]
-    pinned         pinned_items[]
+    adminChannels    admins_channels[]
+    pinned           pinned_items[]
 }
 
 model admins_channels {
