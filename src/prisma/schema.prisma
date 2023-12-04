@@ -9,9 +9,10 @@ datasource db {
 
 model users {
     userId         String               @id @default(uuid()) @db.VarChar(55)
-    firstName      String               @db.VarChar(55)
-    lastName       String               @db.VarChar(55)
-    phoneNumber    String               @db.VarChar(10)
+    firstName      String?              @db.VarChar(55)
+    lastName       String?              @db.VarChar(55)
+    username       String?              @db.VarChar(25)
+    phoneNumber    String               @unique @db.VarChar(10)
     areaCode       area_codes           @relation(fields: [areaCodeId], references: [areaCodeId])
     areaCodeId     String               @db.VarChar(55)
     bio            String?              @db.VarChar(255)
