@@ -20,6 +20,7 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
     method: "POST",
     url: "/verify-phone-number",
     preHandler: validate(verifyPhoneNumberSchema),
+    handler: authController.verifyPhoneNumber,
   });
   done();
 };
