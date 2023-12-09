@@ -1,4 +1,6 @@
 import { FastifyPluginCallback } from "fastify";
+import { sendVerificationCodeShema } from "../schemas/auth.schemas";
+import validate from "../middlewares/validation.middleware";
 const registerAuthRoutesPlugin: FastifyPluginCallback = async (
   fastify,
   options,
@@ -7,6 +9,7 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     method: "POST",
     url: "/send-verification-code",
+    preHandler: validate(sendVerificationCodeShema),
   });
   done();
 };
