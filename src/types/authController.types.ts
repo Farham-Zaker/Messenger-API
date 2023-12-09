@@ -39,3 +39,8 @@ export type CreateUserTypes = {
   password: string | null;
   createdAt: Date;
 };
+export type CompleteProfileBodyType = {
+  firstName: string;
+  lastName: string;
+  username: string;
+};
