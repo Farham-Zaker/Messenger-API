@@ -22,6 +22,10 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
     preHandler: validate(verifyPhoneNumberSchema),
     handler: authController.verifyPhoneNumber,
   });
+  fastify.route({
+    method: "PUT",
+    url: "/complete-profile",
+  });
   done();
 };
 
