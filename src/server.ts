@@ -1,11 +1,12 @@
 import Fastify from "fastify";
 const server = Fastify({ logger: false });
 
-import projectConfigs from "./projectConfigs"
-projectConfigs(server)
 
-import plugin from "./routes/index";
-server.register(plugin);
+import plugins from "./plugins/index"
+plugins(server)
+
+import routes from "./routes/index";
+server.register(routes);
 
 import config from "./config/index";
 try {
