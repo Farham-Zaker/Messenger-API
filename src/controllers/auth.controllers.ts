@@ -8,9 +8,11 @@ import {
   VerifyPhoneNumberBodyType,
   FindUserTypes,
   CreateUserTypes,
+  CompleteProfileBodyType,
 } from "../types/authController.types";
 import AreaCodeServices from "../services/areaCode.services";
 import UserServices from "../services/user.services";
+import { JwtPayload } from "jsonwebtoken";
 
 const usersVerificationCode: UserVerificationCode = {};
 
@@ -170,6 +172,63 @@ export default new (class authController {
         message:
           "Your phone number was vefied successfully. Now you logged in.",
         token,
+      });
+    } catch (error) {
+      sendErrorResponse(reply, error);
+    }
+  }
+  async completeProfile(
+    request: FastifyRequest<{ Body: CompleteProfileBodyType }>,
+    reply: FastifyReply
+  ) {
+    const userServices: UserServices = request.diScope.resolve("userServices");
+   
+    const { firstName, lastName, username } = request.body;
+    const { userId, isProfileCompleted } = request.user as JwtPayload;
+    try {
+      if (isProfileCompleted) {
+        return sendResponse(reply, {
+          status: "success",
+          statusCode: 200,
+          message: "Your profile is complete. No further action is needed.",
+        });
+      }
+      const isUsernameAvialable: boolean = !!(await userServices.findOne({
+        condition: { username },
+        selectedFields: {
+          users: ["userId"],
+        },
+      }));
+      if (isUsernameAvialable) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 409,
+          message: "There is an user with such username. Chose another.",
+        });
+      }
+
+      await userServices.update({
+        data: {
+          firstName,
+          lastName,
+          username,
+        },
+        condition: {
+          userId: userId as string,
+        },
+      });
+
+      const newToken: string | void = userServices.generateToken({
+        reply,
+        userId,
+        isProfileCompleted: true,
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "Your profile is completed successfuly.",
+        note: "Use token from now on.",
+        token: newToken,
       });
     } catch (error) {
       sendErrorResponse(reply, error);

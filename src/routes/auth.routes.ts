@@ -27,7 +27,8 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     method: "PUT",
     url: "/complete-profile",
-    preHandler: [validate(completeProfileShema)],
+    preHandler: [validate(completeProfileShema), isLogged],
+    handler: authController.completeProfile,
   });
   done();
 };
