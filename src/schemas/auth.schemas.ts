@@ -35,7 +35,25 @@ const verifyPhoneNumberSchema = Joi.object({
     "string.empty": "'verificationCode' can not be empty."
   }),
 });
+const completeProfileShema = Joi.object({
+  firstName: Joi.string().required().messages({
+    "any.required": "'firstName' is required.",
+    "string.base": "'firstName' must be a string.",
+    "string.empty": "'firstName' can not be empty.",
+  }),
+  lastName: Joi.string().required().optional().messages({
+    "any.required": "'lastName' is required.",
+    "string.base": "'lastName' must be a string.",
+    "string.empty": "'lastName' can not be empty.",
+  }),
+  username: Joi.string().required().optional().messages({
+    "any.required": "'userName' is required.",
+    "string.base": "'userName' must be a string.",
+    "string.empty": "'userName' can not be empty.",
+  }),
+});
 export {
   sendVerificationCodeShema,
   verifyPhoneNumberSchema,
+  completeProfileShema,
 };

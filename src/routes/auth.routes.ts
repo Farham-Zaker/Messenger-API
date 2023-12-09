@@ -1,10 +1,12 @@
 import { FastifyPluginCallback } from "fastify";
 import authController from "../controllers/auth.controllers";
 import {
+  completeProfileShema,
   sendVerificationCodeShema,
   verifyPhoneNumberSchema,
 } from "../schemas/auth.schemas";
 import validate from "../middlewares/validation.middleware";
+import isLogged from "../middlewares/islogged";
 const registerAuthRoutesPlugin: FastifyPluginCallback = async (
   fastify,
   options,
@@ -25,6 +27,7 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     method: "PUT",
     url: "/complete-profile",
+    preHandler: [validate(completeProfileShema)],
   });
   done();
 };
