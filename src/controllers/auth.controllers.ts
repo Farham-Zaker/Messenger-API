@@ -38,7 +38,7 @@ export default new (class authController {
       if (!isAreaCodeAvialable) {
         return sendResponse(reply, {
           statusCode: 404,
-          status: "fail",
+          status: "error",
           message: `There is not area code such ${areaCode}`,
         });
       }
@@ -93,16 +93,10 @@ export default new (class authController {
 
       const userVerificationCode: number =
         usersVerificationCode[areaCode + phoneNumber];
-
-      if (!userVerificationCode) {
-        return sendResponse(reply, {
-          status: "fail",
-          statusCode: 404,
-          message: "Verification code have not sent to number.",
-        });
-      }
-
-      if (verificationCode !== userVerificationCode.toString()) {
+      if (
+        !userVerificationCode &&
+        verificationCode !== userVerificationCode.toString()
+      ) {
         return sendResponse(reply, {
           statusCode: 401,
           status: "error",
@@ -182,7 +176,7 @@ export default new (class authController {
     reply: FastifyReply
   ) {
     const userServices: UserServices = request.diScope.resolve("userServices");
-   
+
     const { firstName, lastName, username } = request.body;
     const { userId, isProfileCompleted } = request.user as JwtPayload;
     try {
