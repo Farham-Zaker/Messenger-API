@@ -1,6 +1,6 @@
 const authDocs = {
   "/auth/send-verification-code": {
-    get: {
+    post: {
       tags: ["Authentication"],
       summary: "Send verification code to user 's phone.",
       parameters: [
@@ -35,7 +35,7 @@ const authDocs = {
     },
   },
   "/verify-phone-number": {
-    get: {
+    post: {
       tags: ["Authentication"],
       summary:
         "Verify user phone number if the verification code that sent is valid.",
