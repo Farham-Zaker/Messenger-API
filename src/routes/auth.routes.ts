@@ -17,18 +17,27 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
     url: "/send-verification-code",
     preHandler: validate(sendVerificationCodeShema),
     handler: authController.sendVerificationCode,
+    schema: {
+      hide: true,
+    },
   });
   fastify.route({
     method: "POST",
     url: "/verify-phone-number",
     preHandler: validate(verifyPhoneNumberSchema),
     handler: authController.verifyPhoneNumber,
+    schema: {
+      hide: true,
+    },
   });
   fastify.route({
     method: "PUT",
     url: "/complete-profile",
     preHandler: [validate(completeProfileShema), isLogged],
     handler: authController.completeProfile,
+    schema: {
+      hide: true,
+    },
   });
   done();
 };
