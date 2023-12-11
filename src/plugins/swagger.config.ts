@@ -1,8 +1,7 @@
-import { FastifyInstance, FastifyPluginCallback } from "fastify";
+import { FastifyInstance } from "fastify";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import configs from "../config";
-
 import authDocs from "../docs/auth.docs";
 
 const swaggerConfig = (server: FastifyInstance) => {
@@ -16,7 +15,8 @@ const swaggerConfig = (server: FastifyInstance) => {
       },
       host: configs.host,
       paths: {
-},
+        ...authDocs,
+      },
     },
     exposeRoute: false,
   };
