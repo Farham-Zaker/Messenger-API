@@ -8,31 +8,32 @@ datasource db {
 }
 
 model users {
-    userId         String               @id @default(uuid()) @db.VarChar(55)
-    firstName      String?              @db.VarChar(55)
-    lastName       String?              @db.VarChar(55)
-    username       String?              @db.VarChar(25)
-    phoneNumber    String               @unique @db.VarChar(10)
-    areaCode       area_codes           @relation(fields: [areaCodeId], references: [areaCodeId])
-    areaCodeId     String               @db.VarChar(55)
-    bio            String?              @db.VarChar(255)
-    email          String?              @db.VarChar(255)
-    images         user_images[]
-    password       String?              @db.VarChar(60)
-    createdAt      DateTime             @default(now())
-    blockerUsers   blocked_users[]      @relation("blockerUsers")
-    blockedUsers   blocked_users[]      @relation("blockedUsers")
-    userContacts   user_contacts[]      @relation("user")
-    contacts       user_contacts[]      @relation("contacts")
-    messages       messages[]
-    privateChats   user_private_chats[]
-    groupOwner     groups[]
-    joinedGroups   groups_members[]
-    admin_groups   admins_groups[]
-    channelOwner   channels[]
-    joinedChannels channels_members[]
-    adminChannels  admins_channels[]
-    pinned_items   pinned_items[]
+    userId              String             @id @default(uuid()) @db.VarChar(55)
+    firstName           String?            @db.VarChar(55)
+    lastName            String?            @db.VarChar(55)
+    username            String?            @db.VarChar(25)
+    phoneNumber         String             @unique @db.VarChar(10)
+    areaCode            area_codes         @relation(fields: [areaCodeId], references: [areaCodeId])
+    areaCodeId          String             @db.VarChar(55)
+    bio                 String?            @db.VarChar(255)
+    email               String?            @db.VarChar(255)
+    images              user_images[]
+    password            String?            @db.VarChar(60)
+    createdAt           DateTime           @default(now())
+    blockerUsers        blocked_users[]    @relation("blockerUsers")
+    blockedUsers        blocked_users[]    @relation("blockedUsers")
+    userContacts        user_contacts[]    @relation("user")
+    contacts            user_contacts[]    @relation("contacts")
+    messages            messages[]
+    groupOwner          groups[]
+    joinedGroups        groups_members[]
+    admin_groups        admins_groups[]
+    channelOwner        channels[]
+    joinedChannels      channels_members[]
+    adminChannels       admins_channels[]
+    pinned_items        pinned_items[]
+    private_chats       private_chats[]    @relation("user1")
+    user2_private_chats private_chats[]    @relation("user2")
 }
 
 model area_codes {
@@ -68,20 +69,15 @@ model blocked_users {
 }
 
 model private_chats {
-    privateChatId String               @id @default(uuid()) @db.VarChar(55)
+    privateChatId String         @id @default(uuid()) @db.VarChar(55)
+    user1         users          @relation("user1", fields: [user1Id], references: [userId])
+    user1Id       String         @db.VarChar(55)
+    user2         users          @relation("user2", fields: [user2Id], references: [userId])
+    user2Id       String         @db.VarChar(55)
     updatedAt     DateTime
-    cratedAt      DateTime             @default(now())
-    privateChats  user_private_chats[]
+    createdAt     DateTime       @default(now())
     messages      messages[]
     pinned        pinned_items[]
-}
-
-model user_private_chats {
-    id            String        @id @default(uuid()) @db.VarChar(55)
-    user          users         @relation(fields: [userId], references: [userId])
-    userId        String        @db.VarChar(55)
-    chat          private_chats @relation(fields: [privateChatId], references: [privateChatId])
-    privateChatId String        @db.VarChar(55)
 }
 
 model messages {
