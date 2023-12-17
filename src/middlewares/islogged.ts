@@ -33,7 +33,6 @@ const isLogged = async (
 
     if (request.url === "/auth/complete-profile") {
       request.user = decodedToken;
-      return done();
     }
     if (decodedToken?.isProfileCompleted === false) {
       return sendResponse(reply, {
@@ -44,7 +43,6 @@ const isLogged = async (
       });
     }
     request.user = decodedToken;
-    return done();
   } catch (error) {
     return sendErrorResponse(reply, error);
   }
