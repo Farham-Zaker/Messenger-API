@@ -29,6 +29,26 @@ const validate = ({ target, schema }: ParametersType) => {
       }
       return done();
     }
+
+    if (target === "query") {
+      const { error } = schema.validate(request.query);
+
+      if (error) {
+        const errors = error.details.map((detail: any) => {
+          return {
+            message: detail.type,
+            path: detail.path.join("."),
+          };
+        });
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 400,
+          in: "query",
+          errors,
+        });
+      }
+      return done();
+    }
   };
 };
 
