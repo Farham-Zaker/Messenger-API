@@ -15,7 +15,7 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     method: "POST",
     url: "/send-verification-code",
-    preHandler: validate(sendVerificationCodeShema),
+    preHandler: validate({ target: "body", schema: sendVerificationCodeShema }),
     handler: authController.sendVerificationCode,
     schema: {
       hide: true,
@@ -24,7 +24,7 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     method: "POST",
     url: "/verify-phone-number",
-    preHandler: validate(verifyPhoneNumberSchema),
+    preHandler: validate({ target: "body", schema: verifyPhoneNumberSchema }),
     handler: authController.verifyPhoneNumber,
     schema: {
       hide: true,
@@ -33,7 +33,10 @@ const registerAuthRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     method: "PUT",
     url: "/complete-profile",
-    preHandler: [validate(completeProfileShema), isLogged],
+    preHandler: [
+      isLogged,
+      validate({ target: "body", schema: completeProfileShema }),
+    ],
     handler: authController.completeProfile,
     schema: {
       hide: true,
