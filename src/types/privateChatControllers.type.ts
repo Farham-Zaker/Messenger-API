@@ -34,3 +34,6 @@ export type UpdatePrivateChatRequestTypes = {
     createdAt: Date;
   };
 };
+export type DeletePrivateChatRequestTypes = {
+  Params: {privateChatId: string}
+}
