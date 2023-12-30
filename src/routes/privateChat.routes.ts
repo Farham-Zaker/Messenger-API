@@ -6,6 +6,7 @@ import {
   createPrivateChatSchema,
   getAllPrivateChatSchema,
   getPrivateChatByIdSchema,
+  updatePrivateChatSchema,
 } from "../schemas/privateChat.schema";
 
 const privateChatRoutes: FastifyPluginCallback = async (
@@ -56,6 +57,7 @@ const privateChatRoutes: FastifyPluginCallback = async (
       isLogged,
       validate({ target: "body", schema: updatePrivateChatSchema }),
     ],
+    handler: privateChatControllers.updatePrivateChat,
     schema: {
       hide: true,
     },

@@ -6,6 +6,7 @@ import {
   PrivateChatTypes,
   GetAllPrivateChatRequestTypes,
   GetPrivateChatByIdRequestTypes,
+  UpdatePrivateChatRequestTypes,
 } from "../types/privateChatControllers.type";
 import getQueryKeys from "../utils/getQueryKeys";
 
@@ -135,6 +136,55 @@ export default new (class privateChatControllers {
         status: "success",
         statusCode: 200,
         privateChat,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async updatePrivateChat(
+    request: FastifyRequest<UpdatePrivateChatRequestTypes>,
+    reply: FastifyReply
+  ) {
+    const privateChatServices: privateChatServices = request.diScope.resolve(
+      "privateChatServices"
+    );
+    const { privateChatId, updatedAt } = request.body;
+
+    try {
+      const isPrivateChatAvialableForThisUser: boolean =
+        !!(await privateChatServices.findOne({
+          condition: {
+            OR: [
+              { user1Id: request.user?.userId },
+              { user2Id: request.user?.userId },
+            ],
+            privateChatId,
+          },
+          selectedFields: {
+            private_chats: ["privateChatId"],
+          },
+        }));
+
+      if (!isPrivateChatAvialableForThisUser) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any private chat ",
+        });
+      }
+      await privateChatServices.update({
+        data: {
+          updatedAt,
+        },
+        condition: {
+          privateChatId,
+        },
+      });
+
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "Desire private chat updated successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
