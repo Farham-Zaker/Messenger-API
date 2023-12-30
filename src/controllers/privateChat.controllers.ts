@@ -5,6 +5,7 @@ import sendErrorResponse from "../utils/sendErrorResponse";
 import {
   PrivateChatTypes,
   GetAllPrivateChatRequestTypes,
+  GetPrivateChatByIdRequestTypes,
 } from "../types/privateChatControllers.type";
 import getQueryKeys from "../utils/getQueryKeys";
 
@@ -89,6 +90,51 @@ export default new (class privateChatControllers {
         status: "success",
         statusCode: 200,
         privateChats,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getPrivateChatById(
+    request: FastifyRequest<GetPrivateChatByIdRequestTypes>,
+    reply: FastifyReply
+  ) {
+    const privateChatServices: privateChatServices = request.diScope.resolve(
+      "privateChatServices"
+    );
+    const privateChatId = request.params?.privateChatId;
+    const selectedFieldsInQuery: string[] = getQueryKeys(request.query);
+
+    try {
+      const privateChat: PrivateChatTypes | null =
+        await privateChatServices.findOne({
+          condition: {
+            privateChatId,
+            OR: [
+              { user1Id: request.user?.userId },
+              { user1Id: request.user?.userId },
+            ],
+          },
+          selectedFields: {
+            private_chats: [
+              "privateChatId",
+              "updatedAt",
+              "createdAt",
+              ...selectedFieldsInQuery,
+            ],
+          },
+        });
+      if (!privateChat) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any private chat with such id.",
+        });
+      }
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        privateChat,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
