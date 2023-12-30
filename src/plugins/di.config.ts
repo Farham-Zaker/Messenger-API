@@ -4,6 +4,7 @@ import { asClass } from "awilix";
 import UserServices from "../services/user.services";
 import AreaCodeServices from "../services/areaCode.services";
 import privateChatServices from "../services/privateChat.services";
+import messageServices from "../services/message.services";
 
 const diConfig = (fastify: FastifyInstance) => {
   fastify.register(fastifyAwilixPlugin, {
@@ -15,6 +16,7 @@ const diConfig = (fastify: FastifyInstance) => {
     userServices: asClass(UserServices),
     areaCodeServices: asClass(AreaCodeServices),
     privateChatServices: asClass(privateChatServices),
+    messageServices: asClass(messageServices),
   });
 };
 
