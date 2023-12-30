@@ -43,7 +43,34 @@ const privateChatDocs = {
       },
     },
   },
+  "/privateChat/get": {
+    get: {
+      tags: ["Private Chat"],
+      summary: "Get all private chat.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Get all private chats.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 
+
+  
 };
 
 export default privateChatDocs;
