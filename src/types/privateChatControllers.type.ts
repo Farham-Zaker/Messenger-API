@@ -27,3 +27,10 @@ export type GetPrivateChatByIdRequestTypes = {
   };
   Params: { privateChatId: string };
 };
+export type UpdatePrivateChatRequestTypes = {
+  Body: {
+    privateChatId: string;
+    updatedAt: Date;
+    createdAt: Date;
+  };
+};
