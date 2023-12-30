@@ -4,6 +4,7 @@ import isLogged from "../middlewares/islogged";
 import validate from "../middlewares/validation.middleware";
 import {
   createPrivateChatSchema,
+  getAllPrivateChatSchema,
 } from "../schemas/privateChat.schema";
 
 const privateChatRoutes: FastifyPluginCallback = async (
@@ -28,6 +29,7 @@ const privateChatRoutes: FastifyPluginCallback = async (
     method: "GET",
     preHandler: [
       isLogged,
+      validate({ target: "query", schema: getAllPrivateChatSchema }),
     ],
     schema: {
       hide: true,
