@@ -20,3 +20,10 @@ type UserTypes = {
 export type GetAllPrivateChatRequestTypes = {
   Querystring: { user1: "true"; user2: "true" };
 };
+export type GetPrivateChatByIdRequestTypes = {
+  Querystring: {
+    user1: "true";
+    user2: "true";
+  };
+  Params: { privateChatId: string };
+};
