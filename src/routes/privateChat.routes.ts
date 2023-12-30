@@ -62,6 +62,14 @@ const privateChatRoutes: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/delete",
+    method: "DELETE",
+    preHandler: isLogged,
+    schema: {
+      hide: true,
+    },
+  });
 };
 
 export default privateChatRoutes;
