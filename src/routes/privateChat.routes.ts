@@ -36,6 +36,16 @@ const privateChatRoutes: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get/:privateChatId",
+    method: "GET",
+    preHandler: [
+      isLogged,
+    ],
+    schema: {
+      hide: true,
+    },
+  });
 };
 
 export default privateChatRoutes;
