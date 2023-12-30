@@ -150,7 +150,39 @@ const privateChatDocs = {
       },
     },
   },
-  
+  "/privateChat/delete/{privateChatId}": {
+    delete: {
+      tags: ["Private Chat"],
+      summary: "Delete private chat.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "privateChatId",
+          in: "path",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "The private chat deleted.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default privateChatDocs;
