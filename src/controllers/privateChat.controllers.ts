@@ -2,6 +2,11 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import sendResponse from "../utils/sendResponse";
 import privateChatServices from "../services/privateChat.services";
 import sendErrorResponse from "../utils/sendErrorResponse";
+import {
+  PrivateChatTypes,
+  GetAllPrivateChatRequestTypes,
+} from "../types/privateChatControllers.type";
+import getQueryKeys from "../utils/getQueryKeys";
 
 export default new (class privateChatControllers {
   async createChat(
@@ -51,6 +56,42 @@ export default new (class privateChatControllers {
       });
     } catch (error) {
       sendErrorResponse(reply, error);
+    }
+  }
+  async getAllPrivateChat(
+    request: FastifyRequest<GetAllPrivateChatRequestTypes>,
+    reply: FastifyReply
+  ) {
+    const privateChatServices: privateChatServices = request.diScope.resolve(
+      "privateChatServices"
+    );
+    const selectedFieldsInQuery: string[] = getQueryKeys(request.query);
+
+    try {
+      const privateChats: PrivateChatTypes[] =
+        await privateChatServices.findAll({
+          condition: {
+            OR: [
+              { user1Id: request.user?.userId },
+              { user2Id: request.user?.userId },
+            ],
+          },
+          selectedFields: {
+            private_chats: [
+              "privateChatId",
+              "updatedAt",
+              "createdAt",
+              ...selectedFieldsInQuery,
+            ],
+          },
+        });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        privateChats,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
     }
   }
 })();
