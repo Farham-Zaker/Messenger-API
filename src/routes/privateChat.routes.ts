@@ -49,6 +49,16 @@ const privateChatRoutes: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/update",
+    method: "PUT",
+    preHandler: [
+      isLogged,
+    ],
+    schema: {
+      hide: true,
+    },
+  });
 };
 
 export default privateChatRoutes;
