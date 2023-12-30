@@ -33,10 +33,27 @@ const getPrivateChatByIdSchema = Joi.object({
     return true;
   }),
 });
-
+const updatePrivateChatSchema = Joi.object({
+  privateChatId: Joi.string().required().messages({
+    "any.required": "'privateChatId' is required.",
+    "string.base": "'privateChatId' must be a string.",
+    "string.empty": "'privateChatId' can not be empty.",
+  }),
+  updatedAt: Joi.date().iso().optional().messages({
+    "date.base": "'updatedAt' field must be a valid date.",
+    "date.format":
+      "'updatedAt' field must be in ISO format (YYYY-MM-DDTHH:mm:ss.sssZ).",
+  }), 
+  createdAt: Joi.date().iso().optional().messages({
+    "date.base": "'updatedAt' field must be a valid date.",
+    "date.format":
+      "'updatedAt' field must be in ISO format (YYYY-MM-DDTHH:mm:ss.sssZ).",
+  }),
+});
 
 export {
   createPrivateChatSchema,
   getAllPrivateChatSchema,
   getPrivateChatByIdSchema,
+  updatePrivateChatSchema,
 };

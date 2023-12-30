@@ -54,6 +54,7 @@ const privateChatRoutes: FastifyPluginCallback = async (
     method: "PUT",
     preHandler: [
       isLogged,
+      validate({ target: "body", schema: updatePrivateChatSchema }),
     ],
     schema: {
       hide: true,
