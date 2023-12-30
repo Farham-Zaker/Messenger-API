@@ -7,8 +7,10 @@ import {
   GetAllPrivateChatRequestTypes,
   GetPrivateChatByIdRequestTypes,
   UpdatePrivateChatRequestTypes,
+  DeletePrivateChatRequestTypes,
 } from "../types/privateChatControllers.type";
 import getQueryKeys from "../utils/getQueryKeys";
+import messageServices from "../services/message.services";
 
 export default new (class privateChatControllers {
   async createChat(
@@ -190,4 +192,29 @@ export default new (class privateChatControllers {
       return sendErrorResponse(reply, error);
     }
   }
+  async deletePrivateChat(
+    request: FastifyRequest<DeletePrivateChatRequestTypes>,
+    reply: FastifyReply
+  ) {
+    const privateChatServices: privateChatServices = request.diScope.resolve(
+      "privateChatServices"
+    );
+    const messageServices: messageServices =
+      request.diScope.resolve("messageServices");
+
+    const privateChatId: string = request.params.privateChatId;
+
+    try {
+      await messageServices.delete({ privateChatId });
+      await privateChatServices.delete({ privateChatId });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "Desire private chat deleted successfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+
 })();

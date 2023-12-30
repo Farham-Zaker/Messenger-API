@@ -66,6 +66,7 @@ const privateChatRoutes: FastifyPluginCallback = async (
     url: "/delete",
     method: "DELETE",
     preHandler: isLogged,
+    handler: privateChatControllers.deletePrivateChat,
     schema: {
       hide: true,
     },
