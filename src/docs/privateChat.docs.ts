@@ -104,7 +104,52 @@ const privateChatDocs = {
       },
     },
   },
-
+  "/privateChat/update": {
+    put: {
+      tags: ["Private Chat"],
+      summary: "Update a chat details.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          schema: {
+            type: "object",
+            properties: {
+              privateChatId: {
+                type: "string",
+                description: "ID of private chat that you want to update.",
+              },
+              updatedAt: {
+                type: "string",
+                description: "Date of private chat was updated.",
+              },
+            },
+            required: ["privateChatId"],
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Desire private chat updated.",
+        },
+        404: {
+          description: "There is no any private chat with such ID.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
   
 };
 
