@@ -2,7 +2,9 @@ import { FastifyInstance } from "fastify";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import configs from "../config";
+
 import authDocs from "../docs/auth.docs";
+import privateChatDocs from "../docs/privateChat.docs";
 
 const swaggerConfig = (server: FastifyInstance) => {
   const swaggerOptions = {
@@ -16,6 +18,7 @@ const swaggerConfig = (server: FastifyInstance) => {
       host: configs.host,
       paths: {
         ...authDocs,
+        ...privateChatDocs,
       },
     },
     exposeRoute: false,
