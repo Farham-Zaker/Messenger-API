@@ -68,7 +68,42 @@ const privateChatDocs = {
       },
     },
   },
-
+  "/privateChat/get/{privateChatId}": {
+    get: {
+      tags: ["Private Chat"],
+      summary: "Get private chat by id.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "privateChatId",
+          in: "path",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Success",
+        },
+        404: {
+          description: "There is no any private chat with such id.",
+        },
+        500: {
+          description: "Internal Servet Error.",
+        },
+      },
+    },
+  },
 
   
 };
