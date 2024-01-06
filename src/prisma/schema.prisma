@@ -95,16 +95,16 @@ model messages {
     privateChatId String?        @db.VarChar(55)
     group         groups?        @relation(fields: [groupId], references: [groupId])
     groupId       String?        @db.VarChar(55)
-    channel       channels?       @relation(fields: [channelId], references: [channelId])
-    channelId     String?         @db.VarChar(55)
+    channel       channels?      @relation(fields: [channelId], references: [channelId])
+    channelId     String?        @db.VarChar(55)
     pinned        pinned_items[]
 }
 
 model medias {
-    mediaId  String    @id @default(uuid()) @db.VarChar(55)
-    filePath String    @db.VarChar(255)
-    fileType String    @db.VarChar(10)
-    message  messages?
+    mediaId  String     @id @default(uuid()) @db.VarChar(55)
+    filePath String     @db.VarChar(255)
+    fileType String     @db.VarChar(10)
+    message  messages[]
 }
 
 model groups {
