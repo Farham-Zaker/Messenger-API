@@ -95,6 +95,8 @@ model messages {
     privateChatId String?        @db.VarChar(55)
     group         groups?        @relation(fields: [groupId], references: [groupId])
     groupId       String?        @db.VarChar(55)
+    channel       channels?       @relation(fields: [channelId], references: [channelId])
+    channelId     String?         @db.VarChar(55)
     pinned        pinned_items[]
 }
 
@@ -145,6 +147,7 @@ model channels {
     imagePath        String             @db.VarChar(255)
     updatedAt        DateTime
     createdAt        DateTime           @default(now())
+    messages         messages[]
     channels_members channels_members[]
     adminChannels    admins_channels[]
     pinned           pinned_items[]
