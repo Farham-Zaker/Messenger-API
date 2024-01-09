@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from "fastify";
 import sendResponse from "../utils/sendResponse";
 
 type ParametersType = {
-  target: string;
+  target: "body" | "query";
   schema: any;
 };
 const validate = ({ target, schema }: ParametersType) => {
