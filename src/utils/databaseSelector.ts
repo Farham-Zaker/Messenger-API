@@ -1,15 +1,15 @@
 const databaseSelector = (mainTable: string, selectedFields: any) => {
   let selects: Record<string, any> = {};
 
-  Object.keys(selectedFields).map((tableName: string) => {
-    selectedFields[tableName].map((fieldName: string) => {
-      if (tableName == mainTable) {
+  Object.keys(selectedFields).map((model: string) => {
+    selectedFields[model].map((fieldName: string) => {
+      if (model == mainTable) {
         return (selects[fieldName] = true);
       }
-      return (selects[tableName] = {
+      return (selects[model] = {
         ...selects[fieldName],
         select: {
-          ...selects[tableName]?.select,
+          ...selects[model]?.select,
           [fieldName]: true,
         },
       });
