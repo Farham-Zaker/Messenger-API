@@ -1,6 +1,7 @@
 import Joi from "joi";
 import validateTrueOrFalse from "../utils/validateTrueOrFalse";
 import stringValidationErrorsExtractor from "../utils/stringValidationErrorsExtractor";
+import dateValidationErrorsExtractor from "../utils/dateValidationErrorsExtractor";
 import numberValidationErrorsExtractor from "../utils/numberValidationErrorsExtractor";
 
 const sendMessageSchema = Joi.object({
@@ -84,8 +85,41 @@ const getMessagesSchema = Joi.object({
     "object.missing":
       "At least one of the values of 'privateChatId' or 'groupId' or 'channelId' must be sent.",
   });
+const getMessageByIdSchema = Joi.object({
+  sender: Joi.string()
+    .optional()
+    .messages(stringValidationErrorsExtractor("sender"))
+    .custom((value, helper) => {
+      return validateTrueOrFalse(value, helper);
+    }),
+  privateChat: Joi.string()
+    .optional()
+    .messages(stringValidationErrorsExtractor("privateChat"))
+    .custom((value, helper) => {
+      return validateTrueOrFalse(value, helper);
+    }),
+  group: Joi.string()
+    .optional()
+    .messages(stringValidationErrorsExtractor("group"))
+    .custom((value, helper) => {
+      return validateTrueOrFalse(value, helper);
+    }),
+  channel: Joi.string()
+    .optional()
+    .messages(stringValidationErrorsExtractor("channel"))
+    .custom((value, helper) => {
+      return validateTrueOrFalse(value, helper);
+    }),
+  media: Joi.string()
+    .optional()
+    .messages(stringValidationErrorsExtractor("media"))
+    .custom((value, helper) => {
+      return validateTrueOrFalse(value, helper);
+    }),
+});
 
 export {
   sendMessageSchema,
   getMessagesSchema,
+  getMessageByIdSchema,
 };
