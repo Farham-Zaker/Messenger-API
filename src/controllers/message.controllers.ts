@@ -3,6 +3,7 @@ import {
   MessageTypes,
   SendMessageBodyRequest,
   GetMessageQueryTypes,
+  UpdateMessageBodyTypes,
 } from "../types/messageControllers.types";
 import messageServices from "../services/message.services";
 import sendResponse from "../utils/sendResponse";
@@ -197,6 +198,34 @@ export default new (class MessageControllers {
         status: "success",
         statusCode: 200,
         message,
+      });
+    } catch (error) {
+      sendErrorResponse(reply, error);
+    }
+  }
+  async updateMessage(
+    request: FastifyRequest<{ Body: UpdateMessageBodyTypes }>,
+    reply: FastifyReply
+  ) {
+    const { messageId, text, replyOf, updatedAt } = request.body;
+
+    const messageServices: messageServices =
+      request.diScope.resolve("messageServices");
+    try {
+      await messageServices.update({
+        condition: {
+          messageId,
+        },
+        data: {
+          text,
+          replyOf,
+          updatedAt,
+        },
+      });
+      sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "Desire message updated successfully.",
       });
     } catch (error) {
       sendErrorResponse(reply, error);
