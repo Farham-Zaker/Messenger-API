@@ -48,6 +48,16 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/update",
+    method: "PUT",
+    preHandler: [
+      isLogged,
+    ],
+    schema: {
+      hide: true,
+    },
+  });
   done();
 };
 
