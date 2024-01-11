@@ -309,5 +309,38 @@ const messageDocs = {
       },
     },
   },
+  "/message/delete/{messageId}": {
+    delete: {
+      tags: ["Message"],
+      summary: "Delete massage by message ID.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "messageId",
+          in: "query",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default messageDocs;
