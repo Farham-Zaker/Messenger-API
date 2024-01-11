@@ -5,6 +5,7 @@ import configs from "../config";
 
 import authDocs from "../docs/auth.docs";
 import privateChatDocs from "../docs/privateChat.docs";
+import messageDocs from "../docs/message.docs";
 
 const swaggerConfig = (server: FastifyInstance) => {
   const swaggerOptions = {
@@ -19,6 +20,7 @@ const swaggerConfig = (server: FastifyInstance) => {
       paths: {
         ...authDocs,
         ...privateChatDocs,
+        ...messageDocs,
       },
     },
     exposeRoute: false,
