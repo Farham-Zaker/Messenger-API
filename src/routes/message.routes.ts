@@ -65,6 +65,7 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
     url: "/delete/:messageId",
     method: "DELETE",
     preHandler: [isLogged],
+    handler: messageControllers.deleteMessage,
     schema: {
       hide: true,
     },

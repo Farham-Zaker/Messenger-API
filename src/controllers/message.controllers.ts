@@ -231,4 +231,24 @@ export default new (class MessageControllers {
       sendErrorResponse(reply, error);
     }
   }
+  async deleteMessage(
+    request: FastifyRequest<{ Params: { messageId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { messageId } = request.params;
+
+    const messageServices: messageServices =
+      request.diScope.resolve("messageServices");
+
+    try {
+      await messageServices.delete({ messageId });
+      sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "Desire message deleted successfully.",
+      });
+    } catch (error) {
+      sendErrorResponse(reply, error);
+    }
+  }
 })();
