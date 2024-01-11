@@ -43,6 +43,7 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
       isLogged,
       validate({ target: "query", schema: getMessageByIdSchema }),
     ],
+    handler: messageControllers.getMessageById,
     schema: {
       hide: true,
     },

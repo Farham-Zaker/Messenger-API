@@ -122,4 +122,84 @@ export default new (class MessageControllers {
       sendErrorResponse(reply, error);
     }
   }
+  async getMessageById(
+    request: FastifyRequest<{
+      Querystring: GetMessageQueryTypes;
+      Params: { messageId: string };
+    }>,
+    reply: FastifyReply
+  ) {
+    const messageServices: messageServices =
+      request.diScope.resolve("messageServices");
+    const { sender, media, privateChat, channel, group } = request.query;
+    const { messageId } = request.params;
+    try {
+      const message: MessageTypes | null = await messageServices.findOne({
+        condition: {
+          messageId,
+        },
+        selectedFields: {
+          messages: [
+            "messageId",
+            "text",
+            "senderId",
+            "replyOf",
+            "createdAt",
+            "updatedAt",
+            "mediaId",
+            "privateChatId",
+            "groupId",
+            "channelId",
+          ],
+          sender:
+            sender == "true"
+              ? ["userId", "firstName", "lastName", "username"]
+              : [],
+          media: media == "true" ? ["mediaId", "filePath", "fileType"] : [],
+          privateChat:
+            privateChat === "true"
+              ? ["privateChatId", "user1Id", "user2Id", "createdAt"]
+              : [],
+          channel:
+            channel === "true"
+              ? [
+                  "channelId",
+                  "title",
+                  "bio",
+                  "ownerId",
+                  "imagePath",
+                  "updatedAt",
+                  "createdAt",
+                ]
+              : [],
+          group:
+            group === "true"
+              ? [
+                  "groupId",
+                  "title",
+                  "bio",
+                  "ownerId",
+                  "imagePath",
+                  "updatedAt",
+                  "createdAt",
+                ]
+              : [],
+        },
+      });
+      if (!message) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any message with such ID.",
+        });
+      }
+      sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message,
+      });
+    } catch (error) {
+      sendErrorResponse(reply, error);
+    }
+  }
 })();
