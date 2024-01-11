@@ -5,6 +5,15 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
   options,
   done
 ) => {
+  fastify.route({
+    url: "/send",
+    method: "POST",
+    preHandler: [isLogged],
+    schema: {
+      hide: true,
+    },
+  });
+
   done();
 };
 
