@@ -20,7 +20,14 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
-
+  fastify.route({
+    url: "/get",
+    method: "GET",
+    preHandler: [isLogged],
+    schema: {
+      hide: true,
+    },
+  });
   done();
 };
 
