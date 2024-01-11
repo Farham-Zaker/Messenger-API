@@ -61,6 +61,14 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/delete/:messageId",
+    method: "DELETE",
+    preHandler: [isLogged],
+    schema: {
+      hide: true,
+    },
+  });
   done();
 };
 
