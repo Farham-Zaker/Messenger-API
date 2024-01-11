@@ -5,6 +5,7 @@ import {
   getMessageByIdSchema,
   getMessagesSchema,
   sendMessageSchema,
+  updateMessageSchema,
 } from "../schemas/message.schemas";
 import messageControllers from "../controllers/message.controllers";
 const messageRoutesPlugin: FastifyPluginCallback = async (
@@ -53,6 +54,7 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
     method: "PUT",
     preHandler: [
       isLogged,
+      validate({ target: "body", schema: updateMessageSchema }),
     ],
     schema: {
       hide: true,

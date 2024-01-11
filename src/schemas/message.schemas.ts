@@ -85,6 +85,7 @@ const getMessagesSchema = Joi.object({
     "object.missing":
       "At least one of the values of 'privateChatId' or 'groupId' or 'channelId' must be sent.",
   });
+
 const getMessageByIdSchema = Joi.object({
   sender: Joi.string()
     .optional()
@@ -117,9 +118,27 @@ const getMessageByIdSchema = Joi.object({
       return validateTrueOrFalse(value, helper);
     }),
 });
-
+const updateMessageSchema = Joi.object({
+  messageId: Joi.string()
+    .required()
+    .messages({
+      "any.required": "'messageId' is required.",
+      ...stringValidationErrorsExtractor("messageId"),
+    }),
+  text: Joi.string()
+    .optional()
+    .messages(stringValidationErrorsExtractor("text")),
+  replyOf: Joi.string()
+    .optional()
+    .messages(stringValidationErrorsExtractor("replyOf")),
+  updatedAt: Joi.date()
+    .iso()
+    .optional()
+    .messages(dateValidationErrorsExtractor("updatedAt")),
+});
 export {
   sendMessageSchema,
   getMessagesSchema,
   getMessageByIdSchema,
+  updateMessageSchema,
 };
