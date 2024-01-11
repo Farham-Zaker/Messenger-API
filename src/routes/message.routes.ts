@@ -1,7 +1,10 @@
 import { FastifyPluginCallback } from "fastify";
 import isLogged from "../middlewares/islogged";
 import validate from "../middlewares/validation.middleware";
-import { sendMessageSchema } from "../schemas/message.schemas";
+import {
+  getMessagesSchema,
+  sendMessageSchema,
+} from "../schemas/message.schemas";
 import messageControllers from "../controllers/message.controllers";
 const messageRoutesPlugin: FastifyPluginCallback = async (
   fastify,
@@ -23,7 +26,10 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     url: "/get",
     method: "GET",
-    preHandler: [isLogged],
+    preHandler: [
+      isLogged,
+      validate({ target: "query", schema: getMessagesSchema }),
+    ],
     schema: {
       hide: true,
     },
