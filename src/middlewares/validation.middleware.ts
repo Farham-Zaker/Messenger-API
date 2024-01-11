@@ -36,7 +36,7 @@ const validate = ({ target, schema }: ParametersType) => {
       if (error) {
         const errors = error.details.map((detail: any) => {
           return {
-            message: detail.type,
+            message: detail.message,
             path: detail.path.join("."),
           };
         });
