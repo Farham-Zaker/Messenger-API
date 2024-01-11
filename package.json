@@ -21,7 +21,7 @@
     "@fastify/awilix": "^4.0.0",
     "@fastify/swagger": "^8.12.1",
     "@fastify/swagger-ui": "^1.10.1",
-    "@prisma/client": "^5.7.1",
+    "@prisma/client": "^5.8.0",
     "@types/jsonwebtoken": "^9.0.5",
     "awilix": "^9.0.0",
     "axios": "^1.6.2",
