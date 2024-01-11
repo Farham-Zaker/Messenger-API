@@ -62,5 +62,126 @@ const messageDocs = {
       },
     },
   },
+  "/message/get/": {
+    get: {
+      tags: ["Message"],
+      summary:
+        "Get messages based on private chat ID or group ID or channel ID.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "privateChatId",
+          in: "query",
+          required: true,
+          schema: {
+            type: "string",
+          },
+
+          description:
+            "The privateChatId parameter represents the unique identifier for private chats.",
+        },
+        {
+          name: "channelId",
+          in: "query",
+          required: true,
+          description:
+            "The channelId parameter represents the unique identifier for channels.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "query",
+          required: true,
+          description:
+            "The groupId parameter represents the unique identifier for groups.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "sender",
+          in: "query",
+          description:
+            "If true, the response will include information about the sender.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "media",
+          in: "query",
+          description:
+            "If true, the response will include information about the media.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "privateChat",
+          in: "query",
+          description:
+            "If true, the response will include information about the private chat.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channel",
+          in: "query",
+          description:
+            "If true, the response will include information about the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "group",
+          in: "query",
+          description:
+            "If true, the response will include information about the group.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "searchTerm",
+          in: "query",
+          description:
+            "If true, the response will include information about the searchTerm.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "take",
+          in: "query",
+          required: true,
+          description:
+            "If true, the response will include information about the take.",
+          schema: {
+            type: "number",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default messageDocs;
