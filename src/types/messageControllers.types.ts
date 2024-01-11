@@ -80,3 +80,9 @@ export type GetMessageQueryTypes = {
   searchTerm?: string;
   take?: string;
 };
+export type UpdateMessageBodyTypes = {
+  messageId: string;
+  text: string;
+  replyOf: string;
+  updatedAt: Date;
+};
