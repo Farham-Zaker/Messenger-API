@@ -183,5 +183,78 @@ const messageDocs = {
       },
     },
   },
+  "/message/get/{messageId}": {
+    get: {
+      tags: ["Message"],
+      summary: "Get unique message base on ID of message.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "sender",
+          in: "query",
+          description:
+            "If true, the response will include information about the sender.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "media",
+          in: "query",
+          description:
+            "If true, the response will include information about the media.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "privateChat",
+          in: "query",
+          description:
+            "If true, the response will include information about the private chat.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channel",
+          in: "query",
+          description:
+            "If true, the response will include information about the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "group",
+          in: "query",
+          description:
+            "If true, the response will include information about the group.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        404: {
+          description: "Error. There is no any message with ID that sent.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default messageDocs;
