@@ -256,5 +256,58 @@ const messageDocs = {
       },
     },
   },
+  "/message/update": {
+    put: {
+      tags: ["Message"],
+      summary: "Update message base on message ID.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              messageId: {
+                type: "string",
+                description: "ID of message that you want to update.",
+              },
+              text: {
+                type: "string",
+                description: "Text of message.",
+              },
+              replyOf: {
+                type: "string",
+                description:
+                  "The ID of message that this message is reply of that message.",
+              },
+              updatedAt: {
+                type: "string",
+                description: "The date that the message was been updated.",
+              },
+              required: ["messageId"],
+            },
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default messageDocs;
