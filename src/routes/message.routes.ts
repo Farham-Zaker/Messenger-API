@@ -35,6 +35,16 @@ const messageRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get/:messageId",
+    method: "GET",
+    preHandler: [
+      isLogged,
+    ],
+    schema: {
+      hide: true,
+    },
+  });
   done();
 };
 
