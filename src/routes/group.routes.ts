@@ -2,6 +2,7 @@ import { FastifyPluginCallback } from "fastify";
 import isLogged from "../middlewares/islogged";
 import validate from "../middlewares/validation.middleware";
 import { createGroupSchmea } from "../schemas/group.schemas";
+import groupControllers from "../controllers/group.controllers";
 
 const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
@@ -11,6 +12,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       isLogged,
       validate({ target: "body", schema: createGroupSchmea }),
     ],
+    handler: groupControllers.createGroup,
   });
   done();
 };
