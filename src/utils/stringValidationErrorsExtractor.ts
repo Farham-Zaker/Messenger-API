@@ -6,7 +6,6 @@ type Parameter = {
 };
 const stringValidationErrorsExtractor = ({ field, required }: Parameter) => {
   if (required) {
-    console.log(field);
     return {
       "any.required": `'${field}' is required.`,
       "string.base": `'${field}' must be string.`,
