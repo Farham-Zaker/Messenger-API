@@ -7,16 +7,17 @@ import numberValidationErrorsExtractor from "../utils/numberValidationErrorsExtr
 const sendMessageSchema = Joi.object({
   text: Joi.string()
     .required()
-    .messages({
-      "any.required": "'text' is required.",
-      ...stringValidationErrorsExtractor("text"),
-    }),
+    .messages(
+      stringValidationErrorsExtractor({ field: "text", required: true })
+    ),
   privateChatId: Joi.string().messages(
-    stringValidationErrorsExtractor("privateChatId")
+    stringValidationErrorsExtractor({ field: "privateChatId", required: false })
   ),
-  groupId: Joi.string().messages(stringValidationErrorsExtractor("groupId")),
+  groupId: Joi.string().messages(
+    stringValidationErrorsExtractor({ field: "groupId", required: false })
+  ),
   channelId: Joi.string().messages(
-    stringValidationErrorsExtractor("channelId")
+    stringValidationErrorsExtractor({ field: "channelId", required: false })
   ),
 })
   .xor("privateChatId", "groupId", "channelId")
@@ -28,24 +29,35 @@ const sendMessageSchema = Joi.object({
   });
 const getMessagesSchema = Joi.object({
   privateChatId: Joi.string().messages(
-    stringValidationErrorsExtractor("privateChatId")
+    stringValidationErrorsExtractor({ field: "privateChatId", required: false })
   ),
-  groupId: Joi.string().messages(stringValidationErrorsExtractor("groupId")),
+  groupId: Joi.string().messages(
+    stringValidationErrorsExtractor({ field: "groupId", required: false })
+  ),
   channelId: Joi.string().messages(
-    stringValidationErrorsExtractor("channelId")
+    stringValidationErrorsExtractor({ field: "channelId", required: false })
   ),
   sender: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("sender"))
+    .messages(
+      stringValidationErrorsExtractor({ field: "sender", required: true })
+    )
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
   media: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("media"))
+    .messages(
+      stringValidationErrorsExtractor({ field: "media", required: false })
+    )
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
   privateChat: Joi.string().when("privateChatId", {
     is: Joi.exist(),
     then: Joi.string()
-      .messages(stringValidationErrorsExtractor("privateChat"))
+      .messages(
+        stringValidationErrorsExtractor({
+          field: "privateChat",
+          required: false,
+        })
+      )
       .custom((value, helper) => {
         validateTrueOrFalse(value, helper);
       }),
@@ -57,7 +69,12 @@ const getMessagesSchema = Joi.object({
   channel: Joi.string()
     .when("channelId", {
       is: Joi.exist(),
-      then: Joi.string().messages(stringValidationErrorsExtractor("channel")),
+      then: Joi.string().messages(
+        stringValidationErrorsExtractor({
+          field: "privateChat",
+          required: false,
+        })
+      ),
       otherwise: Joi.forbidden().messages({
         "any.unknown":
           "'channel' is not allowed when 'channelId' is not present.",
@@ -67,16 +84,20 @@ const getMessagesSchema = Joi.object({
   group: Joi.string()
     .when("groupId", {
       is: Joi.exist(),
-      then: Joi.string().messages(stringValidationErrorsExtractor("group")),
+      then: Joi.string().messages(
+        stringValidationErrorsExtractor({ field: "group", required: false })
+      ),
       otherwise: Joi.forbidden().messages({
         "any.unknown": "'group' is not allowed when 'groupId' is not present.",
       }),
     })
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
   searchTerm: Joi.string().messages(
-    stringValidationErrorsExtractor("searchTerm")
+    stringValidationErrorsExtractor({ field: "searchTerm", required: false })
   ),
-  take: Joi.number().messages(numberValidationErrorsExtractor("take")),
+  take: Joi.number().messages(
+    numberValidationErrorsExtractor({ field: "take", required: false })
+  ),
 })
   .xor("privateChatId", "groupId", "channelId")
   .messages({
@@ -89,31 +110,41 @@ const getMessagesSchema = Joi.object({
 const getMessageByIdSchema = Joi.object({
   sender: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("sender"))
+    .messages(
+      stringValidationErrorsExtractor({ field: "sender", required: true })
+    )
     .custom((value, helper) => {
       return validateTrueOrFalse(value, helper);
     }),
   privateChat: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("privateChat"))
+    .messages(
+      stringValidationErrorsExtractor({ field: "privateChat", required: false })
+    )
     .custom((value, helper) => {
       return validateTrueOrFalse(value, helper);
     }),
   group: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("group"))
+    .messages(
+      stringValidationErrorsExtractor({ field: "group", required: false })
+    )
     .custom((value, helper) => {
       return validateTrueOrFalse(value, helper);
     }),
   channel: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("channel"))
+    .messages(
+      stringValidationErrorsExtractor({ field: "privateChat", required: false })
+    )
     .custom((value, helper) => {
       return validateTrueOrFalse(value, helper);
     }),
   media: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("media"))
+    .messages(
+      stringValidationErrorsExtractor({ field: "media", required: false })
+    )
     .custom((value, helper) => {
       return validateTrueOrFalse(value, helper);
     }),
@@ -123,18 +154,27 @@ const updateMessageSchema = Joi.object({
     .required()
     .messages({
       "any.required": "'messageId' is required.",
-      ...stringValidationErrorsExtractor("messageId"),
+      ...stringValidationErrorsExtractor({
+        field: "messageId",
+        required: true,
+      }),
     }),
   text: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("text")),
+    .messages(
+      stringValidationErrorsExtractor({ field: "text", required: false })
+    ),
   replyOf: Joi.string()
     .optional()
-    .messages(stringValidationErrorsExtractor("replyOf")),
+    .messages(
+      stringValidationErrorsExtractor({ field: "replyOf", required: false })
+    ),
   updatedAt: Joi.date()
     .iso()
     .optional()
-    .messages(dateValidationErrorsExtractor("updatedAt")),
+    .messages(
+      dateValidationErrorsExtractor({ field: "updatedAt", required: false })
+    ),
 });
 export {
   sendMessageSchema,
