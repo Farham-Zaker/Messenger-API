@@ -1,7 +1,7 @@
 import Joi, { LanguageMessages } from "joi";
 import stringValidationErrorsExtractor from "../utils/stringValidationErrorsExtractor";
 
-const createGroupSchmea = Joi.object({
+const createGroupSchema = Joi.object({
   title: Joi.string()
     .required()
     .messages(
@@ -17,5 +17,16 @@ const createGroupSchmea = Joi.object({
     stringValidationErrorsExtractor({ field: "imagePath", required: false })
   ),
 });
-
-export { createGroupSchmea };
+const addMemberToGroupSchema = Joi.object({
+  userId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "userId", required: true })
+    ),
+  groupId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "groupId", required: true })
+    ),
+});
+export { createGroupSchema, addMemberToGroupSchema };
