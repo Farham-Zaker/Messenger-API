@@ -13,6 +13,17 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       validate({ target: "body", schema: createGroupSchmea }),
     ],
     handler: groupControllers.createGroup,
+    schema: {
+      hide: true,
+    },
+  });
+  fastify.route({
+    url: "/add-member",
+    method: "POST",
+    preHandler: [isLogged],
+    schema: {
+      hide: true,
+    },
   });
   done();
 };
