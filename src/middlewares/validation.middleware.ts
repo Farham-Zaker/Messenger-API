@@ -12,6 +12,13 @@ const validate = ({ target, schema }: ParametersType) => {
     done: HookHandlerDoneFunction
   ) => {
     if (target === "body") {
+      if (!request.body) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 400,
+          message: "Provide the required information in the request body.",
+        });
+      }
       const { error } = schema.validate(request.body);
       if (error) {
         const errors = error.details.map((detail: any) => {
@@ -31,6 +38,13 @@ const validate = ({ target, schema }: ParametersType) => {
     }
 
     if (target === "query") {
+      if (!request.query) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 400,
+          message: "Provide the required information in the request query.",
+        });
+      }
       const { error } = schema.validate(request.query);
 
       if (error) {
