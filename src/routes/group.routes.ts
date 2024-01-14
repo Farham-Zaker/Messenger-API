@@ -27,6 +27,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       isLogged,
       validate({ target: "body", schema: addMemberToGroupSchema }),
     ],
+    handler: groupControllers.addMember,
     schema: {
       hide: true,
     },

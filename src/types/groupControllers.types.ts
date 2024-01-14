@@ -3,3 +3,7 @@ export type CreateGroupBodyRequestTypes = {
   bio?: string;
   imagePath?: string;
 };
+export type AddMemberToGroupBodyRequestTyps = {
+  userId: string;
+  groupId: string;
+};
