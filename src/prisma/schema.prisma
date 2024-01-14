@@ -111,7 +111,7 @@ model medias {
 model groups {
     groupId   String           @id @default(uuid()) @db.VarChar(55)
     title     String           @db.VarChar(55)
-    bio       String?           @db.VarChar(255)
+    bio       String?          @db.VarChar(255)
     owner     users            @relation(fields: [ownerId], references: [userId])
     ownerId   String           @db.VarChar(55)
     imagePath String?          @db.VarChar(255)
@@ -124,11 +124,11 @@ model groups {
 }
 
 model groups_members {
-    memberId  String @id @default(uuid()) @db.VarChar(55)
-    users   users  @relation(fields: [userId], references: [userId])
-    userId  String @db.VarChar(55)
-    groups  groups @relation(fields: [groupId], references: [groupId])
-    groupId String @db.VarChar(55)
+    memberId String @id @default(uuid()) @db.VarChar(55)
+    users    users  @relation(fields: [userId], references: [userId])
+    userId   String @db.VarChar(55)
+    group    groups @relation(fields: [groupId], references: [groupId])
+    groupId  String @db.VarChar(55)
 }
 
 model admins_groups {
