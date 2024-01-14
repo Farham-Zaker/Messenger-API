@@ -6,12 +6,22 @@ export type CreateGroupParametersTypes = {
   updatedAt: Date;
 };
 export type GroupTypes = {
-  groupId: string;
-  bio: string | null;
-  ownerId: string;
-  imagePath: string | null;
-  updatedAt: Date;
-  createdAt: Date;
+  groupId?: string;
+  bio?: string | null;
+  ownerId?: string;
+  imagePath?: string | null;
+  updatedAt?: Date;
+  createdAt?: Date;
+};
+export type FindOneGroupParametersTypes = {
+  condition: {
+    groupId?: string;
+    ownerId?: string;
+  };
+  selectedFields: {
+    groups?: string[];
+    owner?: string[];
+  };
 };
 export type AddMemberToGroupParamtersTyps = {
   userId: string;
