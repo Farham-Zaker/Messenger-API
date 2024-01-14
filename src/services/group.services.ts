@@ -4,7 +4,6 @@ import {
   GroupTypes,
   FindOneGroupParametersTypes,
   AddMemberToGroupParamtersTyps,
-  AddedMemberTypes,
   FindOneGroupMemberParametersTypes,
   GroupMemberTypes,
 } from "../types/groupServices.types";
@@ -30,8 +29,8 @@ class GroupServices {
   }
   async addMember(
     data: AddMemberToGroupParamtersTyps
-  ): Promise<AddedMemberTypes> {
-    const groupMember: AddedMemberTypes =
+  ): Promise<GroupMemberTypes> {
+    const groupMember: GroupMemberTypes =
       await prismaServices.groups_members.create({
         data,
       });

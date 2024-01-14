@@ -27,11 +27,6 @@ export type AddMemberToGroupParamtersTyps = {
   userId: string;
   groupId: string;
 };
-export type AddedMemberTypes = {
-  memberId: string;
-  groupId: string;
-  userId: string;
-};
 export type FindOneGroupMemberParametersTypes = {
   condition: {
     memberId?: string;
