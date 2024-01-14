@@ -27,7 +27,7 @@ model users {
     messages            messages[]
     groupOwner          groups[]
     joinedGroups        groups_members[]
-    admin_groups        admins_groups[]
+    admin_groups        groups_admins[]
     channelOwner        channels[]
     joinedChannels      channels_members[]
     adminChannels       admins_channels[]
@@ -119,23 +119,23 @@ model groups {
     createdAt DateTime         @default(now())
     messages  messages[]
     members   groups_members[]
-    admins    admins_groups[]
+    admins    groups_admins[]
     pinneds   pinned_items[]
 }
 
 model groups_members {
     memberId String @id @default(uuid()) @db.VarChar(55)
-    users    users  @relation(fields: [userId], references: [userId])
+    user     users  @relation(fields: [userId], references: [userId])
     userId   String @db.VarChar(55)
     group    groups @relation(fields: [groupId], references: [groupId])
     groupId  String @db.VarChar(55)
 }
 
-model admins_groups {
+model groups_admins {
     adminId String @id @default(uuid()) @db.VarChar(55)
-    users   users  @relation(fields: [userId], references: [userId])
+    user    users  @relation(fields: [userId], references: [userId])
     userId  String @db.VarChar(55)
-    groups  groups @relation(fields: [groupId], references: [groupId])
+    group   groups @relation(fields: [groupId], references: [groupId])
     groupId String @db.VarChar(55)
 }
 
