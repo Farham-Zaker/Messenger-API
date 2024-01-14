@@ -17,6 +17,18 @@ const createGroupSchema = Joi.object({
     stringValidationErrorsExtractor({ field: "imagePath", required: false })
   ),
 });
+const addAdminSchema = Joi.object({
+  userId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "userId", required: true })
+    ),
+  groupId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "groupId", required: true })
+    ),
+});
 const addMemberToGroupSchema = Joi.object({
   userId: Joi.string()
     .required()
@@ -29,4 +41,4 @@ const addMemberToGroupSchema = Joi.object({
       stringValidationErrorsExtractor({ field: "groupId", required: true })
     ),
 });
-export { createGroupSchema, addMemberToGroupSchema };
+export { createGroupSchema, addAdminSchema, addMemberToGroupSchema };
