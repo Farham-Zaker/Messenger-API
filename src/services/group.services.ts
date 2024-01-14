@@ -16,17 +16,6 @@ class GroupServices {
     });
     return group;
   }
-  async findOneGroup({
-    condition,
-    selectedFields,
-  }: FindOneGroupParametersTypes): Promise<GroupTypes | null> {
-    const group: GroupTypes | null = await prismaServices.groups.findFirst({
-      where: condition,
-      select: databaseSelector("groups", selectedFields),
-    });
-    console.log(group);
-    return group;
-  }
   async addMember(
     data: AddMemberToGroupParamtersTyps
   ): Promise<GroupMemberTypes> {
@@ -35,6 +24,16 @@ class GroupServices {
         data,
       });
     return groupMember;
+  }
+  async findOneGroup({
+    condition,
+    selectedFields,
+  }: FindOneGroupParametersTypes): Promise<GroupTypes | null> {
+    const group: GroupTypes | null = await prismaServices.groups.findFirst({
+      where: condition,
+      select: databaseSelector("groups", selectedFields),
+    });
+    return group;
   }
   async findOneGroupMember({
     condition,

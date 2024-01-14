@@ -13,6 +13,10 @@ export type GroupTypes = {
   updatedAt?: Date;
   createdAt?: Date;
 };
+export type AddMemberToGroupParamtersTyps = {
+  userId: string;
+  groupId: string;
+};
 export type FindOneGroupParametersTypes = {
   condition: {
     groupId?: string;
@@ -22,10 +26,6 @@ export type FindOneGroupParametersTypes = {
     groups?: string[];
     owner?: string[];
   };
-};
-export type AddMemberToGroupParamtersTyps = {
-  userId: string;
-  groupId: string;
 };
 export type FindOneGroupMemberParametersTypes = {
   condition: {
