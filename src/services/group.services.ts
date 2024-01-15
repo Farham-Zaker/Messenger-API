@@ -54,6 +54,7 @@ class GroupServices {
     const admin: GroupAdminTypes | null =
       await prismaServices.groups_admins.findFirst({
         where: condition,
+        select: databaseSelector("groups_admins", selectedFields),
       });
     return admin;
   }
