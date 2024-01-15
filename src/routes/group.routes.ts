@@ -30,7 +30,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       validate({ target: "body", schema: addAdminSchema }),
       isGroupOwner,
     ],
-    handler: () => {},
+    handler: groupControllers.addAdmin,
     schema: {
       hide: true,
     },

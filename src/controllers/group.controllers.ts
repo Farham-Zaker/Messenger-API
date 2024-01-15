@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import {
+  AddAdminBodyRequestTypes,
   AddMemberToGroupBodyRequestTyps,
   CreateGroupBodyRequestTypes,
 } from "../types/groupControllers.types";
@@ -29,6 +30,50 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 201,
         message: "The group created successfully.",
+      });
+    } catch (error) {
+      sendErrorResponse(reply, error);
+    }
+  }
+  async addAdmin(
+    request: FastifyRequest<{ Body: AddAdminBodyRequestTypes }>,
+    reply: FastifyReply
+  ) {
+    const { userId, groupId } = request.body;
+    const user = request.user;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
+    try {
+      if (user?.userId === userId) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 403,
+          message: "You can not add yourself to admin",
+        });
+      }
+
+      const isUserAdmin: boolean = !!(await groupServices.findOneGroupAdmin({
+        condition: {
+          userId,
+          groupId,
+        },
+        selectedFields: {
+          groups_admins: ["adminId"],
+        },
+      }));
+      if (isUserAdmin) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 403,
+          message: "Desire user is still an admin.",
+        });
+      }
+      await groupServices.addAdmin({ userId, groupId });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 201,
+        message: "Desire user added to admins successfully.",
       });
     } catch (error) {
       sendErrorResponse(reply, error);
