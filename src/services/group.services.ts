@@ -1,6 +1,7 @@
 import prismaServices from "../prisma/prismaServices";
 import {
   CreateGroupParametersTypes,
+  CreatedGroupTypes,
   GroupTypes,
   FindOneGroupParametersTypes,
   AddMemberToGroupParamtersTyps,
@@ -13,8 +14,8 @@ import {
 import databaseSelector from "../utils/databaseSelector";
 
 class GroupServices {
-  async create(data: CreateGroupParametersTypes): Promise<GroupTypes> {
-    const group: GroupTypes = await prismaServices.groups.create({
+  async create(data: CreateGroupParametersTypes): Promise<CreatedGroupTypes> {
+    const group: CreatedGroupTypes = await prismaServices.groups.create({
       data,
     });
     return group;

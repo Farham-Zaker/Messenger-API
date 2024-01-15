@@ -5,6 +5,15 @@ export type CreateGroupParametersTypes = {
   imagePath?: string;
   updatedAt: Date;
 };
+export type CreatedGroupTypes = {
+  groupId: string;
+  title: string;
+  bio: string | null;
+  imagePath: string | null;
+  ownerId: string;
+  updatedAt: Date;
+  createdAt: Date;
+};
 export type GroupTypes = {
   groupId?: string;
   bio?: string | null;
@@ -12,7 +21,7 @@ export type GroupTypes = {
   imagePath?: string | null;
   updatedAt?: Date;
   createdAt?: Date;
-  admins?: AdminTypes[]
+  admins?: AdminTypes[];
 };
 type AdminTypes = {
   adminId: string;
