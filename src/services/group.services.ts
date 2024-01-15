@@ -6,6 +6,8 @@ import {
   AddMemberToGroupParamtersTyps,
   FindOneGroupMemberParametersTypes,
   GroupMemberTypes,
+  GroupAdminTypes,
+  FindOneGroupAdminParamtersTypes,
 } from "../types/groupServices.types";
 import databaseSelector from "../utils/databaseSelector";
 
@@ -34,6 +36,16 @@ class GroupServices {
       select: databaseSelector("groups", selectedFields),
     });
     return group;
+  }
+  async findOneGroupAdmin({
+    condition,
+    selectedFields,
+  }: FindOneGroupAdminParamtersTypes) {
+    const admin: GroupAdminTypes | null =
+      await prismaServices.groups_admins.findFirst({
+        where: condition,
+      });
+    return admin;
   }
   async findOneGroupMember({
     condition,

@@ -13,6 +13,11 @@ export type GroupTypes = {
   updatedAt?: Date;
   createdAt?: Date;
 };
+export type GroupAdminTypes = {
+  adminId?: string;
+  userId?: string;
+  groupId?: string;
+};
 export type AddMemberToGroupParamtersTyps = {
   userId: string;
   groupId: string;
@@ -27,13 +32,24 @@ export type FindOneGroupParametersTypes = {
     owner?: string[];
   };
 };
+export type FindOneGroupAdminParamtersTypes = {
+  condition: {
+    adminId?: string;
+    userId?: string;
+    groupId?: string;
+  };
+  selectedFields: {
+    groups_admins?: string[];
+    user?: string[];
+    group?: string[];
+  };
+};
 export type FindOneGroupMemberParametersTypes = {
   condition: {
     memberId?: string;
     userId?: string;
     groupId?: string;
   };
-
   selectedFields: {
     groups_members: string[];
     users?: string[];
