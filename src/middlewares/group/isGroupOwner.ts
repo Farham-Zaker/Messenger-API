@@ -1,7 +1,7 @@
 import { preHandlerHookHandler } from "fastify";
-import GroupServices from "../services/group.services";
-import sendResponse from "../utils/sendResponse";
-import sendErrorResponse from "../utils/sendErrorResponse";
+import GroupServices from "../../services/group.services";
+import sendResponse from "../../utils/sendResponse";
+import sendErrorResponse from "../../utils/sendErrorResponse";
 
 type BodyTypes = {
   userId: string;

@@ -7,7 +7,7 @@ import {
   createGroupSchema,
 } from "../schemas/group.schemas";
 import groupControllers from "../controllers/group.controllers";
-import isGroupOwner from "../middlewares/isGroupOwner";
+import isGroupOwner from "../middlewares/group/isGroupOwner";
 
 const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
