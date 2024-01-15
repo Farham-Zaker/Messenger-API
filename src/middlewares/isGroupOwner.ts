@@ -7,22 +7,24 @@ type BodyTypes = {
   userId: string;
   groupId: string;
 };
+type GroupTypes = {
+  ownerId?: string;
+};
 const isGroupOwner: preHandlerHookHandler = async (request, reply, done) => {
   const { groupId } = request.body as BodyTypes;
   const user = request?.user;
   const groupServices: GroupServices = request.diScope.resolve("groupServices");
-
   try {
-    const group: boolean = !!(await groupServices.findOneGroup({
+    const group: GroupTypes | null = await groupServices.findOneGroup({
       condition: {
         groupId,
         ownerId: user?.userId,
       },
       selectedFields: {
-        groups: ["groupId"],
+        groups: ["ownerId"],
       },
-    }));
-    if (!group) {
+    });
+    if (group?.ownerId !== user?.userId) {
       return sendResponse(reply, {
         status: "error",
         statusCode: 400,
