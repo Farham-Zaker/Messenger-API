@@ -8,6 +8,7 @@ import {
 } from "../schemas/group.schemas";
 import groupControllers from "../controllers/group.controllers";
 import isGroupOwner from "../middlewares/group/isGroupOwner";
+import isGroupAdminOrOwner from "../middlewares/group/isGroupAdminOrOwner";
 
 const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
@@ -41,6 +42,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     preHandler: [
       isLogged,
       validate({ target: "body", schema: addMemberToGroupSchema }),
+      isGroupAdminOrOwner,
     ],
     handler: groupControllers.addMember,
     schema: {
