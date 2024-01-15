@@ -12,7 +12,14 @@ export type GroupTypes = {
   imagePath?: string | null;
   updatedAt?: Date;
   createdAt?: Date;
+  admins?: AdminTypes[]
 };
+type AdminTypes = {
+  adminId: string;
+  userId: string;
+  groupId: string;
+};
+
 export type AddAdmiToGroupParametersTypes = {
   groupId: string;
   userId: string;
