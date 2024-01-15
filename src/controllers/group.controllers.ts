@@ -84,9 +84,17 @@ export default new (class groupControllers {
     reply: FastifyReply
   ) {
     const { userId, groupId } = request.body;
+    const user = request.user;
     const groupServices: GroupServices =
       request.diScope.resolve("groupServices");
     try {
+      if (userId == user?.userId) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 403,
+          message: "You can not add youself to this group.",
+        });
+      }
       const groupMember: boolean = !!(await groupServices.findOneGroupMember({
         condition: {
           userId,
