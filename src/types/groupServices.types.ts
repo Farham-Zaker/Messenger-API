@@ -13,6 +13,10 @@ export type GroupTypes = {
   updatedAt?: Date;
   createdAt?: Date;
 };
+export type AddAdmiToGroupParametersTypes = {
+  groupId: string;
+  userId: string;
+};
 export type GroupAdminTypes = {
   adminId?: string;
   userId?: string;

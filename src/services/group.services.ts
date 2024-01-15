@@ -6,6 +6,7 @@ import {
   AddMemberToGroupParamtersTyps,
   FindOneGroupMemberParametersTypes,
   GroupMemberTypes,
+  AddAdmiToGroupParametersTypes,
   GroupAdminTypes,
   FindOneGroupAdminParamtersTypes,
 } from "../types/groupServices.types";
@@ -17,6 +18,14 @@ class GroupServices {
       data,
     });
     return group;
+  }
+  async addAdmin(
+    data: AddAdmiToGroupParametersTypes
+  ): Promise<GroupAdminTypes> {
+    const admin: GroupAdminTypes = await prismaServices.groups_admins.create({
+      data,
+    });
+    return admin;
   }
   async addMember(
     data: AddMemberToGroupParamtersTyps
