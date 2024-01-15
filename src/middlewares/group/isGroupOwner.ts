@@ -31,7 +31,6 @@ const isGroupOwner: preHandlerHookHandler = async (request, reply, done) => {
         message: "Just owner of this group can acces to this route.",
       });
     }
-    return done();
   } catch (error) {
     return sendErrorResponse(reply, error);
   }
