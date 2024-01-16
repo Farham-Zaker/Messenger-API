@@ -46,5 +46,56 @@ const groupDocs = {
       },
     },
   },
+  "/group/add-admin": {
+    post: {
+      tags: ["Group"],
+      summary: "Add an user to admins of a group.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              userId: {
+                type: "string",
+                description:
+                  "ID of user that you want to add its to admin a group.",
+              },
+              groupId: {
+                type: "string",
+                description: "ID of group that you want to add user to admins.",
+              },
+            },
+            required: ["userId", "groupId"],
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response. Added.",
+        },
+        403: {
+          description: "You can not add yourself to admin.",
+        },
+        409: {
+          description: "Desire user is still an admin.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default groupDocs;
