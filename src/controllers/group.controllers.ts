@@ -70,7 +70,7 @@ export default new (class groupControllers {
       if (isUserAdmin) {
         return sendResponse(reply, {
           status: "error",
-          statusCode: 403,
+          statusCode: 409,
           message: "Desire user is still an admin.",
         });
       }
@@ -113,7 +113,7 @@ export default new (class groupControllers {
       if (groupMember) {
         return sendResponse(reply, {
           status: "error",
-          statusCode: 403,
+          statusCode: 409,
           message: "There is an member with such ID in the group with such ID.",
         });
       }
