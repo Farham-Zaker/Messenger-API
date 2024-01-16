@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import {
   AddAdminBodyRequestTypes,
+  GroupTypes,
   AddMemberToGroupBodyRequestTyps,
   CreateGroupBodyRequestTypes,
 } from "../types/groupControllers.types";
@@ -19,12 +20,16 @@ export default new (class groupControllers {
     const { title, bio, imagePath } = request.body;
     const user = request.user;
     try {
-      await groupServices.create({
+      const group: GroupTypes = await groupServices.create({
         title,
         bio,
         ownerId: user?.userId,
         imagePath,
         updatedAt: new Date(),
+      });
+      await groupServices.addMember({
+        groupId: group.groupId as string,
+        userId: user?.userId,
       });
       return sendResponse(reply, {
         status: "success",

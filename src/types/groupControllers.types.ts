@@ -3,6 +3,15 @@ export type CreateGroupBodyRequestTypes = {
   bio?: string;
   imagePath?: string;
 };
+export type GroupTypes = {
+  groupId: string;
+  title: string;
+  bio: string | null;
+  ownerId: string;
+  imagePath: string | null;
+  updatedAt: Date;
+  createdAt: Date;
+};
 export type AddAdminBodyRequestTypes = {
   userId: string;
   groupId: string;
