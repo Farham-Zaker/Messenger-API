@@ -97,5 +97,57 @@ const groupDocs = {
       },
     },
   },
+  "/group/add-member": {
+    post: {
+      tags: ["Group"],
+      summary: "Add member to a group.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              userId: {
+                type: "string",
+                description:
+                  "ID of user that you want add its to member of a group.",
+              },
+              groupId: {
+                type: "string",
+                description: "ID of group that you want add user to member.",
+              },
+            },
+            required: ["userId", "groupId"],
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response. Added.",
+        },
+        403: {
+          description: "You can not add youself to this group.",
+        },
+        409: {
+          description:
+            "There is an member with such ID in the group with such ID.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default groupDocs;
