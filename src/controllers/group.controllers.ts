@@ -4,6 +4,7 @@ import {
   GroupTypes,
   AddMemberToGroupBodyRequestTyps,
   CreateGroupBodyRequestTypes,
+  GetAllGroupsQueryTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -129,6 +130,54 @@ export default new (class groupControllers {
       });
     } catch (error) {
       sendErrorResponse(reply, error);
+    }
+  }
+  async getGroups(
+    request: FastifyRequest<{ Querystring: GetAllGroupsQueryTypes }>,
+    reply: FastifyReply
+  ) {
+    const { owner } = request.query;
+    const user = request.user;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+    try {
+      const groups: GroupTypes[] = await groupServices.findAllGroups({
+        condition: {
+          members: {
+            memberId: user?.userId,
+            relation: "one to many",
+          },
+        },
+        selectedFields: {
+          groups: [
+            "groupId",
+            "title",
+            "bio",
+            "imagePath",
+            "ownerId",
+            "updatedAt",
+            "createdAt",
+          ],
+          owner:
+            owner === "true"
+              ? [
+                  "userId",
+                  "username",
+                  "firstName",
+                  "lastName",
+                  "areaCodeId",
+                  "phoneNumber",
+                ]
+              : [],
+        },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        groups,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
     }
   }
 })();
