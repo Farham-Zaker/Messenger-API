@@ -5,6 +5,7 @@ import {
   addAdminSchema,
   addMemberToGroupSchema,
   createGroupSchema,
+  getAllGroupAdminsSchema,
   getAllGroupsSchema,
 } from "../schemas/group.schemas";
 import groupControllers from "../controllers/group.controllers";
@@ -65,7 +66,10 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
     url: "/get-admins",
     method: "GET",
-    preHandler: [isLogged],
+    preHandler: [
+      isLogged,
+      validate({ target: "query", schema: getAllGroupAdminsSchema }),
+    ],
     handler: () => {},
   });
   done();
