@@ -149,5 +149,39 @@ const groupDocs = {
       },
     },
   },
+  "/group/get-groups": {
+    get: {
+      tags: ["Group"],
+      summary: "Get all groups based on the user that is member of that.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "owner",
+          in: "quey",
+          schema: {
+            type: "string",
+          },
+          description:
+            "If true, the response will include information about the owner of the groups.",
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Sever Error.",
+        },
+      },
+    },
+  },
 };
 export default groupDocs;
