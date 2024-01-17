@@ -1,5 +1,6 @@
 import Joi, { LanguageMessages } from "joi";
 import stringValidationErrorsExtractor from "../utils/stringValidationErrorsExtractor";
+import validateTrueOrFalse from "../utils/validateTrueOrFalse";
 
 const createGroupSchema = Joi.object({
   title: Joi.string()
@@ -41,4 +42,17 @@ const addMemberToGroupSchema = Joi.object({
       stringValidationErrorsExtractor({ field: "groupId", required: true })
     ),
 });
-export { createGroupSchema, addAdminSchema, addMemberToGroupSchema };
+const getAllGroups = Joi.object({
+  owner: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "owner", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+});
+export {
+  createGroupSchema,
+  addAdminSchema,
+  addMemberToGroupSchema,
+  getAllGroups,
+};
