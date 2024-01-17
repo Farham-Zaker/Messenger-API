@@ -13,6 +13,7 @@ import {
   AddAdmiToGroupParametersTypes,
   GroupAdminTypes,
   FindOneGroupAdminParamtersTypes,
+  FindAllGroupsAdminsParametersTypes,
 } from "../types/groupServices.types";
 import databaseSelector from "../utils/databaseSelector";
 import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
@@ -61,10 +62,20 @@ class GroupServices {
     });
     return groups;
   }
+  async findAllGroupAdmins({
+    condition,
+    selectedFields,
+  }: FindAllGroupsAdminsParametersTypes): Promise<GroupAdminTypes[]> {
+    const admins = await prismaServices.groups_admins.findMany({
+      where: prismaWhereInputExtractor(condition),
+      select: databaseSelector("admins", selectedFields),
+    });
+    return admins;
+  }
   async findOneGroupAdmin({
     condition,
     selectedFields,
-  }: FindOneGroupAdminParamtersTypes) {
+  }: FindOneGroupAdminParamtersTypes): Promise<GroupTypes | null> {
     const admin: GroupAdminTypes | null =
       await prismaServices.groups_admins.findFirst({
         where: condition,

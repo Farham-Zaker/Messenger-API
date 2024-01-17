@@ -36,7 +36,9 @@ export type AddAdmiToGroupParametersTypes = {
 export type GroupAdminTypes = {
   adminId?: string;
   userId?: string;
+  user?: UserTypes;
   groupId?: string;
+  group?: GroupTypes;
 };
 export type AddMemberToGroupParamtersTyps = {
   userId: string;
@@ -69,6 +71,18 @@ export type FindAllGroupsConditionTypes = {
     adminId: string;
     relation: "one to many" | "one to one";
   };
+};
+export type FindAllGroupsAdminsParametersTypes = {
+  condition: FindAllGroupsAdminsConditionTypes;
+  selectedFields: {
+    admins: string[];
+    group?: string[];
+    user?: string[];
+  };
+};
+export type FindAllGroupsAdminsConditionTypes = {
+  groupId?: string;
+  userId?: string;
 };
 export type FindOneGroupAdminParamtersTypes = {
   condition: {
