@@ -55,6 +55,9 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     method: "GET",
     preHandler: [isLogged, validate({ target: "query", schema: getAllGroups })],
     handler: groupControllers.getGroups,
+    schema: {
+      hide: true,
+    },
   });
   done();
 };
