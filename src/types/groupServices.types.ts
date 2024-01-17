@@ -52,6 +52,24 @@ export type FindOneGroupParametersTypes = {
     owner?: string[];
   };
 };
+export type FindAllGroupsPramatersTypes = {
+  condition: FindAllGroupsConditionTypes;
+  selectedFields: {
+    groups: string[];
+    owner?: string[];
+  };
+};
+export type FindAllGroupsConditionTypes = {
+  ownerId?: string;
+  members?: {
+    memberId: string;
+    relation: "one to many" | "one to one";
+  };
+  admins?: {
+    adminId: string;
+    relation: "one to many" | "one to one";
+  };
+};
 export type FindOneGroupAdminParamtersTypes = {
   condition: {
     adminId?: string;

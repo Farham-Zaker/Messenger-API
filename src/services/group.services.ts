@@ -1,9 +1,12 @@
+import { Prisma } from "@prisma/client";
 import prismaServices from "../prisma/prismaServices";
 import {
   CreateGroupParametersTypes,
   CreatedGroupTypes,
   GroupTypes,
   FindOneGroupParametersTypes,
+  FindAllGroupsPramatersTypes,
+  FindAllGroupsConditionTypes,
   AddMemberToGroupParamtersTyps,
   FindOneGroupMemberParametersTypes,
   GroupMemberTypes,
@@ -12,6 +15,7 @@ import {
   FindOneGroupAdminParamtersTypes,
 } from "../types/groupServices.types";
 import databaseSelector from "../utils/databaseSelector";
+import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
 
 class GroupServices {
   async create(data: CreateGroupParametersTypes): Promise<CreatedGroupTypes> {
@@ -46,6 +50,16 @@ class GroupServices {
       select: databaseSelector("groups", selectedFields),
     });
     return group;
+  }
+  async findAllGroups({
+    condition,
+    selectedFields,
+  }: FindAllGroupsPramatersTypes): Promise<GroupTypes[]> {
+    const groups = await prismaServices.groups.findMany({
+      where: prismaWhereInputExtractor<FindAllGroupsConditionTypes>(condition),
+      select: databaseSelector("groups", selectedFields),
+    });
+    return groups;
   }
   async findOneGroupAdmin({
     condition,
