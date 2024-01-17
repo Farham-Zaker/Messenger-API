@@ -62,6 +62,12 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get-admins",
+    method: "GET",
+    preHandler: [isLogged],
+    handler: () => {},
+  });
   done();
 };
 
