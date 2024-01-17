@@ -42,7 +42,7 @@ const addMemberToGroupSchema = Joi.object({
       stringValidationErrorsExtractor({ field: "groupId", required: true })
     ),
 });
-const getAllGroups = Joi.object({
+const getAllGroupsSchema = Joi.object({
   owner: Joi.string()
     .optional()
     .messages(
@@ -54,5 +54,5 @@ export {
   createGroupSchema,
   addAdminSchema,
   addMemberToGroupSchema,
-  getAllGroups,
+  getAllGroupsSchema,
 };
