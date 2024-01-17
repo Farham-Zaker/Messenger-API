@@ -71,6 +71,9 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       validate({ target: "query", schema: getAllGroupAdminsSchema }),
     ],
     handler: groupControllers.getAdmins,
+    schema:{
+      hide: true
+    }
   });
   done();
 };
