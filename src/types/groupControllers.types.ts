@@ -35,3 +35,26 @@ export type OwnerTypes = {
   areaCodeId: string;
   createdAt: Date;
 };
+
+export type GetAdminsQueryRequestTypes = {
+  groupId: string;
+  group?: string;
+  user?: string;
+};
+export type GroupAdminTypes = {
+  adminId?: string;
+  groupId?: string;
+  group?: GroupTypes;
+  userId?: string;
+  user?: UserTypes;
+};
+type UserTypes = {
+  userId?: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  username?: string | null;
+  phoneNumber?: string;
+  areaCodeId?: string;
+  email?: string | null;
+  createdAt?: Date;
+};

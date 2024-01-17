@@ -5,6 +5,8 @@ import {
   AddMemberToGroupBodyRequestTyps,
   CreateGroupBodyRequestTypes,
   GetAllGroupsQueryTypes,
+  GetAdminsQueryRequestTypes,
+  GroupAdminTypes
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -167,6 +169,7 @@ export default new (class groupControllers {
                   "lastName",
                   "areaCodeId",
                   "phoneNumber",
+                  "email",
                 ]
               : [],
         },
@@ -175,6 +178,56 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 200,
         groups,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getAdmins(
+    request: FastifyRequest<{ Querystring: GetAdminsQueryRequestTypes }>,
+    reply: FastifyReply
+  ) {
+    const { groupId, group, user } = request.query;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
+    try {
+      const admins: GroupAdminTypes[] = await groupServices.findAllGroupAdmins({
+        condition: {
+          groupId,
+        },
+        selectedFields: {
+          admins: ["adminId", "userId", "groupId"],
+          group:
+            group === "true"
+              ? [
+                  "groupId",
+                  "title",
+                  "bio",
+                  "imagePath",
+                  "ownerId",
+                  "updatedAt",
+                  "createdAt",
+                ]
+              : [],
+          user:
+            user === "true"
+              ? [
+                  "userId",
+                  "firstName",
+                  "lastName",
+                  "username",
+                  "areaCodeId",
+                  "phoneNumber",
+                  "email",
+                ]
+              : [],
+        },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        admins,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
