@@ -69,10 +69,30 @@ const getAllGroupAdminsSchema = Joi.object({
     )
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
 });
+const getAllGroupMembersSchema = Joi.object({
+  groupId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "groupId", required: true })
+    ),
+  user: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "user", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  group: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "group", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+});
 export {
   createGroupSchema,
   addAdminSchema,
   addMemberToGroupSchema,
   getAllGroupsSchema,
   getAllGroupAdminsSchema,
+  getAllGroupMembersSchema,
 };
