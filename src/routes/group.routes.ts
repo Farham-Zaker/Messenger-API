@@ -88,6 +88,12 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get-groups/:groupId",
+    method: "GET",
+    preHandler: [isLogged],
+    handler: () => {},
+  });
   done();
 };
 
