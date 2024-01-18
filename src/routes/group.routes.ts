@@ -71,9 +71,18 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       validate({ target: "query", schema: getAllGroupAdminsSchema }),
     ],
     handler: groupControllers.getAdmins,
-    schema:{
-      hide: true
-    }
+    schema: {
+      hide: true,
+    },
+  });
+  fastify.route({
+    url: "/get-members",
+    method: "GET",
+    preHandler: [isLogged],
+    handler: () => {},
+    schema: {
+      hide: true,
+    },
   });
   done();
 };
