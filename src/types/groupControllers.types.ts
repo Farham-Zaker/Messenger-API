@@ -58,3 +58,15 @@ type UserTypes = {
   email?: string | null;
   createdAt?: Date;
 };
+export type GetAllMembersQueryRequestTypes = {
+  groupId: string;
+  group?: string;
+  user?: string;
+};
+export type GroupMemberTypes = {
+  memberId?: string;
+  groupId?: string;
+  group?: GroupTypes;
+  userId?: string;
+  user?: UserTypes;
+};

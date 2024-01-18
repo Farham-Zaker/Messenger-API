@@ -6,11 +6,13 @@ import {
   CreateGroupBodyRequestTypes,
   GetAllGroupsQueryTypes,
   GetAdminsQueryRequestTypes,
-  GroupAdminTypes
+  GroupAdminTypes,
+  GetAllMembersQueryRequestTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
+import { GroupMemberTypes } from "../types/groupServices.types";
 
 export default new (class groupControllers {
   async createGroup(
@@ -228,6 +230,57 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 200,
         admins,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getMembers(
+    request: FastifyRequest<{ Querystring: GetAllMembersQueryRequestTypes }>,
+    reply: FastifyReply
+  ) {
+    const { groupId, group, user } = request.query;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
+    try {
+      const members: GroupMemberTypes[] =
+        await groupServices.findAllGroupMembers({
+          condition: {
+            groupId,
+          },
+          selectedFields: {
+            groups_members: ["memberId", "groupId", "userId"],
+            group:
+              group === "true"
+                ? [
+                    "groupId",
+                    "title",
+                    "bio",
+                    "imagePath",
+                    "ownerId",
+                    "updatedAt",
+                    "createdAt",
+                  ]
+                : [],
+            user:
+              user === "true"
+                ? [
+                    "userId",
+                    "firstName",
+                    "lastName",
+                    "username",
+                    "areaCodeId",
+                    "phoneNumber",
+                    "email",
+                  ]
+                : [],
+          },
+        });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        members,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
