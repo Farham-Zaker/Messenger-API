@@ -14,6 +14,7 @@ import {
   GroupAdminTypes,
   FindOneGroupAdminParamtersTypes,
   FindAllGroupsAdminsParametersTypes,
+  FindAllGroupsMembersParametersTypes,
 } from "../types/groupServices.types";
 import databaseSelector from "../utils/databaseSelector";
 import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
@@ -82,6 +83,17 @@ class GroupServices {
         select: databaseSelector("groups_admins", selectedFields),
       });
     return admin;
+  }
+  async findAllGroupMembers({
+    condition,
+    selectedFields,
+  }: FindAllGroupsMembersParametersTypes): Promise<GroupMemberTypes[]> {
+    const members: GroupMemberTypes[] =
+      await prismaServices.groups_members.findMany({
+        where: condition,
+        select: databaseSelector("groups_members", selectedFields),
+      });
+    return members;
   }
   async findOneGroupMember({
     condition,

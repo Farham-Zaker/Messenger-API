@@ -84,6 +84,17 @@ export type FindAllGroupsAdminsConditionTypes = {
   groupId?: string;
   userId?: string;
 };
+export type FindAllGroupsMembersParametersTypes = {
+  condition: {
+    groupId?: string;
+    userId?: string;
+  };
+  selectedFields: {
+    groups_members: string[];
+    group?: string[];
+    user?: string[];
+  };
+};
 export type FindOneGroupAdminParamtersTypes = {
   condition: {
     adminId?: string;
