@@ -235,5 +235,57 @@ const groupDocs = {
       },
     },
   },
+  "/group/get-members": {
+    get: {
+      tags: ["Group"],
+      summary: "Get all members of a group.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "query",
+          description: "ID of group that you want to get admins of that.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "group",
+          in: "query",
+          description:
+            "If true, the response will include information about the groups.,",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "user",
+          in: "query",
+          description:
+            "If true, the response will include information about the members.,",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default groupDocs;
