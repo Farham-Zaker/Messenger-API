@@ -88,6 +88,32 @@ const getAllGroupMembersSchema = Joi.object({
     )
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
 });
+const getGroupById = Joi.object({
+  owner: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "owner", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  admins: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "admins", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  members: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "members", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  messages: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "messages", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+});
 export {
   createGroupSchema,
   addAdminSchema,
@@ -95,4 +121,5 @@ export {
   getAllGroupsSchema,
   getAllGroupAdminsSchema,
   getAllGroupMembersSchema,
+  getGroupById,
 };
