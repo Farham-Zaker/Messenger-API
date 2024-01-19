@@ -70,3 +70,12 @@ export type GroupMemberTypes = {
   userId?: string;
   user?: UserTypes;
 };
+export type GetGroupByIdParamsRequestTypes = {
+  groupId: string;
+};
+export type GetGroupByIdQueryRequestTypes = {
+  owner?: string;
+  admins?: string;
+  members?: string;
+  messages?: string;
+};

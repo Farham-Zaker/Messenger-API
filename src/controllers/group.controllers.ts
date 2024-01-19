@@ -8,6 +8,8 @@ import {
   GetAdminsQueryRequestTypes,
   GroupAdminTypes,
   GetAllMembersQueryRequestTypes,
+  GetGroupByIdParamsRequestTypes,
+  GetGroupByIdQueryRequestTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -281,6 +283,75 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 200,
         members,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getGroupById(
+    request: FastifyRequest<{
+      Params: GetGroupByIdParamsRequestTypes;
+      Querystring: GetGroupByIdQueryRequestTypes;
+    }>,
+    reply: FastifyReply
+  ) {
+    const { groupId } = request.params;
+    const { owner, admins, members, messages } = request.query;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+    try {
+      const group: GroupTypes | null = await groupServices.findOneGroup({
+        condition: {
+          groupId,
+        },
+        selectedFields: {
+          groups: [
+            "groupId",
+            "title",
+            "bio",
+            "imagePath",
+            "ownerId",
+            "updatedAt",
+            "createdAt",
+          ],
+          owner:
+            owner === "true"
+              ? [
+                  "userId",
+                  "username",
+                  "firstName",
+                  "lastName",
+                  "areaCodeId",
+                  "phoneNumber",
+                  "email",
+                ]
+              : [],
+          admins: admins === "true" ? ["adminId", "user"] : [],
+          members: members === "true" ? ["memberId", "user"] : [],
+          messages:
+            messages === "true"
+              ? [
+                  "messageId",
+                  "text",
+                  "senderId",
+                  "replyOf",
+                  "updatedAt",
+                  "createdAt",
+                ]
+              : [],
+        },
+      });
+      if (!group) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any group with such ID.",
+        });
+      }
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        group,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
