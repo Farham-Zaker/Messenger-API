@@ -361,5 +361,69 @@ const groupDocs = {
       },
     },
   },
+  "/group/get-one-admin": {
+    get: {
+      tags: ["Group"],
+      summary: "Get one group admin by user ID and group ID.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "query",
+          description: "ID of group that you want to get admins of that.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "userId",
+          in: "query",
+          description: "ID of user that you want to get admins of that.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "group",
+          in: "query",
+          description:
+            "If true, the response will include information about the group.,",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "user",
+          in: "query",
+          description:
+            "If true, the response will include information about the admin.,",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successfull response.",
+        },
+        404: {
+          description: "There is no any admin with such group ID and user ID.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default groupDocs;
