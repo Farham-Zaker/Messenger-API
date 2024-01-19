@@ -114,6 +114,30 @@ const getGroupById = Joi.object({
     )
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
 });
+const getAdminByIdSchema = Joi.object({
+  groupId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "groupId", required: true })
+    ),
+  group: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "group", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  userId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "userId", required: true })
+    ),
+  user: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "user", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+});
 export {
   createGroupSchema,
   addAdminSchema,
@@ -122,4 +146,5 @@ export {
   getAllGroupAdminsSchema,
   getAllGroupMembersSchema,
   getGroupById,
+  getAdminByIdSchema,
 };

@@ -5,6 +5,7 @@ import {
   addAdminSchema,
   addMemberToGroupSchema,
   createGroupSchema,
+  getAdminByIdSchema,
   getAllGroupAdminsSchema,
   getAllGroupMembersSchema,
   getAllGroupsSchema,
@@ -101,11 +102,14 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
     url: "/get-one-admin",
     method: "GET",
-    preHandler: [isLogged],
+    preHandler: [
+      isLogged,
+      validate({ target: "query", schema: getAdminByIdSchema }),
+    ],
     handler: () => {},
     schema: {
-      hide: true
-    }
+      hide: true,
+    },
   });
   done();
 };
