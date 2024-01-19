@@ -50,8 +50,11 @@ export type FindOneGroupParametersTypes = {
     ownerId?: string;
   };
   selectedFields: {
-    groups?: string[];
+    groups: string[];
     owner?: string[];
+    admins?: string[];
+    members?: string[];
+    messages?: string[];
   };
 };
 export type FindAllGroupsPramatersTypes = {
