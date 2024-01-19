@@ -287,5 +287,79 @@ const groupDocs = {
       },
     },
   },
+  "/group/get-group/{groupId}": {
+    get: {
+      tags: ["Group"],
+      summary:
+        "Get group by ID with information about owner, admins, members and messages.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "params",
+          required: true,
+          description: "ID of group",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "owner",
+          in: "query",
+          description:
+            "If true, the response will include information about the owner.,",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "admins",
+          in: "query",
+          description:
+            "If true, the response will include information about the admins.,",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "members",
+          in: "query",
+          description:
+            "If true, the response will include information about the members.,",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "messages",
+          in: "query",
+          description:
+            "If true, the response will include information about the messages.,",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        404: {
+          description: "There is no any group with such ID.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default groupDocs;
