@@ -10,6 +10,7 @@ import {
   GetAllMembersQueryRequestTypes,
   GetGroupByIdParamsRequestTypes,
   GetGroupByIdQueryRequestTypes,
+  GetOneGroupAdminQueryRequestRequestTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -352,6 +353,67 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 200,
         group,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getOneAdmin(
+    request: FastifyRequest<{
+      Querystring: GetOneGroupAdminQueryRequestRequestTypes;
+    }>,
+    reply: FastifyReply
+  ) {
+    const { groupId, group, userId, user } = request.query;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
+    try {
+      const admin: GroupAdminTypes | null =
+        await groupServices.findOneGroupAdmin({
+          condition: {
+            groupId,
+            userId,
+          },
+          selectedFields: {
+            groups_admins: ["adminId", "groupId", "userId"],
+            group:
+              group === "true"
+                ? [
+                    "groupId",
+                    "title",
+                    "bio",
+                    "imagePath",
+                    "ownerId",
+                    "updatedAt",
+                    "createdAt",
+                  ]
+                : [],
+            user:
+              user === "true"
+                ? [
+                    "userId",
+                    "username",
+                    "firstName",
+                    "lastName",
+                    "areaCodeId",
+                    "phoneNumber",
+                    "email",
+                  ]
+                : [],
+          },
+        });
+      if (!admin) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any admin with such group ID and user ID.",
+        });
+      }
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        admin,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);

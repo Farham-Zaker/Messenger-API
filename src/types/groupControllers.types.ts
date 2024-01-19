@@ -79,3 +79,9 @@ export type GetGroupByIdQueryRequestTypes = {
   members?: string;
   messages?: string;
 };
+export type GetOneGroupAdminQueryRequestRequestTypes = {
+  userId: string;
+  user?: string;
+  groupId: string;
+  group?: string;
+};
