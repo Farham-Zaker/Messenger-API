@@ -13,6 +13,7 @@ import {
   GetOneGroupAdminQueryRequestRequestTypes,
   GetOneGroupMemberQueryRequestRequestTypes,
   UpdateGroupBodyRequestTypes,
+  DeleteAdminRequestQueryTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -495,6 +496,25 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 200,
         message: "Desire group updated succussfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async deleteAdmin(
+    request: FastifyRequest<{ Querystring: DeleteAdminRequestQueryTypes }>,
+    reply: FastifyReply
+  ) {
+    const { groupId, userId } = request.query;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
+    try {
+      await groupServices.deleteAdmin({ groupId, userId });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target group deleted successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);

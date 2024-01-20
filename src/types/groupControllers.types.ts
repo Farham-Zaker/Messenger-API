@@ -98,3 +98,7 @@ export type UpdateGroupBodyRequestTypes = {
   imagePath?: string;
   updatedAt?: Date;
 };
+export type DeleteAdminRequestQueryTypes = {
+  userId: string;
+  groupId: string;
+};
