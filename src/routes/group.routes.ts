@@ -10,6 +10,7 @@ import {
   getAllGroupMembersSchema,
   getAllGroupsSchema,
   getGroupById,
+  getOneMemberSchema,
 } from "../schemas/group.schemas";
 import groupControllers from "../controllers/group.controllers";
 import isGroupOwner from "../middlewares/group/isGroupOwner";
@@ -114,7 +115,10 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
     url: "/get-one-member",
     method: "GET",
-    preHandler: [isLogged],
+    preHandler: [
+      isLogged,
+      validate({ target: "query", schema: getOneMemberSchema }),
+    ],
     handler: () => {},
     schema: {
       hide: true,
