@@ -11,6 +11,7 @@ import {
   getAllGroupsSchema,
   getGroupById,
   getOneMemberSchema,
+  updateGroupSchema,
 } from "../schemas/group.schemas";
 import groupControllers from "../controllers/group.controllers";
 import isGroupOwner from "../middlewares/group/isGroupOwner";
@@ -127,7 +128,11 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
     url: "/update",
     method: "PUT",
-    preHandler: [isLogged, isGroupAdminOrOwner],
+    preHandler: [
+      isLogged,
+      isGroupAdminOrOwner,
+      validate({ target: "body", schema: updateGroupSchema }),
+    ],
     handler: () => {},
     schema: {
       hide: true,

@@ -1,6 +1,7 @@
 import Joi, { LanguageMessages } from "joi";
 import stringValidationErrorsExtractor from "../utils/stringValidationErrorsExtractor";
 import validateTrueOrFalse from "../utils/validateTrueOrFalse";
+import dateValidationErrorsExtractor from "../utils/dateValidationErrorsExtractor";
 
 const createGroupSchema = Joi.object({
   title: Joi.string()
@@ -162,6 +163,36 @@ const getOneMemberSchema = Joi.object({
     )
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
 });
+const updateGroupSchema = Joi.object({
+  groupId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "groupId", required: true })
+    ),
+  title: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "title", required: false })
+    ),
+  bio: Joi.string()
+    .optional()
+    .min(3)
+    .messages({
+      ...stringValidationErrorsExtractor({ field: "bio", required: false }),
+      "string.min": "'bio' length must be at least 3 characters long",
+    }),
+  imagePath: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "imagePath", required: false })
+    ),
+  updatedAt: Joi.date()
+    .iso()
+    .optional()
+    .messages(
+      dateValidationErrorsExtractor({ field: "updatedAt", required: false })
+    ),
+});
 export {
   createGroupSchema,
   addAdminSchema,
@@ -172,4 +203,5 @@ export {
   getGroupById,
   getAdminByIdSchema,
   getOneMemberSchema,
+  updateGroupSchema,
 };
