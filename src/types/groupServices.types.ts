@@ -141,3 +141,14 @@ type UserTypes = {
   password: string | null;
   createdAt: Date;
 };
+export type UpdateGroupPramatersTypes = {
+  condition: {
+    groupId: string;
+  };
+  data: {
+    title?: string;
+    bio?: string;
+    imagePath?: string;
+    updatedAt?: Date;
+  };
+};

@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import prismaServices from "../prisma/prismaServices";
 import {
   CreateGroupParametersTypes,
@@ -15,6 +14,7 @@ import {
   FindOneGroupAdminParamtersTypes,
   FindAllGroupsAdminsParametersTypes,
   FindAllGroupsMembersParametersTypes,
+  UpdateGroupPramatersTypes,
 } from "../types/groupServices.types";
 import databaseSelector from "../utils/databaseSelector";
 import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
@@ -105,6 +105,16 @@ class GroupServices {
         select: databaseSelector("groups_members", selectedFields),
       });
     return groupMember;
+  }
+  async updateGroup({
+    condition,
+    data,
+  }: UpdateGroupPramatersTypes): Promise<GroupTypes> {
+    const updatedGroup: GroupTypes = await prismaServices.groups.update({
+      where: condition,
+      data,
+    });
+    return updatedGroup;
   }
 }
 export default GroupServices;
