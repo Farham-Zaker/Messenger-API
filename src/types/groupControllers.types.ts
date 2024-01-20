@@ -1,4 +1,4 @@
-export type CreateGroupBodyRequestTypes = {
+export type CreateGroupRequestBodyTypes = {
   title: string;
   bio?: string;
   imagePath?: string;
@@ -13,15 +13,15 @@ export type GroupTypes = {
   updatedAt?: Date;
   createdAt?: Date;
 };
-export type AddAdminBodyRequestTypes = {
+export type AddAdminRequestBodyTypes = {
   userId: string;
   groupId: string;
 };
-export type AddMemberToGroupBodyRequestTyps = {
+export type AddMemberToGroupRequestBodyTypes = {
   userId: string;
   groupId: string;
 };
-export type GetAllGroupsQueryTypes = {
+export type GetAllGroupsRequestQueryTypes = {
   owner: string;
 };
 export type OwnerTypes = {
@@ -36,7 +36,7 @@ export type OwnerTypes = {
   createdAt: Date;
 };
 
-export type GetAdminsQueryRequestTypes = {
+export type GetAdminsRequestQueryTypes = {
   groupId: string;
   group?: string;
   user?: string;
@@ -58,7 +58,7 @@ type UserTypes = {
   email?: string | null;
   createdAt?: Date;
 };
-export type GetAllMembersQueryRequestTypes = {
+export type GetAllMembersRequestQueryTypes = {
   groupId: string;
   group?: string;
   user?: string;
@@ -70,28 +70,28 @@ export type GroupMemberTypes = {
   userId?: string;
   user?: UserTypes;
 };
-export type GetGroupByIdParamsRequestTypes = {
+export type GetGroupByIdRequestParamsTypes = {
   groupId: string;
 };
-export type GetGroupByIdQueryRequestTypes = {
+export type GetGroupByIdRequestQueryTypes = {
   owner?: string;
   admins?: string;
   members?: string;
   messages?: string;
 };
-export type GetOneGroupAdminQueryRequestRequestTypes = {
+export type GetOneGroupAdminRequestQueryRequestTypes = {
   userId: string;
   user?: string;
   groupId: string;
   group?: string;
 };
-export type GetOneGroupMemberQueryRequestRequestTypes = {
+export type GetOneGroupMemberRequestQueryTypes = {
   userId: string;
   user?: string;
   groupId: string;
   group?: string;
 };
-export type UpdateGroupBodyRequestTypes = {
+export type UpdateGroupRequestBodyTypes = {
   groupId: string;
   title?: string;
   bio?: string;

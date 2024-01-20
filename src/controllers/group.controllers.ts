@@ -1,18 +1,18 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import {
-  AddAdminBodyRequestTypes,
+  AddAdminRequestBodyTypes,
   GroupTypes,
-  AddMemberToGroupBodyRequestTyps,
-  CreateGroupBodyRequestTypes,
-  GetAllGroupsQueryTypes,
-  GetAdminsQueryRequestTypes,
+  AddMemberToGroupRequestBodyTypes,
+  CreateGroupRequestBodyTypes,
+  GetAllGroupsRequestQueryTypes,
+  GetAdminsRequestQueryTypes,
   GroupAdminTypes,
-  GetAllMembersQueryRequestTypes,
-  GetGroupByIdParamsRequestTypes,
-  GetGroupByIdQueryRequestTypes,
-  GetOneGroupAdminQueryRequestRequestTypes,
-  GetOneGroupMemberQueryRequestRequestTypes,
-  UpdateGroupBodyRequestTypes,
+  GetAllMembersRequestQueryTypes,
+  GetGroupByIdRequestParamsTypes,
+  GetGroupByIdRequestQueryTypes,
+  GetOneGroupAdminRequestQueryRequestTypes,
+  GetOneGroupMemberRequestQueryTypes,
+  UpdateGroupRequestBodyTypes,
   DeleteAdminRequestQueryTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
@@ -22,7 +22,7 @@ import { GroupMemberTypes } from "../types/groupServices.types";
 
 export default new (class groupControllers {
   async createGroup(
-    request: FastifyRequest<{ Body: CreateGroupBodyRequestTypes }>,
+    request: FastifyRequest<{ Body: CreateGroupRequestBodyTypes }>,
     reply: FastifyReply
   ) {
     const groupServices: GroupServices =
@@ -52,7 +52,7 @@ export default new (class groupControllers {
     }
   }
   async addAdmin(
-    request: FastifyRequest<{ Body: AddAdminBodyRequestTypes }>,
+    request: FastifyRequest<{ Body: AddAdminRequestBodyTypes }>,
     reply: FastifyReply
   ) {
     const { userId, groupId } = request.body;
@@ -96,7 +96,7 @@ export default new (class groupControllers {
     }
   }
   async addMember(
-    request: FastifyRequest<{ Body: AddMemberToGroupBodyRequestTyps }>,
+    request: FastifyRequest<{ Body: AddMemberToGroupRequestBodyTypes }>,
     reply: FastifyReply
   ) {
     const { userId, groupId } = request.body;
@@ -143,7 +143,7 @@ export default new (class groupControllers {
     }
   }
   async getGroups(
-    request: FastifyRequest<{ Querystring: GetAllGroupsQueryTypes }>,
+    request: FastifyRequest<{ Querystring: GetAllGroupsRequestQueryTypes }>,
     reply: FastifyReply
   ) {
     const { owner } = request.query;
@@ -192,7 +192,7 @@ export default new (class groupControllers {
     }
   }
   async getAdmins(
-    request: FastifyRequest<{ Querystring: GetAdminsQueryRequestTypes }>,
+    request: FastifyRequest<{ Querystring: GetAdminsRequestQueryTypes }>,
     reply: FastifyReply
   ) {
     const { groupId, group, user } = request.query;
@@ -242,7 +242,7 @@ export default new (class groupControllers {
     }
   }
   async getMembers(
-    request: FastifyRequest<{ Querystring: GetAllMembersQueryRequestTypes }>,
+    request: FastifyRequest<{ Querystring: GetAllMembersRequestQueryTypes }>,
     reply: FastifyReply
   ) {
     const { groupId, group, user } = request.query;
@@ -294,8 +294,8 @@ export default new (class groupControllers {
   }
   async getGroupById(
     request: FastifyRequest<{
-      Params: GetGroupByIdParamsRequestTypes;
-      Querystring: GetGroupByIdQueryRequestTypes;
+      Params: GetGroupByIdRequestParamsTypes;
+      Querystring: GetGroupByIdRequestQueryTypes;
     }>,
     reply: FastifyReply
   ) {
@@ -363,7 +363,7 @@ export default new (class groupControllers {
   }
   async getOneAdmin(
     request: FastifyRequest<{
-      Querystring: GetOneGroupAdminQueryRequestRequestTypes;
+      Querystring: GetOneGroupAdminRequestQueryRequestTypes;
     }>,
     reply: FastifyReply
   ) {
@@ -424,7 +424,7 @@ export default new (class groupControllers {
   }
   async getOneMember(
     request: FastifyRequest<{
-      Querystring: GetOneGroupMemberQueryRequestRequestTypes;
+      Querystring: GetOneGroupMemberRequestQueryTypes;
     }>,
     reply: FastifyReply
   ) {
@@ -481,7 +481,7 @@ export default new (class groupControllers {
     }
   }
   async updateGroup(
-    request: FastifyRequest<{ Body: UpdateGroupBodyRequestTypes }>,
+    request: FastifyRequest<{ Body: UpdateGroupRequestBodyTypes }>,
     reply: FastifyReply
   ) {
     const { groupId, title, bio, imagePath, updatedAt } = request.body;
