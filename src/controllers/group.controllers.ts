@@ -82,14 +82,14 @@ export default new (class groupControllers {
         return sendResponse(reply, {
           status: "error",
           statusCode: 409,
-          message: "Desire user is still an admin.",
+          message: "The targer user is still an admin.",
         });
       }
       await groupServices.addAdmin({ userId, groupId });
       return sendResponse(reply, {
         status: "success",
         statusCode: 201,
-        message: "Desire user added to admins successfully.",
+        message: "Ther target user added to admins successfully.",
       });
     } catch (error) {
       sendErrorResponse(reply, error);
@@ -495,7 +495,7 @@ export default new (class groupControllers {
       return sendResponse(reply, {
         status: "success",
         statusCode: 200,
-        message: "Desire group updated succussfully.",
+        message: "The target group updated succussfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
