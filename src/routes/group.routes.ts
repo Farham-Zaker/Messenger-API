@@ -124,6 +124,15 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       hide: true,
     },
   });
+  fastify.route({
+    url: "/update",
+    method: "PUT",
+    preHandler: [isLogged, isGroupAdminOrOwner],
+    handler: () => {},
+    schema: {
+      hide: true,
+    },
+  });
   done();
 };
 
