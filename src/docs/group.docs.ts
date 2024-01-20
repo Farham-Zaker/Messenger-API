@@ -481,5 +481,48 @@ const groupDocs = {
       },
     },
   },
+  "/delete-admin": {
+    delete: {
+      tags: ["Group"],
+      summary: "Delete admin of a group.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "query",
+          required: true,
+          description: "ID of group.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "userId",
+          in: "query",
+          required: true,
+          description: "ID of user.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default groupDocs;
