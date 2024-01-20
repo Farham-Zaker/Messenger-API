@@ -3,18 +3,22 @@ import GroupServices from "../../services/group.services";
 import sendResponse from "../../utils/sendResponse";
 import sendErrorResponse from "../../utils/sendErrorResponse";
 
-type BodyTypes = {
-  userId: string;
-  groupId: string;
-};
 type GroupTypes = {
   ownerId?: string;
 };
 const isGroupOwner: preHandlerHookHandler = async (request, reply, done) => {
-  const { groupId } = request.body as BodyTypes;
-  const user = request?.user;
-  const groupServices: GroupServices = request.diScope.resolve("groupServices");
   try {
+    let groupId: string | undefined;
+    if (request.method === "POST" || request.method === "PUT") {
+      groupId = (request.body as { groupId?: string })?.groupId;
+    }
+    if (request.method === "GET" || request.method === "DELETE") {
+      groupId = (request.query as { groupId?: string })?.groupId;
+    }
+    const user = request?.user;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
     const group: GroupTypes | null = await groupServices.findOneGroup({
       condition: {
         groupId,
