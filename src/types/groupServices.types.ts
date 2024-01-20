@@ -118,7 +118,7 @@ export type FindOneGroupMemberParametersTypes = {
   };
   selectedFields: {
     groups_members: string[];
-    users?: string[];
+    user?: string[];
     group?: string[];
   };
 };
