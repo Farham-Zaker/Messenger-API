@@ -15,6 +15,7 @@ import {
   FindAllGroupsAdminsParametersTypes,
   FindAllGroupsMembersParametersTypes,
   UpdateGroupPramatersTypes,
+  DeleletAdminParametersType,
 } from "../types/groupServices.types";
 import databaseSelector from "../utils/databaseSelector";
 import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
@@ -115,6 +116,14 @@ class GroupServices {
       data,
     });
     return updatedGroup;
+  }
+  async deleteAdmin(condition: DeleletAdminParametersType): Promise<void> {
+    const deletedAdmin = await prismaServices.groups_admins.deleteMany({
+      where: condition,
+    });
+    if (deletedAdmin.count === 0) {
+      throw new Error("There is no any admin with such group ID and user ID.");
+    }
   }
 }
 export default GroupServices;

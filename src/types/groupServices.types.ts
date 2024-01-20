@@ -152,3 +152,7 @@ export type UpdateGroupPramatersTypes = {
     updatedAt?: Date;
   };
 };
+export type DeleletAdminParametersType = {
+  userId: string;
+  groupId: string;
+};
