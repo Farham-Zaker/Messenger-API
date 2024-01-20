@@ -111,6 +111,15 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get-one-member",
+    method: "GET",
+    preHandler: [isLogged],
+    handler: () => {},
+    schema: {
+      hide: true,
+    },
+  });
   done();
 };
 
