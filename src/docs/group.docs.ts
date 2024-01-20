@@ -425,5 +425,61 @@ const groupDocs = {
       },
     },
   },
+  "/group/update": {
+    put: {
+      tags: ["Group"],
+      summary: "Update group by owner or admin of group.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              groupId: {
+                type: "string",
+                description: "ID of group.",
+              },
+              title: {
+                type: "string",
+                description: "Title of group.",
+              },
+              bio: {
+                type: "string",
+                description: "Bio of group.",
+              },
+              imagePath: {
+                type: "string",
+                description: "Path of image of group.",
+              },
+              updatedAt: {
+                type: "date",
+                description: "The date that group was updated.",
+              },
+            },
+            required: ["groupId"],
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default groupDocs;
