@@ -148,6 +148,9 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       isGroupOwner,
     ],
     handler: groupControllers.deleteAdmin,
+    schema: {
+      hide: true,
+    },
   });
   done();
 };
