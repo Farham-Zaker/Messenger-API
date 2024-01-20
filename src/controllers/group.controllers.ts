@@ -12,6 +12,7 @@ import {
   GetGroupByIdQueryRequestTypes,
   GetOneGroupAdminQueryRequestRequestTypes,
   GetOneGroupMemberQueryRequestRequestTypes,
+  UpdateGroupBodyRequestTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -473,6 +474,27 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 200,
         member,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async updateGroup(
+    request: FastifyRequest<{ Body: UpdateGroupBodyRequestTypes }>,
+    reply: FastifyReply
+  ) {
+    const { groupId, title, bio, imagePath, updatedAt } = request.body;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+    try {
+      await groupServices.updateGroup({
+        condition: { groupId },
+        data: { title, bio, imagePath, updatedAt },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "Desire group updated succussfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);

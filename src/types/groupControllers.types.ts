@@ -91,3 +91,10 @@ export type GetOneGroupMemberQueryRequestRequestTypes = {
   groupId: string;
   group?: string;
 };
+export type UpdateGroupBodyRequestTypes = {
+  groupId: string;
+  title?: string;
+  bio?: string;
+  imagePath?: string;
+  updatedAt?: Date;
+};
