@@ -5,7 +5,7 @@ import {
   addAdminSchema,
   addMemberToGroupSchema,
   createGroupSchema,
-  deleteAdminSchema,
+  deleteAdminAndMemberSchema,
   getAdminByIdSchema,
   getAllGroupAdminsSchema,
   getAllGroupMembersSchema,
@@ -144,7 +144,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     method: "DELETE",
     preHandler: [
       isLogged,
-      validate({ target: "query", schema: deleteAdminSchema }),
+      validate({ target: "query", schema: deleteAdminAndMemberSchema }),
       isGroupOwner,
     ],
     handler: groupControllers.deleteAdmin,
