@@ -11,6 +11,7 @@ import {
   GetGroupByIdParamsRequestTypes,
   GetGroupByIdQueryRequestTypes,
   GetOneGroupAdminQueryRequestRequestTypes,
+  GetOneGroupMemberQueryRequestRequestTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -414,6 +415,64 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 200,
         admin,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getOneMember(
+    request: FastifyRequest<{
+      Querystring: GetOneGroupMemberQueryRequestRequestTypes;
+    }>,
+    reply: FastifyReply
+  ) {
+    const { groupId, userId, group, user } = request.query;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
+    try {
+      const member: GroupMemberTypes | null =
+        await groupServices.findOneGroupMember({
+          condition: { groupId, userId },
+          selectedFields: {
+            groups_members: ["memberId", "groupId", "userId"],
+            group:
+              group === "true"
+                ? [
+                    "groupId",
+                    "title",
+                    "bio",
+                    "imagePath",
+                    "ownerId",
+                    "updatedAt",
+                    "createdAt",
+                  ]
+                : [],
+            user:
+              user === "true"
+                ? [
+                    "userId",
+                    "username",
+                    "firstName",
+                    "lastName",
+                    "areaCodeId",
+                    "phoneNumber",
+                    "email",
+                  ]
+                : [],
+          },
+        });
+      if (!member) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any member with such user ID and group ID.",
+        });
+      }
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        member,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
