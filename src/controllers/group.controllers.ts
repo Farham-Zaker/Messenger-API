@@ -13,8 +13,8 @@ import {
   GetOneGroupAdminRequestQueryRequestTypes,
   GetOneGroupMemberRequestQueryTypes,
   UpdateGroupRequestBodyTypes,
-  DeleteAdminRequestQueryTypes,
-  DeleteMemberRequestQueryTypes,
+  RemoveAdminRequestQueryTypes,
+  RemoveMemberRequestQueryTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -502,8 +502,8 @@ export default new (class groupControllers {
       return sendErrorResponse(reply, error);
     }
   }
-  async deleteAdmin(
-    request: FastifyRequest<{ Querystring: DeleteAdminRequestQueryTypes }>,
+  async removeAdmin(
+    request: FastifyRequest<{ Querystring: RemoveAdminRequestQueryTypes }>,
     reply: FastifyReply
   ) {
     const { groupId, userId } = request.query;
@@ -521,8 +521,8 @@ export default new (class groupControllers {
       return sendErrorResponse(reply, error);
     }
   }
-  async deleteMember(
-    request: FastifyRequest<{ Querystring: DeleteMemberRequestQueryTypes }>,
+  async removeMember(
+    request: FastifyRequest<{ Querystring: RemoveMemberRequestQueryTypes }>,
     reply: FastifyReply
   ) {
     const { groupId, userId } = request.query;
@@ -544,7 +544,7 @@ export default new (class groupControllers {
       if (isTargetUserOwnerOfGroup) {
         return sendResponse(reply, {
           status: "error",
-          statusCode: 404,
+          statusCode: 403,
           message: "The owner of group can not be removed.",
         });
       }
@@ -555,7 +555,7 @@ export default new (class groupControllers {
         return sendResponse(reply, {
           status: "success",
           statusCode: 200,
-          message: "The target user deleted successfully.",
+          message: "The target user removed successfully.",
         });
       }
       if (user?.role === "admin") {
@@ -580,7 +580,7 @@ export default new (class groupControllers {
         return sendResponse(reply, {
           status: "success",
           statusCode: 200,
-          message: "The targer user deleted successfully.",
+          message: "The targer user removed successfully.",
         });
       }
     } catch (error) {
