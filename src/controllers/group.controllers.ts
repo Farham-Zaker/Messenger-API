@@ -587,4 +587,25 @@ export default new (class groupControllers {
       return sendErrorResponse(reply, error);
     }
   }
+  async deleteGroup(
+    request: FastifyRequest<{ Params: { groupId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { groupId } = request.params;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
+    try {
+      await groupServices.removeAllAdmins({ groupId });
+      await groupServices.removeAllMembers({ groupId });
+      await groupServices.deleteGroup({ groupId });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target group deleted successfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
 })();

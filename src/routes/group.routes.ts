@@ -169,7 +169,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     url: "/delete/:groupId",
     method: "DELETE",
     preHandler: [isLogged, isGroupOwner],
-    handler: () => {},
+    handler: groupControllers.deleteGroup,
     schema: {
       hide: true,
     },
