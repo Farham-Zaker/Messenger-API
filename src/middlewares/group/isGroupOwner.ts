@@ -28,6 +28,13 @@ const isGroupOwner: preHandlerHookHandler = async (request, reply, done) => {
         groups: ["ownerId"],
       },
     });
+    if (!group) {
+      return sendResponse(reply, {
+        status: "error",
+        statusCode: 404,
+        message: "There is no any group with such ID.",
+      });
+    }
     if (group?.ownerId !== user?.userId) {
       return sendResponse(reply, {
         status: "error",

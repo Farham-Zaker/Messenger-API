@@ -34,6 +34,13 @@ const isGroupAdminOrOwner: preHandlerHookHandler = async (
         groups: ["groupId", "ownerId", "admins"],
       },
     });
+    if (!group) {
+      return sendResponse(reply, {
+        status: "error",
+        statusCode: 404,
+        message: "There is no any group with such ID.",
+      });
+    }
     const isGroupOwner = group?.ownerId == user?.userId ? true : false;
     const grupAdmins: AdminTypes[] = group?.admins!;
     const isGroupAdmin: boolean = !!grupAdmins?.find(
