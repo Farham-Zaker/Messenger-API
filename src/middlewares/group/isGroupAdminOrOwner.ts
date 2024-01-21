@@ -47,6 +47,10 @@ const isGroupAdminOrOwner: preHandlerHookHandler = async (
         message: "Just owner or admin of this group can add member.",
       });
     }
+    request.user = {
+      ...request.user,
+      role: isGroupOwner ? "owner" : "admin",
+    };
   } catch (error) {
     return sendErrorResponse(reply, error);
   }
