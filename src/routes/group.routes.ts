@@ -140,6 +140,12 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     },
   });
   fastify.route({
+    url: "/left",
+    method: "DELETE",
+    preHandler: [isLogged],
+    handler: () => {},
+  });
+  fastify.route({
     url: "/remove-admin",
     method: "DELETE",
     preHandler: [
