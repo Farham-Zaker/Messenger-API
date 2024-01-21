@@ -481,10 +481,10 @@ const groupDocs = {
       },
     },
   },
-  "/delete-admin": {
+  "/remove-admin": {
     delete: {
       tags: ["Group"],
-      summary: "Delete admin of a group.",
+      summary: "Remove admin of a group.",
       parameters: [
         {
           name: "token",
@@ -517,6 +517,55 @@ const groupDocs = {
       responses: {
         200: {
           description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
+  "/group/remove-member": {
+    delete: {
+      tags: ["Group"],
+      summary: "Remove member of a group.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "query",
+          required: true,
+          description: "ID of group.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "userId",
+          in: "query",
+          required: true,
+          description: "ID of user.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response",
+        },
+        400: {
+          description: "Admin just can remove memebers that are not admin.",
+        },
+        403: {
+          description: "The owner of group can not be removed.",
         },
         500: {
           description: "Internal Server Error.",
