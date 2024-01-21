@@ -140,7 +140,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     },
   });
   fastify.route({
-    url: "/delete-admin",
+    url: "/remove-admin",
     method: "DELETE",
     preHandler: [
       isLogged,
@@ -153,7 +153,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     },
   });
   fastify.route({
-    url: "/delete-member",
+    url: "/remove-member",
     method: "DELETE",
     preHandler: [
       isLogged,
