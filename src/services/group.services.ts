@@ -126,13 +126,28 @@ class GroupServices {
       throw new Error("There is no any admin with such group ID and user ID.");
     }
   }
-  async removeMember(condition: RemoveMemberParametersType) {
+  async removeAllAdmins(condition: { groupId: string }): Promise<void> {
+    await prismaServices.groups_admins.deleteMany({
+      where: condition,
+    });
+  }
+  async removeMember(condition: RemoveMemberParametersType): Promise<void> {
     const deletedMember = await prismaServices.groups_members.deleteMany({
       where: condition,
     });
     if (deletedMember.count === 0) {
       throw new Error("There is no any member with such group ID and user ID.");
     }
+  }
+  async removeAllMembers(condition: { groupId: string }): Promise<void> {
+    await prismaServices.groups_members.deleteMany({
+      where: condition,
+    });
+  }
+  async deleteGroup(condition: { groupId: string }): Promise<void> {
+    await prismaServices.groups.delete({
+      where: condition,
+    });
   }
 }
 export default GroupServices;

@@ -156,6 +156,7 @@ export type RemoveAdminParametersType = {
   userId: string;
   groupId: string;
 };
+export type RemoveAllAdminsParametersTypes = { groupId: string };
 export type RemoveMemberParametersType = {
   userId: string;
   groupId: string;
