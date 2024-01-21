@@ -155,7 +155,11 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
     url: "/delete-member",
     method: "DELETE",
-    preHandler: [isLogged, isGroupAdminOrOwner],
+    preHandler: [
+      isLogged,
+      validate({ target: "query", schema: deleteAdminAndMemberSchema }),
+      isGroupAdminOrOwner,
+    ],
     handler: () => {},
     schema: {
       hide: true,
