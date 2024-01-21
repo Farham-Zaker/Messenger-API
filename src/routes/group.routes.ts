@@ -5,7 +5,6 @@ import {
   addAdminSchema,
   addMemberToGroupSchema,
   createGroupSchema,
-  deleteAdminAndMemberSchema,
   getAdminByIdSchema,
   getAllGroupAdminsSchema,
   getAllGroupMembersSchema,
@@ -13,6 +12,7 @@ import {
   getGroupById,
   getOneMemberSchema,
   updateGroupSchema,
+  removeAdminAndMemberSchema,
 } from "../schemas/group.schemas";
 import groupControllers from "../controllers/group.controllers";
 import isGroupOwner from "../middlewares/group/isGroupOwner";
@@ -144,7 +144,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     method: "DELETE",
     preHandler: [
       isLogged,
-      validate({ target: "query", schema: deleteAdminAndMemberSchema }),
+      validate({ target: "query", schema: removeAdminAndMemberSchema }),
       isGroupOwner,
     ],
     handler: groupControllers.deleteAdmin,
@@ -157,7 +157,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     method: "DELETE",
     preHandler: [
       isLogged,
-      validate({ target: "query", schema: deleteAdminAndMemberSchema }),
+      validate({ target: "query", schema: removeAdminAndMemberSchema }),
       isGroupAdminOrOwner,
     ],
     handler: groupControllers.deleteMember,

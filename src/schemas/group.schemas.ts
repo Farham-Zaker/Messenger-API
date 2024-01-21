@@ -193,7 +193,7 @@ const updateGroupSchema = Joi.object({
       dateValidationErrorsExtractor({ field: "updatedAt", required: false })
     ),
 });
-const deleteAdminAndMemberSchema = Joi.object({
+const removeAdminAndMemberSchema = Joi.object({
   groupId: Joi.string()
     .required()
     .messages(
@@ -216,5 +216,5 @@ export {
   getAdminByIdSchema,
   getOneMemberSchema,
   updateGroupSchema,
-  deleteAdminAndMemberSchema,
+  removeAdminAndMemberSchema,
 };
