@@ -16,6 +16,7 @@ import {
   FindAllGroupsMembersParametersTypes,
   UpdateGroupPramatersTypes,
   DeleletAdminParametersType,
+  RemoveMemberParametersType,
 } from "../types/groupServices.types";
 import databaseSelector from "../utils/databaseSelector";
 import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
@@ -123,6 +124,14 @@ class GroupServices {
     });
     if (deletedAdmin.count === 0) {
       throw new Error("There is no any admin with such group ID and user ID.");
+    }
+  }
+  async removeMember(condition: RemoveMemberParametersType) {
+    const deletedMember = await prismaServices.groups_members.deleteMany({
+      where: condition,
+    });
+    if (deletedMember.count === 0) {
+      throw new Error("There is no any member with such group ID and user ID.");
     }
   }
 }

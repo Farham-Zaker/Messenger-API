@@ -156,3 +156,7 @@ export type DeleletAdminParametersType = {
   userId: string;
   groupId: string;
 };
+export type RemoveMemberParametersType = {
+  userId: string;
+  groupId: string;
+};
