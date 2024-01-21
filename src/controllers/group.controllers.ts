@@ -14,6 +14,7 @@ import {
   GetOneGroupMemberRequestQueryTypes,
   UpdateGroupRequestBodyTypes,
   DeleteAdminRequestQueryTypes,
+  DeleteMemberRequestQueryTypes,
 } from "../types/groupControllers.types";
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
@@ -516,6 +517,72 @@ export default new (class groupControllers {
         statusCode: 200,
         message: "The target group deleted successfully.",
       });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async deleteMember(
+    request: FastifyRequest<{ Querystring: DeleteMemberRequestQueryTypes }>,
+    reply: FastifyReply
+  ) {
+    const { groupId, userId } = request.query;
+    const user = request.user;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+
+    try {
+      const isTargetUserOwnerOfGroup: boolean =
+        !!(await groupServices.findOneGroup({
+          condition: {
+            groupId,
+            ownerId: userId,
+          },
+          selectedFields: {
+            groups: ["groupId"],
+          },
+        }));
+      if (isTargetUserOwnerOfGroup) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "The owner of group can not be removed.",
+        });
+      }
+
+      if (user?.role === "owner") {
+        await groupServices.removeMember({ groupId, userId });
+        await groupServices.deleteAdmin({ groupId, userId });
+        return sendResponse(reply, {
+          status: "success",
+          statusCode: 200,
+          message: "The target user deleted successfully.",
+        });
+      }
+      if (user?.role === "admin") {
+        const isTargetUserAdmin: boolean =
+          !!(await groupServices.findOneGroupAdmin({
+            condition: {
+              userId,
+            },
+            selectedFields: {
+              groups_admins: ["adminId"],
+            },
+          }));
+        if (isTargetUserAdmin) {
+          return sendResponse(reply, {
+            status: "error",
+            statusCode: 400,
+            message: "Admin just can remove memebers that are not admin.",
+          });
+        }
+        await groupServices.removeMember({ groupId, userId });
+        await groupServices.deleteAdmin({ groupId, userId });
+        return sendResponse(reply, {
+          status: "success",
+          statusCode: 200,
+          message: "The targer user deleted successfully.",
+        });
+      }
     } catch (error) {
       return sendErrorResponse(reply, error);
     }

@@ -102,3 +102,7 @@ export type DeleteAdminRequestQueryTypes = {
   userId: string;
   groupId: string;
 };
+export type DeleteMemberRequestQueryTypes = {
+  userId: string;
+  groupId: string;
+};
