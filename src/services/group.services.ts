@@ -15,7 +15,7 @@ import {
   FindAllGroupsAdminsParametersTypes,
   FindAllGroupsMembersParametersTypes,
   UpdateGroupPramatersTypes,
-  DeleletAdminParametersType,
+  RemoveAdminParametersType,
   RemoveMemberParametersType,
 } from "../types/groupServices.types";
 import databaseSelector from "../utils/databaseSelector";
@@ -118,7 +118,7 @@ class GroupServices {
     });
     return updatedGroup;
   }
-  async deleteAdmin(condition: DeleletAdminParametersType): Promise<void> {
+  async removeAdmin(condition: RemoveAdminParametersType): Promise<void> {
     const deletedAdmin = await prismaServices.groups_admins.deleteMany({
       where: condition,
     });

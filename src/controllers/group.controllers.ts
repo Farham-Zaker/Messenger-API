@@ -511,7 +511,7 @@ export default new (class groupControllers {
       request.diScope.resolve("groupServices");
 
     try {
-      await groupServices.deleteAdmin({ groupId, userId });
+      await groupServices.removeAdmin({ groupId, userId });
       return sendResponse(reply, {
         status: "success",
         statusCode: 200,
@@ -551,7 +551,7 @@ export default new (class groupControllers {
 
       if (user?.role === "owner") {
         await groupServices.removeMember({ groupId, userId });
-        await groupServices.deleteAdmin({ groupId, userId });
+        await groupServices.removeAdmin({ groupId, userId });
         return sendResponse(reply, {
           status: "success",
           statusCode: 200,
@@ -576,7 +576,7 @@ export default new (class groupControllers {
           });
         }
         await groupServices.removeMember({ groupId, userId });
-        await groupServices.deleteAdmin({ groupId, userId });
+        await groupServices.removeAdmin({ groupId, userId });
         return sendResponse(reply, {
           status: "success",
           statusCode: 200,
