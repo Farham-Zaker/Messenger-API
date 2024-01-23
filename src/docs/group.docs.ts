@@ -481,6 +481,40 @@ const groupDocs = {
       },
     },
   },
+  "/left/:{groupId}": {
+    delete: {
+      tags: ["Group"],
+      summary: "Left from a group.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "params",
+          required: true,
+          description: "ID of group.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
   "/remove-admin": {
     delete: {
       tags: ["Group"],
