@@ -9,6 +9,8 @@ export type GroupTypes = {
   bio?: string | null;
   ownerId?: string;
   imagePath?: string | null;
+  admins?: GroupAdminTypes[];
+  members?: GroupMemberTypes[];
   owner?: OwnerTypes;
   updatedAt?: Date;
   createdAt?: Date;

@@ -105,7 +105,7 @@ export default new (class groupControllers {
     const groupServices: GroupServices =
       request.diScope.resolve("groupServices");
     try {
-      if (userId == user?.userId) {
+      if (userId === user?.userId) {
         return sendResponse(reply, {
           status: "error",
           statusCode: 403,
@@ -155,7 +155,7 @@ export default new (class groupControllers {
       const groups: GroupTypes[] = await groupServices.findAllGroups({
         condition: {
           members: {
-            memberId: user?.userId,
+            userId: user?.userId,
             relation: "one to many",
           },
         },
@@ -432,7 +432,7 @@ export default new (class groupControllers {
     const { groupId, userId, group, user } = request.query;
     const groupServices: GroupServices =
       request.diScope.resolve("groupServices");
-
+      console.log(group === "true" ?? []);
     try {
       const member: GroupMemberTypes | null =
         await groupServices.findOneGroupMember({
@@ -498,6 +498,101 @@ export default new (class groupControllers {
         statusCode: 200,
         message: "The target group updated succussfully.",
       });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async leftGroup(
+    request: FastifyRequest<{ Params: { groupId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { groupId } = request.params;
+    const user = request.user;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+    try {
+      const group: GroupTypes | null = await groupServices.findOneGroup({
+        condition: {
+          groupId,
+          members: {
+            userId: user?.userId,
+            relation: "one to many",
+          },
+        },
+        selectedFields: {
+          groups: ["groupId", "ownerId", "admins", "members"],
+        },
+      });
+      if (!group) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "You are not join in group with such group ID.",
+        });
+      }
+      const successResponse = {
+        status: "success",
+        statusCode: 200,
+        message: "Leaving the group was done successfully.",
+      };
+      // Check is user owner of group by token that sent.
+      const isThisUserOwnerOfGroup: boolean = group.ownerId === user?.userId;
+
+      if (isThisUserOwnerOfGroup) {
+        // If there is not any admin in group, owner of group will be the oldest member of group.
+        if (group.admins?.length === 0) {
+          const sortedMembers = group.members?.sort((a, b) => {
+            const dateA = a.createdAt as any;
+            const dateB = b.createdAt as any;
+            return dateA - dateB;
+          }) as GroupMemberTypes[];
+          const oldestMember: GroupMemberTypes = sortedMembers[0];
+
+          await groupServices.updateGroup({
+            condition: { groupId },
+            data: { ownerId: oldestMember.userId },
+          });
+          return sendResponse(reply, successResponse);
+        }
+        // Check if the user is the oldest member in group.
+        const sortedAdmins = group.admins?.sort((a, b) => {
+          const dateA = a.createdAt instanceof Date ? a.createdAt : new Date();
+          const dateB = b.createdAt instanceof Date ? b.createdAt : new Date();
+          return dateA.getTime() - dateB.getTime();
+        }) as GroupAdminTypes[];
+        const oldestAdmin: GroupAdminTypes = sortedAdmins[0];
+
+        await groupServices.removeAdmin({
+          userId: oldestAdmin.userId as string,
+          groupId: groupId,
+        });
+        await groupServices.updateGroup({
+          condition: {
+            groupId,
+          },
+          data: {
+            ownerId: oldestAdmin.userId,
+          },
+        });
+        await groupServices.removeMember({
+          userId: user?.userId,
+          groupId: groupId,
+        });
+        return sendResponse(reply, successResponse);
+      }
+      // If the user is admin of group by token that sent.
+      const isThisUserAdminOfGroup: boolean = !!group.admins?.find(
+        (admin) => admin.userId === user?.userId
+      );
+      if (isThisUserAdminOfGroup) {
+        await groupServices.removeAdmin({ userId: user?.userId, groupId });
+        await groupServices.removeMember({ userId: user?.userId, groupId });
+        return sendResponse(reply, successResponse);
+      }
+
+      // If the user is neither owner nor admin, it is just member
+      await groupServices.removeMember({ userId: user?.userId, groupId });
+      return sendResponse(reply, successResponse);
     } catch (error) {
       return sendErrorResponse(reply, error);
     }
