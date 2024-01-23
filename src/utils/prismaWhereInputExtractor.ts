@@ -1,9 +1,7 @@
-const prismaWhereInputExtractor = <T extends {}>(
-  condition: T
-) => {
+const prismaWhereInputExtractor = <T extends {}>(condition: T) => {
   const where: any = {};
   const keys = Object.keys(condition) as Array<keyof T>;
-  console.log(keys);
+
   keys.map((key) => {
     const conditionValue = condition[key];
     if (
@@ -18,7 +16,7 @@ const prismaWhereInputExtractor = <T extends {}>(
       });
 
       return (where[key] = {
-        none: {
+        every: {
           [k]: v,
         },
       });
