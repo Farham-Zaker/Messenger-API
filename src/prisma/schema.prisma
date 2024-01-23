@@ -30,7 +30,7 @@ model users {
     admin_groups        groups_admins[]
     channelOwner        channels[]
     joinedChannels      channels_members[]
-    adminChannels       admins_channels[]
+    adminChannels       channels_admins[]
     pinned_items        pinned_items[]
     private_chats       private_chats[]    @relation("user1")
     user2_private_chats private_chats[]    @relation("user2")
@@ -124,19 +124,21 @@ model groups {
 }
 
 model groups_members {
-    memberId String @id @default(uuid()) @db.VarChar(55)
-    user     users  @relation(fields: [userId], references: [userId])
-    userId   String @db.VarChar(55)
-    group    groups @relation(fields: [groupId], references: [groupId])
-    groupId  String @db.VarChar(55)
+    memberId  String   @id @default(uuid()) @db.VarChar(55)
+    user      users    @relation(fields: [userId], references: [userId])
+    userId    String   @db.VarChar(55)
+    group     groups   @relation(fields: [groupId], references: [groupId])
+    groupId   String   @db.VarChar(55)
+    createdAt DateTime @default(now())
 }
 
 model groups_admins {
-    adminId String @id @default(uuid()) @db.VarChar(55)
-    user    users  @relation(fields: [userId], references: [userId])
-    userId  String @db.VarChar(55)
-    group   groups @relation(fields: [groupId], references: [groupId])
-    groupId String @db.VarChar(55)
+    adminId   String   @id @default(uuid()) @db.VarChar(55)
+    user      users    @relation(fields: [userId], references: [userId])
+    userId    String   @db.VarChar(55)
+    group     groups   @relation(fields: [groupId], references: [groupId])
+    groupId   String   @db.VarChar(55)
+    createdAt DateTime @default(now())
 }
 
 model channels {
@@ -150,16 +152,17 @@ model channels {
     createdAt        DateTime           @default(now())
     messages         messages[]
     channels_members channels_members[]
-    adminChannels    admins_channels[]
+    adminChannels    channels_admins[]
     pinned           pinned_items[]
 }
 
-model admins_channels {
+model channels_admins {
     adminId   String   @id @default(uuid()) @db.VarChar(55)
     user      users    @relation(fields: [userId], references: [userId])
     userId    String   @db.VarChar(55)
     channel   channels @relation(fields: [channelId], references: [channelId])
     channelId String   @db.VarChar(55)
+    createdAt DateTime @default(now())
 }
 
 model channels_members {
@@ -168,6 +171,7 @@ model channels_members {
     userId    String   @db.VarChar(55)
     channels  channels @relation(fields: [channelId], references: [channelId])
     channelId String   @db.VarChar(55)
+    createdAt DateTime @default(now())
 }
 
 model pinned_items {
