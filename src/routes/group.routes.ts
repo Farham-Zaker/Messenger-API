@@ -32,6 +32,12 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     },
   });
   fastify.route({
+    url: "/:groupId/upload-profile-photo",
+    method: "POST",
+    preHandler: [isLogged, isGroupAdminOrOwner],
+    handler: () => {},
+  });
+  fastify.route({
     url: "/add-admin",
     method: "POST",
     preHandler: [
