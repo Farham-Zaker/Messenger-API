@@ -47,6 +47,7 @@ export type GroupAdminTypes = {
   group?: GroupTypes;
   userId?: string;
   user?: UserTypes;
+  createdAt?: Date;
 };
 type UserTypes = {
   userId?: string;
@@ -69,6 +70,7 @@ export type GroupMemberTypes = {
   group?: GroupTypes;
   userId?: string;
   user?: UserTypes;
+  createdAt?: Date;
 };
 export type GetGroupByIdRequestParamsTypes = {
   groupId: string;
