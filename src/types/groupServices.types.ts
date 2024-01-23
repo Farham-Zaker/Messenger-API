@@ -45,16 +45,21 @@ export type AddMemberToGroupParamtersTyps = {
   groupId: string;
 };
 export type FindOneGroupParametersTypes = {
-  condition: {
-    groupId?: string;
-    ownerId?: string;
-  };
+  condition: FindOneGroupConditionTypes;
   selectedFields: {
     groups: string[];
     owner?: string[];
     admins?: string[];
     members?: string[];
     messages?: string[];
+  };
+};
+export type FindOneGroupConditionTypes = {
+  groupId?: string;
+  ownerId?: string;
+  members?: {
+    userId: string;
+    relation: "one to many" | "one to one";
   };
 };
 export type FindAllGroupsPramatersTypes = {
@@ -67,7 +72,7 @@ export type FindAllGroupsPramatersTypes = {
 export type FindAllGroupsConditionTypes = {
   ownerId?: string;
   members?: {
-    memberId: string;
+    userId: string;
     relation: "one to many" | "one to one";
   };
   admins?: {
@@ -128,6 +133,7 @@ export type GroupMemberTypes = {
   group?: GroupTypes;
   userId?: string;
   user?: UserTypes;
+  createdAt?: Date;
 };
 type UserTypes = {
   userId: string;
@@ -147,6 +153,7 @@ export type UpdateGroupPramatersTypes = {
   };
   data: {
     title?: string;
+    ownerId?: string;
     bio?: string;
     imagePath?: string;
     updatedAt?: Date;

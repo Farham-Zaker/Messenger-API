@@ -4,6 +4,7 @@ import {
   CreatedGroupTypes,
   GroupTypes,
   FindOneGroupParametersTypes,
+  FindOneGroupConditionTypes,
   FindAllGroupsPramatersTypes,
   FindAllGroupsConditionTypes,
   AddMemberToGroupParamtersTyps,
@@ -60,7 +61,7 @@ class GroupServices {
     selectedFields,
   }: FindOneGroupParametersTypes): Promise<GroupTypes | null> {
     const group: GroupTypes | null = await prismaServices.groups.findFirst({
-      where: condition,
+      where: prismaWhereInputExtractor<FindOneGroupConditionTypes>(condition),
       select: databaseSelector("groups", selectedFields),
     });
     return group;
