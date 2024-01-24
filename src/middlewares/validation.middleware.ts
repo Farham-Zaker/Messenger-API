@@ -2,66 +2,43 @@ import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from "fastify";
 import sendResponse from "../utils/sendResponse";
 
 type ParametersType = {
-  target: "body" | "query";
+  target: "body" | "query"
   schema: any;
 };
 const validate = ({ target, schema }: ParametersType) => {
-  return (
+  return async (
     request: FastifyRequest,
     reply: FastifyReply,
     done: HookHandlerDoneFunction
-  ) => {
+  ) =>  {
+    let requestData;
     if (target === "body") {
-      if (!request.body) {
-        return sendResponse(reply, {
-          status: "error",
-          statusCode: 400,
-          message: "Provide the required information in the request body.",
-        });
-      }
-      const { error } = schema.validate(request.body);
-      if (error) {
-        const errors = error.details.map((detail: any) => {
-          return {
-            message: detail.message,
-            path: detail.path.join("."),
-          };
-        });
-        return sendResponse(reply, {
-          status: "error",
-          statusCode: 400,
-          in: "body",
-          errors,
-        });
-      }
-      return done();
+      requestData = request.body;
+    } else if (target === "query") {
+      requestData = request.query;
+    } 
+    
+    if (!requestData) {
+      return sendResponse(reply, {
+        status: "error",
+        statusCode: 400,
+        message: `Provide the required information in the request ${target}.`,
+      });
     }
-
-    if (target === "query") {
-      if (!request.query) {
-        return sendResponse(reply, {
-          status: "error",
-          statusCode: 400,
-          message: "Provide the required information in the request query.",
-        });
-      }
-      const { error } = schema.validate(request.query);
-
-      if (error) {
-        const errors = error.details.map((detail: any) => {
-          return {
-            message: detail.message,
-            path: detail.path.join("."),
-          };
-        });
-        return sendResponse(reply, {
-          status: "error",
-          statusCode: 400,
-          in: "query",
-          errors,
-        });
-      }
-      return done();
+    const { error } = schema.validate(requestData);
+    if (error) {
+      const errors = error.details.map((detail: any) => {
+        return {
+          message: detail.message,
+          path: detail.path.join("."),
+        };
+      });
+      return sendResponse(reply, {
+        status: "error",
+        statusCode: 400,
+        in: target,
+        errors,
+      });
     }
   };
 };
