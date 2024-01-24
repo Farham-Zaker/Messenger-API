@@ -13,6 +13,7 @@ import {
   getOneMemberSchema,
   updateGroupSchema,
   removeAdminAndMemberSchema,
+  uploadProfilePhotoSchema,
 } from "../schemas/group.schemas";
 import groupControllers from "../controllers/group.controllers";
 import isGroupOwner from "../middlewares/group/isGroupOwner";
@@ -32,10 +33,13 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     },
   });
   fastify.route({
-    url: "/:groupId/upload-profile-photo",
+    url: "/upload-profile-photo/:groupId",
     method: "POST",
-    preHandler: [isLogged, isGroupAdminOrOwner],
+    preHandler: [isLogged],
     handler: () => {},
+    schema: {
+      hide: true,
+    },
   });
   fastify.route({
     url: "/add-admin",
