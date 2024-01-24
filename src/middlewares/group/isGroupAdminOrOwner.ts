@@ -20,9 +20,11 @@ const isGroupAdminOrOwner: preHandlerHookHandler = async (
 ) => {
   let groupId: string | undefined;
   if (request.method === "POST" || request.method === "PUT") {
+    if ((request.params as { groupId?: string })?.groupId) {
+      return (groupId = (request.params as { groupId?: string })?.groupId);
+    }
     groupId = (request.body as { groupId?: string })?.groupId;
-  }
-  if (request.method === "GET" || request.method === "DELETE") {
+  } else if (request.method === "GET" || request.method === "DELETE") {
     groupId = (request.query as { groupId?: string })?.groupId;
   }
   const user = request.user;
