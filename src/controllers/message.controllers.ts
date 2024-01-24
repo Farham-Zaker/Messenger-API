@@ -197,7 +197,7 @@ export default new (class MessageControllers {
       sendResponse(reply, {
         status: "success",
         statusCode: 200,
-        message,
+        messageDate: message,
       });
     } catch (error) {
       sendErrorResponse(reply, error);
