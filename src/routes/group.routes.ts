@@ -13,7 +13,6 @@ import {
   getOneMemberSchema,
   updateGroupSchema,
   removeAdminAndMemberSchema,
-  uploadProfilePhotoSchema,
 } from "../schemas/group.schemas";
 import groupControllers from "../controllers/group.controllers";
 import isGroupOwner from "../middlewares/group/isGroupOwner";
@@ -36,7 +35,7 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     url: "/upload-profile-photo/:groupId",
     method: "POST",
     preHandler: [isLogged],
-    handler: () => {},
+    handler: groupControllers.uploadProfilePhoto,
     schema: {
       hide: true,
     },

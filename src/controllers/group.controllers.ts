@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import {
   AddAdminRequestBodyTypes,
   GroupTypes,
+  GroupMemberTypes,
   AddMemberToGroupRequestBodyTypes,
   CreateGroupRequestBodyTypes,
   GetAllGroupsRequestQueryTypes,
@@ -19,8 +20,10 @@ import {
 import GroupServices from "../services/group.services";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
-import { GroupMemberTypes } from "../types/groupServices.types";
-
+import fs from "fs";
+import pump from "pump";
+import path from "path";
+import upload from "../utils/upload";
 export default new (class groupControllers {
   async createGroup(
     request: FastifyRequest<{ Body: CreateGroupRequestBodyTypes }>,
@@ -50,6 +53,41 @@ export default new (class groupControllers {
       });
     } catch (error) {
       sendErrorResponse(reply, error);
+    }
+  }
+  async uploadProfilePhoto(
+    request: FastifyRequest<{ Params: { groupId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { groupId } = request.params;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+console.log(await request.file());
+    try {
+      const uploadedFile = await upload({
+        request,
+        reply,
+        acceptedFormats: ["png", "jpeg", "jpg"],
+        uploadDestination: "./src/uploads",
+        desiredName: `${groupId}_profile`,
+      });
+      console.log(groupId);
+      await groupServices.updateGroup({
+        condition: {
+          groupId,
+        },
+        data: {
+          imagePath: uploadedFile?.filePath,
+        },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 201,
+        message: "The profile photo uploaded successfully.",
+        photoPath: uploadedFile?.filePath,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
     }
   }
   async addAdmin(
@@ -432,7 +470,7 @@ export default new (class groupControllers {
     const { groupId, userId, group, user } = request.query;
     const groupServices: GroupServices =
       request.diScope.resolve("groupServices");
-      console.log(group === "true" ?? []);
+    console.log(group === "true" ?? []);
     try {
       const member: GroupMemberTypes | null =
         await groupServices.findOneGroupMember({
