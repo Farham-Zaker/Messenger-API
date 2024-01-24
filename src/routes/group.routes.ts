@@ -41,6 +41,12 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
     },
   });
   fastify.route({
+    url: "/remove-profile-photo/:groupId",
+    method: "DELETE",
+    preHandler: [isLogged, isGroupAdminOrOwner],
+    handler: () => {},
+  });
+  fastify.route({
     url: "/add-admin",
     method: "POST",
     preHandler: [
