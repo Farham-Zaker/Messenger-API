@@ -34,17 +34,11 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
     url: "/upload-profile-photo/:groupId",
     method: "POST",
-    preHandler: [isLogged],
+    preHandler: [isLogged, isGroupAdminOrOwner],
     handler: groupControllers.uploadProfilePhoto,
     schema: {
       hide: true,
     },
-  });
-  fastify.route({
-    url: "/remove-profile-photo/:groupId",
-    method: "DELETE",
-    preHandler: [isLogged, isGroupAdminOrOwner],
-    handler: groupControllers.removeProfilePhoto,
   });
   fastify.route({
     url: "/add-admin",
@@ -150,6 +144,15 @@ const groupRoutesPlugin: FastifyPluginCallback = (fastify, option, done) => {
       validate({ target: "body", schema: updateGroupSchema }),
     ],
     handler: groupControllers.updateGroup,
+    schema: {
+      hide: true,
+    },
+  });
+  fastify.route({
+    url: "/remove-profile-photo/:groupId",
+    method: "DELETE",
+    preHandler: [isLogged, isGroupAdminOrOwner],
+    handler: groupControllers.removeProfilePhoto,
     schema: {
       hide: true,
     },
