@@ -536,6 +536,40 @@ const groupDocs = {
       },
     },
   },
+  "/remove-profile-photo/:groupId": {
+    delete: {
+      tags: ["Group"],
+      summary: "Reomve profile photot.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "params",
+          description: "ID of group",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
   "/left/:{groupId}": {
     delete: {
       tags: ["Group"],
