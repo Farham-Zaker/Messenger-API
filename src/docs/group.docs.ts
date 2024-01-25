@@ -46,6 +46,61 @@ const groupDocs = {
       },
     },
   },
+  "/group/upload-profile-photo/{groupId}": {
+    post: {
+      tags: ["Group"],
+      summary: "Add photo for profile of group.",
+      consumes: ["multipart/form-data"],
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "groupId",
+          in: "params",
+          description: "ID of group",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              file: {
+                type: "object",
+                description: "Selected file in HTML file input.",
+              },
+            },
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response,",
+        },
+        400: {
+          description: "No file uploaded.",
+        },
+        415: {
+          description: "Unsupported Media Type.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
   "/group/add-admin": {
     post: {
       tags: ["Group"],
