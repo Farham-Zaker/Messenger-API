@@ -71,7 +71,6 @@ export default new (class groupControllers {
         uploadDestination: "./src/uploads",
         desiredName: `${groupId}_profile`,
       });
-      console.log(groupId);
       await groupServices.updateGroup({
         condition: {
           groupId,
@@ -85,51 +84,6 @@ export default new (class groupControllers {
         statusCode: 201,
         message: "The profile photo uploaded successfully.",
         photoPath: uploadedFile?.filePath,
-      });
-    } catch (error) {
-      return sendErrorResponse(reply, error);
-    }
-  }
-  async removeProfilePhoto(
-    request: FastifyRequest<{ Params: { groupId: string } }>,
-    reply: FastifyReply
-  ) {
-    const { groupId } = request.params;
-    const groupServices: GroupServices =
-      request.diScope.resolve("groupServices");
-    try {
-      // Remove file
-      const directoryPath: string = "./src/uploads";
-      fs.readdir(directoryPath, (error, files) => {
-        // Find the file that the name of that start with group ID
-        const targetFiles: string[] = files.filter((file) =>
-          file.startsWith(groupId)
-        );
-        if (targetFiles.length === 0) {
-          return sendResponse(reply, {
-            status: "error",
-            statusCode: 404,
-            message: "There is no any file with such group ID.",
-          });
-        }
-        // Remove all file that the name of that start with group ID
-        targetFiles.forEach((file) => {
-          const filePath: string = path.join(directoryPath, file);
-          fs.unlink(filePath, (err) => {
-            sendErrorResponse(reply, err);
-          });
-        });
-      });
-      await groupServices.updateGroup({
-        condition: { groupId },
-        data: {
-          imagePath: "",
-        },
-      });
-      return sendResponse(reply, {
-        status: "success",
-        statusCode: 200,
-        message: "The target profile photo removed successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
@@ -580,6 +534,51 @@ export default new (class groupControllers {
         status: "success",
         statusCode: 200,
         message: "The target group updated succussfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async removeProfilePhoto(
+    request: FastifyRequest<{ Params: { groupId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { groupId } = request.params;
+    const groupServices: GroupServices =
+      request.diScope.resolve("groupServices");
+    try {
+      // Remove file
+      const directoryPath: string = "./src/uploads";
+      fs.readdir(directoryPath, (error, files) => {
+        // Find the file that the name of that start with group ID
+        const targetFiles: string[] = files.filter((file) =>
+          file.startsWith(groupId)
+        );
+        if (targetFiles.length === 0) {
+          return sendResponse(reply, {
+            status: "error",
+            statusCode: 404,
+            message: "There is no any file with such group ID.",
+          });
+        }
+        // Remove all file that the name of that start with group ID
+        targetFiles.forEach((file) => {
+          const filePath: string = path.join(directoryPath, file);
+          fs.unlink(filePath, (err) => {
+            sendErrorResponse(reply, err);
+          });
+        });
+      });
+      await groupServices.updateGroup({
+        condition: { groupId },
+        data: {
+          imagePath: "",
+        },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target profile photo removed successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
