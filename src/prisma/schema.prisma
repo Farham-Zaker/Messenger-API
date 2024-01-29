@@ -147,7 +147,7 @@ model channels {
     bio              String             @db.VarChar(255)
     owner            users              @relation(fields: [ownerId], references: [userId])
     ownerId          String             @db.VarChar(55)
-    imagePath        String             @db.VarChar(255)
+    imagePath        String?            @db.VarChar(255)
     updatedAt        DateTime
     createdAt        DateTime           @default(now())
     messages         messages[]
