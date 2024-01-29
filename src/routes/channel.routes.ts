@@ -2,6 +2,7 @@ import { FastifyPluginCallback } from "fastify";
 import validate from "../middlewares/validation.middleware";
 import isLogged from "../middlewares/islogged";
 import { createChannelShcema } from "../schemas/channel.schemas";
+import channelControllers from "../controllers/channel.controllers";
 const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify,
   options,
@@ -14,7 +15,7 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       isLogged,
       validate({ target: "body", schema: createChannelShcema }),
     ],
-    handler: () => {},
+    handler: channelControllers.createChannel,
   });
 };
 
