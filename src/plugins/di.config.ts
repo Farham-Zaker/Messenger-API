@@ -6,6 +6,7 @@ import AreaCodeServices from "../services/areaCode.services";
 import privateChatServices from "../services/privateChat.services";
 import messageServices from "../services/message.services";
 import GroupServices from "../services/group.services";
+import ChannelServices from "../services/channel.services";
 
 const diConfig = (fastify: FastifyInstance) => {
   fastify.register(fastifyAwilixPlugin, {
@@ -19,6 +20,7 @@ const diConfig = (fastify: FastifyInstance) => {
     privateChatServices: asClass(privateChatServices),
     messageServices: asClass(messageServices),
     groupServices: asClass(GroupServices),
+    channelServices: asClass(ChannelServices),
   });
 };
 
