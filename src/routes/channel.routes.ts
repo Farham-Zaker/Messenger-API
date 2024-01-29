@@ -16,6 +16,9 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       validate({ target: "body", schema: createChannelShcema }),
     ],
     handler: channelControllers.createChannel,
+    schema: {
+      hide: true,
+    },
   });
 };
 
