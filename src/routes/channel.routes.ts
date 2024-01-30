@@ -1,8 +1,10 @@
 import { FastifyPluginCallback } from "fastify";
 import validate from "../middlewares/validation.middleware";
 import isLogged from "../middlewares/islogged";
+import isChannelOwner from "../middlewares/channel/isChannelOwner";
 import { createChannelShcema } from "../schemas/channel.schemas";
 import channelControllers from "../controllers/channel.controllers";
+import { addAdminSchema } from "../schemas/group.schemas";
 const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify,
   options,
@@ -23,7 +25,10 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     url: "/add-admin",
     method: "POST",
-    preHandler: [isLogged],
+    preHandler: [
+      isLogged,
+      validate({ target: "body", schema: addAdminSchema }),
+    ],
     handler: () => {},
     schema: {
       hide: true,

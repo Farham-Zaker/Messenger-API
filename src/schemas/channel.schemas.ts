@@ -17,3 +17,15 @@ export const createChannelShcema = Joi.object({
   ),
 });
 
+export const addAdminSchema = Joi.object({
+  channelId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "channelId", required: true })
+    ),
+  userId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "userId", required: true })
+    ),
+});
