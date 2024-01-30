@@ -2,9 +2,11 @@ import { FastifyPluginCallback } from "fastify";
 import validate from "../middlewares/validation.middleware";
 import isLogged from "../middlewares/islogged";
 import isChannelOwner from "../middlewares/channel/isChannelOwner";
-import { createChannelShcema } from "../schemas/channel.schemas";
+import {
+  createChannelShcema,
+  addAdminSchema,
+} from "../schemas/channel.schemas";
 import channelControllers from "../controllers/channel.controllers";
-import { addAdminSchema } from "../schemas/group.schemas";
 const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify,
   options,
@@ -31,6 +33,15 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       isChannelOwner,
     ],
     handler: channelControllers.addAdmin,
+    schema: {
+      hide: true,
+    },
+  });
+  fastify.route({
+    url: "/upload-profile-photo/:channelId",
+    method: "POST",
+    preHandler: [isLogged],
+    handler: () => {},
     schema: {
       hide: true,
     },
