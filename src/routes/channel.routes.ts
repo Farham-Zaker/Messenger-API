@@ -28,8 +28,9 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     preHandler: [
       isLogged,
       validate({ target: "body", schema: addAdminSchema }),
+      isChannelOwner,
     ],
-    handler: () => {},
+    handler: channelControllers.addAdmin,
     schema: {
       hide: true,
     },

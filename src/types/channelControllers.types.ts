@@ -3,3 +3,7 @@ export type CreateChannelRequestBodyTypes = {
   bio: string;
   imagePath?: string;
 };
+export type AddAdminRequestBodyTypes = {
+  channelId: string;
+  userId: string;
+};
