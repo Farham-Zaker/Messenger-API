@@ -47,5 +47,57 @@ const channelDocs = {
       },
     },
   },
+  "/channel/add-admin": {
+    post: {
+      tags: ["Channel"],
+      summary: "Add a user to admins of channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              channelId: {
+                type: "string",
+                descripton: "ID of channel.",
+              },
+              userId: {
+                type: "string",
+                description: "ID of target user.",
+              },
+            },
+            required: ["channelId", "userId"],
+          },
+        },
+      ],
+      responses: {
+        201: {
+          description: "Successful response.",
+        },
+        400: {
+          description: "Just owner of group can add a user to admin.",
+        },
+        403: {
+          description:
+            "Owner of channel can not add itself to admin of channel.",
+        },
+        404: {
+          description: "Lack of existence of user in group.",
+        },
+      },
+    },
+  },
 };
+
 export default channelDocs;
