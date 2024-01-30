@@ -20,6 +20,15 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/add-admin",
+    method: "POST",
+    preHandler: [isLogged],
+    handler: () => {},
+    schema: {
+      hide: true,
+    },
+  });
 };
 
 export default channelRoutesPlugin;
