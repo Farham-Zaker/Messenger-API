@@ -142,18 +142,18 @@ model groups_admins {
 }
 
 model channels {
-    channelId        String             @id @default(uuid()) @db.VarChar(55)
-    title            String             @db.VarChar(255)
-    bio              String             @db.VarChar(255)
-    owner            users              @relation(fields: [ownerId], references: [userId])
-    ownerId          String             @db.VarChar(55)
-    imagePath        String?            @db.VarChar(255)
-    updatedAt        DateTime
-    createdAt        DateTime           @default(now())
-    messages         messages[]
-    channels_members channels_members[]
-    adminChannels    channels_admins[]
-    pinned           pinned_items[]
+    channelId String             @id @default(uuid()) @db.VarChar(55)
+    title     String             @db.VarChar(255)
+    bio       String             @db.VarChar(255)
+    owner     users              @relation(fields: [ownerId], references: [userId])
+    ownerId   String             @db.VarChar(55)
+    imagePath String?            @db.VarChar(255)
+    updatedAt DateTime
+    createdAt DateTime           @default(now())
+    messages  messages[]
+    members   channels_members[]
+    admins    channels_admins[]
+    pinned    pinned_items[]
 }
 
 model channels_admins {
