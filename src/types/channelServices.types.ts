@@ -90,3 +90,15 @@ export type ChannelMemberTypes = {
   channelId?: string;
   channel?: ChannelTypes;
 };
+export type UpdateChannelParametersTypes = {
+  condition: {
+    channelId: string;
+  };
+  data: {
+    title?: string;
+    bio?: string;
+    ownerId?: string;
+    imagePath?: string;
+    updatedAt?: Date;
+  };
+};

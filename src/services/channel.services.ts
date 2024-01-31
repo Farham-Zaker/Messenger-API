@@ -10,6 +10,7 @@ import {
   FindOneChannelAdminParametersTypes,
   ChannelMemberTypes,
   FindOneMemberParametersTypes,
+  UpdateChannelParametersTypes,
 } from "../types/channelServices.types";
 import databaseSelector from "../utils/databaseSelector";
 import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
@@ -67,6 +68,16 @@ class ChannelServices {
         select: databaseSelector("channels_members", selectedFields),
       });
     return channelMember;
+  }
+  async updateChannel({
+    condition,
+    data,
+  }: UpdateChannelParametersTypes): Promise<ChannelTypes> {
+    const updatedChannel: ChannelTypes = await prismaServices.channels.update({
+      data,
+      where: condition,
+    });
+    return updatedChannel;
   }
 }
 
