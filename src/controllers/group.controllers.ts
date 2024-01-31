@@ -67,7 +67,7 @@ export default new (class groupControllers {
       const uploadedFile = await upload({
         request,
         reply,
-        acceptedFormats: ["png", "jpeg", "jpg"],
+        acceptableFormats: ["png", "jpeg", "jpg"],
         uploadDestination: "./src/uploads",
         desiredName: `${groupId}_profile`,
       });
