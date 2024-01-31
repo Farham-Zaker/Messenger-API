@@ -122,4 +122,40 @@ export default new (class channelController {
       return sendErrorResponse(reply, error);
     }
   }
+  async joinToChannel(
+    request: FastifyRequest<{ Params: { channelId: string } }>,
+    reply: FastifyReply
+  ) {
+    const channelId = request.params.channelId;
+    const user = request.user;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+      // Check if user is joined or not
+      const isUserJoinedToChannel: boolean =
+        !!(await channelServices.findOneChannelMember({
+          condition: { channelId, userId: user?.userId },
+          selectedFields: { channels_members: ["memberId"] },
+        }));
+      if (isUserJoinedToChannel) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 400,
+          message: "This user is already joined in channel.",
+        });
+      }
+      // Add member to channel
+      await channelServices.addMember({
+        channelId,
+        userId: user?.userId,
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 201,
+        message: "The target user joined successfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
 })();

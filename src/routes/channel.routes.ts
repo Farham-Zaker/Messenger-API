@@ -51,7 +51,10 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     url: "/join/:channelId",
     method: "POST",
     preHandler: [isLogged],
-    handler: () => {},
+    handler: channelControllers.joinToChannel,
+    schema: {
+      hide: true,
+    },
   });
 };
 
