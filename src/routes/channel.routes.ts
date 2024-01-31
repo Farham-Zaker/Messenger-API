@@ -42,7 +42,7 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     url: "/upload-profile-photo/:channelId",
     method: "POST",
     preHandler: [isLogged, isChannelOrOwnerOrAdmin],
-    handler: () => {},
+    handler: channelControllers.uploadProfilePhoto,
     schema: {
       hide: true,
     },

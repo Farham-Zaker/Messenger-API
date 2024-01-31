@@ -6,6 +6,7 @@ import {
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
+import upload from "../utils/upload";
 
 export default new (class channelController {
   async createChannel(
@@ -84,6 +85,39 @@ export default new (class channelController {
         statusCode: 201,
         message: "The target user added to admins successfully.",
       });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async uploadProfilePhoto(
+    request: FastifyRequest<{ Params: { channelId: string } }>,
+    reply: FastifyReply
+  ) {
+    const channelId = request.params.channelId;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+      const uploadedImage = await upload({
+        request,
+        reply,
+        acceptableFormats: ["png", "jpeg", "jpg"],
+        desiredName: request.params.channelId,
+        uploadDestination: "./src/uploads",
+      });
+      if (typeof uploadedImage === "object") {
+        await channelServices.updateChannel({
+          condition: { channelId },
+          data: {
+            imagePath: uploadedImage.filePath,
+          },
+        });
+        return sendResponse(reply, {
+          status: "success",
+          statusCode: 200,
+          message: "The profile photo uploaded successfully.",
+          imageURL: uploadedImage.filePath,
+        });
+      }
     } catch (error) {
       return sendErrorResponse(reply, error);
     }
