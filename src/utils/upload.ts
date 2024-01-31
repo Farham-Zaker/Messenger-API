@@ -6,17 +6,21 @@ import fs from "fs";
 type ParametersTypes = {
   request: FastifyRequest;
   reply: FastifyReply;
-  acceptedFormats: string[];
+  acceptableFormats: string[];
   uploadDestination: string;
   desiredName: string;
+};
+type FunctionType = {
+  uploadStatus: string;
+  filePath: string;
 };
 const upload = async ({
   request,
   reply,
-  acceptedFormats,
+  acceptableFormats,
   uploadDestination,
   desiredName,
-}: ParametersTypes) => {
+}: ParametersTypes): Promise<FunctionType | void> => {
   const file = await request.file();
 
   //   Check file uploaded or not.
@@ -31,7 +35,7 @@ const upload = async ({
   //   Check the format of file.
   const fileNmae: string[] = file.filename.split(".");
   const fileFromat = fileNmae[fileNmae.length - 1];
-  const isFileFormatInvalid: boolean = !!acceptedFormats.find(
+  const isFileFormatInvalid: boolean = !!acceptableFormats.find(
     (format) => format === fileFromat
   );
   if (!isFileFormatInvalid) {
@@ -49,11 +53,11 @@ const upload = async ({
     uploadDestination,
     `${desiredName}.${fileFromat}`
   );
- 
+
   await pump(file.file, fs.createWriteStream(uploadPath));
   return {
-    upload: "success",
-    filePath: path.join(__dirname,"../../",uploadPath),
+    uploadStatus: "success",
+    filePath: path.join(__dirname, "../../", uploadPath),
   };
 };
 
