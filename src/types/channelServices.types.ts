@@ -17,6 +17,10 @@ export type AddAdminParametersTypes = {
   channelId: string;
   userId: string;
 };
+export type AddMemberParametersTypes = {
+  userId: string;
+  channelId: string;
+};
 export type ChannelAdminTypes = {
   adminId?: string;
   channelId?: string;

@@ -5,6 +5,7 @@ import {
   CreateChannelParametersTypes,
   CreatedChannelTypes,
   AddAdminParametersTypes,
+  AddMemberParametersTypes,
   FindOneChannelParametersTypes,
   FindOneChannelQueryConditionTypes,
   FindOneChannelAdminParametersTypes,
@@ -33,6 +34,13 @@ class ChannelServices {
       data,
     });
     return addedAdminTypes;
+  }
+  async addMember(data: AddMemberParametersTypes): Promise<ChannelMemberTypes> {
+    const channelMember: ChannelMemberTypes =
+      await prismaServices.channels_members.create({
+        data,
+      });
+    return channelMember;
   }
   async findOneChannel({
     condition,
