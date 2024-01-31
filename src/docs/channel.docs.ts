@@ -144,6 +144,43 @@ const channelDocs = {
       },
     },
   },
+  "/channel/join/{channelId}": {
+    post: {
+      tags: ["Channel"],
+      summary: "Join to channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channelId",
+          in: "params",
+          required: true,
+          description: "ID of channel",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successfull response",
+        },
+        400: {
+          description: "Existence of user in the channel.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
