@@ -26,7 +26,7 @@ const isChannelOwner: preHandlerHookHandler = async (request, reply, done) => {
       return sendResponse(reply, {
         status: "error",
         statusCode: 400,
-        message: "Just owner of group can add a user to admin of channel.",
+        message: "Just owner of group can access to this route.",
       });
     }
   } catch (error) {
