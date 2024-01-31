@@ -98,6 +98,52 @@ const channelDocs = {
       },
     },
   },
+  "/channel/upload-profile-photo/{channelId}": {
+    post: {
+      tags: ["Channel"],
+      summary: "Upload photo for profile of channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              file: {
+                type: "object",
+                description: "Selected file in HTML file input.",
+              },
+            },
+            required: ["file"],
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        400: {
+          description: "No file uploaded.",
+        },
+        415: {
+          description: "Unsupported Media Type.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
