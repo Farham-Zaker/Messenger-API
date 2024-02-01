@@ -6,6 +6,7 @@ import {
   createChannelShcema,
   addAdminSchema,
   getAllChannelsSchema,
+  getAllAdminsOrMembersShcema,
 } from "../schemas/channel.schemas";
 import channelControllers from "../controllers/channel.controllers";
 import isChannelOrOwnerOrAdmin from "../middlewares/channel/isChannelOwnerOrAdmin";
@@ -72,7 +73,10 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     url: "/get-admins",
     method: "GET",
-    preHandler: [isLogged],
+    preHandler: [
+      isLogged,
+      validate({ target: "query", schema: getAllAdminsOrMembersShcema }),
+    ],
     handler: () => {},
   });
 };

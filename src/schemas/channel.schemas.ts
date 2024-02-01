@@ -50,3 +50,22 @@ export const getAllChannelsSchema = Joi.object({
     )
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
 });
+export const getAllAdminsOrMembersShcema = Joi.object({
+  channelId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "channelId", required: true })
+    ),
+  user: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "user", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  channel: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "channel", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+});
