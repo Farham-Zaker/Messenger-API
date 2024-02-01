@@ -64,7 +64,7 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       isLogged,
       validate({ target: "query", schema: getAllChannelsSchema }),
     ],
-    handler: () => {},
+    handler: channelControllers.getAllChannels,
   });
 };
 

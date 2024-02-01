@@ -3,10 +3,13 @@ import ChannelServices from "../services/channel.services";
 import {
   AddAdminRequestBodyTypes,
   CreateChannelRequestBodyTypes,
+  GetAllChannelsRequestQueryTypes,
+  ChannelTypes,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
 import upload from "../utils/upload";
+import getQueryKeys from "../utils/getQueryKeys";
 
 export default new (class channelController {
   async createChannel(
@@ -153,6 +156,57 @@ export default new (class channelController {
         status: "success",
         statusCode: 201,
         message: "The target user joined successfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getAllChannels(
+    request: FastifyRequest<{ Querystring: GetAllChannelsRequestQueryTypes }>,
+    reply: FastifyReply
+  ) {
+    const { owner, admins, members } = request.query;
+    const user = request.user;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+      const queryKeys: string[] = getQueryKeys<GetAllChannelsRequestQueryTypes>(
+        request.query
+      );
+      const channelsSelctedFields: string[] = [
+        "channelId",
+        "title",
+        "bio",
+        ...queryKeys,
+      ];
+
+      const channels: ChannelTypes[] = await channelServices.findAllChannels({
+        condition: {
+          members: { userId: user?.userId, relation: "one to many" },
+        },
+        selectedFields: {
+          channels: channelsSelctedFields,
+          owner:
+            owner === "true"
+              ? [
+                  "userId",
+                  "firstName",
+                  "lastName",
+                  "username",
+                  "email",
+                  "phoneNumber",
+                  "areaCode",
+                ]
+              : [],
+          admins: admins === "true" ? ["user"] : [],
+          members: members === "true" ? ["users"] : [],
+        },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        channels,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
