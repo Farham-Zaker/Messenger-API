@@ -12,6 +12,8 @@ import {
   ChannelMemberTypes,
   FindOneMemberParametersTypes,
   UpdateChannelParametersTypes,
+  GetAllChannelsParametersTypes,
+  GetAllChannelQueryConditionTypes,
 } from "../types/channelServices.types";
 import databaseSelector from "../utils/databaseSelector";
 import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
@@ -41,6 +43,17 @@ class ChannelServices {
         data,
       });
     return channelMember;
+  }
+  async findAllChannels({
+    condition,
+    selectedFields,
+  }: GetAllChannelsParametersTypes): Promise<ChannelTypes[]> {
+    const channels: ChannelTypes[] = await prismaServices.channels.findMany({
+      where:
+        prismaWhereInputExtractor<GetAllChannelQueryConditionTypes>(condition),
+      select: databaseSelector("channels", selectedFields),
+    });
+    return channels;
   }
   async findOneChannel({
     condition,

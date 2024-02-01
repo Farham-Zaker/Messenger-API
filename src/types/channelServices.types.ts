@@ -21,6 +21,21 @@ export type AddMemberParametersTypes = {
   userId: string;
   channelId: string;
 };
+export type GetAllChannelsParametersTypes = {
+  condition: GetAllChannelQueryConditionTypes;
+  selectedFields: {
+    channels: string[];
+    owner?: string[];
+    admins?: string[];
+    members?: string[];
+  };
+};
+export type GetAllChannelQueryConditionTypes = {
+  members?: {
+    userId: string;
+    relation: "one to many" | "one to one";
+  };
+};
 export type ChannelAdminTypes = {
   adminId?: string;
   channelId?: string;
