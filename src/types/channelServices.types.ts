@@ -99,6 +99,15 @@ export type FindOneChannelAdminParametersTypes = {
     user?: string[];
   };
 };
+export type FindAllChannelMembersParametersTypes = {
+  condition: {
+    groupId: string;
+    userId: string;
+  };
+  selectedFields: {
+    channels_members: string[];
+  };
+};
 export type FindOneMemberParametersTypes = {
   condition: {
     userId: string;
