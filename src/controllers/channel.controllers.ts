@@ -8,6 +8,7 @@ import {
   GetAllAdminsORMembersRequestQueryTypes,
   AdminTypes,
   MemberType,
+  GetChannelByIdRequestQueryTypes,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
@@ -274,6 +275,48 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         members,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getChannelById(
+    request: FastifyRequest<{
+      Params: { channelId: string };
+      Querystring: GetChannelByIdRequestQueryTypes;
+    }>,
+    reply: FastifyReply
+  ) {
+    try {
+      const { channelId } = request.params;
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+      // Get keys of object that was 'true' in request query
+      const queryKeys: string[] = getQueryKeys<GetChannelByIdRequestQueryTypes>(
+        request.query
+      );
+      const channel: ChannelTypes | null = await channelServices.findOneChannel(
+        {
+          condition: {
+            channelId,
+          },
+          selectedFields: {
+            channels: ["channelId", ...queryKeys],
+          },
+        }
+      );
+      if (!channel) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any channel with such ID.",
+        });
+      }
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        channel,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);

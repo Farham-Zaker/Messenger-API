@@ -8,9 +8,9 @@ export type AddAdminRequestBodyTypes = {
   userId: string;
 };
 export type GetAllChannelsRequestQueryTypes = {
-  owner: string;
-  admins: string;
-  members: string;
+  owner?: string;
+  admins?: string;
+  members?: string;
 };
 export type ChannelTypes = {
   channelId?: string;
@@ -49,4 +49,9 @@ export type GetAllAdminsORMembersRequestQueryTypes = {
   channelId: string;
   channel?: string;
   user?: string;
+};
+export type GetChannelByIdRequestQueryTypes = {
+  owner?: string;
+  admins?: string;
+  members?: string;
 };
