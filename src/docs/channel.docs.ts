@@ -93,7 +93,7 @@ const channelDocs = {
             "Owner of channel can not add itself to admin of channel.",
         },
         404: {
-          description: "Lack of existence of user in group.",
+          description: "Lack of existence of user in channel.",
         },
       },
     },
@@ -312,6 +312,62 @@ const channelDocs = {
       responses: {
         200: {
           description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
+  "/channel/get-channels/{channelId}": {
+    get: {
+      tags: ["Channel"],
+      summary: "Get a channel by ID.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "owner",
+          in: "query",
+          description:
+            "If true, the response will include information about the owner of the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "admins",
+          in: "query",
+          description:
+            "If true, the response will include information about the admins of the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "members",
+          in: "query",
+          description:
+            "If true, the response will include information about the members of the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        404: {
+          description:
+            "Lack of existence of channel with such ID that was sent.",
         },
         500: {
           description: "Internal Server Error.",
