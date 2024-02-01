@@ -69,6 +69,12 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get-admins",
+    method: "GET",
+    preHandler: [isLogged],
+    handler: () => {},
+  });
 };
 
 export default channelRoutesPlugin;
