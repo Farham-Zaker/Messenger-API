@@ -85,7 +85,10 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     url: "/get-members",
     method: "GET",
-    preHandler: [isLogged],
+    preHandler: [
+      isLogged,
+      validate({ target: "query", schema: getAllAdminsOrMembersShcema }),
+    ],
     handler: () => {},
   });
 };
