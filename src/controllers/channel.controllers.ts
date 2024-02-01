@@ -5,8 +5,9 @@ import {
   CreateChannelRequestBodyTypes,
   GetAllChannelsRequestQueryTypes,
   ChannelTypes,
-  GetAllAdminsRequestQueryTypes,
+  GetAllAdminsORMembersRequestQueryTypes,
   AdminTypes,
+  MemberType,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
@@ -215,16 +216,20 @@ export default new (class channelController {
     }
   }
   async getAllAdmins(
-    request: FastifyRequest<{ Querystring: GetAllAdminsRequestQueryTypes }>,
+    request: FastifyRequest<{
+      Querystring: GetAllAdminsORMembersRequestQueryTypes;
+    }>,
     reply: FastifyReply
   ) {
     const { channelId } = request.query;
     try {
       const channelServices: ChannelServices =
         request.diScope.resolve("channelServices");
-      const queryKeys: string[] = getQueryKeys<GetAllAdminsRequestQueryTypes>(
-        request.query
-      );
+
+      // Get keys of object that was 'true' in request query
+      const queryKeys: string[] =
+        getQueryKeys<GetAllAdminsORMembersRequestQueryTypes>(request.query);
+
       const admins: AdminTypes[] = await channelServices.findAllChannelAdmins({
         condition: {
           channelId,
@@ -237,6 +242,38 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         admins,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getAllMembers(
+    request: FastifyRequest<{
+      Querystring: GetAllAdminsORMembersRequestQueryTypes;
+    }>,
+    reply: FastifyReply
+  ) {
+    const { channelId } = request.query;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+      // Get keys of object that was 'true' in request query
+      const queryKeys: string[] =
+        getQueryKeys<GetAllAdminsORMembersRequestQueryTypes>(request.query);
+
+      const members: MemberType[] = await channelServices.findAllChannelAdmins({
+        condition: {
+          channelId,
+        },
+        selectedFields: {
+          channels_admins: ["adminId", "channelId", "userId", ...queryKeys],
+        },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        members,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
