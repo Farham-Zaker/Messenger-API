@@ -5,6 +5,8 @@ import {
   CreateChannelRequestBodyTypes,
   GetAllChannelsRequestQueryTypes,
   ChannelTypes,
+  GetAllAdminsRequestQueryTypes,
+  AdminTypes,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
@@ -199,14 +201,42 @@ export default new (class channelController {
                   "areaCode",
                 ]
               : [],
-          admins: admins === "true" ? ["user"] : [],
-          members: members === "true" ? ["users"] : [],
+          admins: admins === "true" ? ["adminId", "user"] : [],
+          members: members === "true" ? ["memberId", "user"] : [],
         },
       });
       return sendResponse(reply, {
         status: "success",
         statusCode: 200,
         channels,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getAllAdmins(
+    request: FastifyRequest<{ Querystring: GetAllAdminsRequestQueryTypes }>,
+    reply: FastifyReply
+  ) {
+    const { channelId } = request.query;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+      const queryKeys: string[] = getQueryKeys<GetAllAdminsRequestQueryTypes>(
+        request.query
+      );
+      const admins: AdminTypes[] = await channelServices.findAllChannelAdmins({
+        condition: {
+          channelId,
+        },
+        selectedFields: {
+          channels_admins: ["adminId", "channelId", "userId", ...queryKeys],
+        },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        admins,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);

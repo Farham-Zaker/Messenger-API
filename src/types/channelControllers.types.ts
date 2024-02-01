@@ -45,3 +45,8 @@ export type MemberType = {
   userId?: string;
   channelId?: string;
 };
+export type GetAllAdminsRequestQueryTypes = {
+  channelId: string;
+  channel?: string;
+  user?: string;
+};
