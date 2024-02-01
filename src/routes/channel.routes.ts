@@ -82,6 +82,12 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get-members",
+    method: "GET",
+    preHandler: [isLogged],
+    handler: () => {},
+  });
 };
 
 export default channelRoutesPlugin;
