@@ -94,6 +94,12 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get-channels/:channelId",
+    method: "GET",
+    preHandler: [isLogged],
+    handler: () => {},
+  });
 };
 
 export default channelRoutesPlugin;
