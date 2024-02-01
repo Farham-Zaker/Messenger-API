@@ -276,6 +276,49 @@ const channelDocs = {
       },
     },
   },
+  "/channel/get-members": {
+    get: {
+      tags: ["Channel"],
+      summary: "Get all members of a channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channel",
+          in: "query",
+          description:
+            "If true, the response will include information about the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "user",
+          in: "query",
+          description:
+            "If true, the response will include information about the member.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
