@@ -5,7 +5,7 @@ import isChannelOwner from "../middlewares/channel/isChannelOwner";
 import {
   createChannelShcema,
   addAdminSchema,
-  getAllChannelsSchema,
+  getChannelSchema,
   getAllAdminsOrMembersShcema,
 } from "../schemas/channel.schemas";
 import channelControllers from "../controllers/channel.controllers";
@@ -63,7 +63,7 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     method: "GET",
     preHandler: [
       isLogged,
-      validate({ target: "query", schema: getAllChannelsSchema }),
+      validate({ target: "query", schema: getChannelSchema }),
     ],
     handler: channelControllers.getAllChannels,
     schema: {
@@ -97,7 +97,9 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     url: "/get-channels/:channelId",
     method: "GET",
-    preHandler: [isLogged],
+    preHandler: [
+      isLogged,
+    ],
     handler: () => {},
   });
 };

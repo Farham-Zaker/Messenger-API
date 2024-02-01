@@ -30,7 +30,7 @@ export const addAdminSchema = Joi.object({
       stringValidationErrorsExtractor({ field: "userId", required: true })
     ),
 });
-export const getAllChannelsSchema = Joi.object({
+export const getChannelSchema = Joi.object({
   owner: Joi.string()
     .optional()
     .messages(
