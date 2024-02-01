@@ -7,6 +7,7 @@ import {
   AddAdminParametersTypes,
   AddMemberParametersTypes,
   FindOneChannelParametersTypes,
+  FindAllChannelAdminsParametersTypes,
   FindOneChannelQueryConditionTypes,
   FindOneChannelAdminParametersTypes,
   ChannelMemberTypes,
@@ -68,6 +69,17 @@ class ChannelServices {
         select: databaseSelector("channels", selectedFields),
       });
     return channel;
+  }
+  async findAllChannelAdmins({
+    condition,
+    selectedFields,
+  }: FindAllChannelAdminsParametersTypes): Promise<ChannelAdminTypes[]> {
+    const admins: ChannelAdminTypes[] =
+      await prismaServices.channels_admins.findMany({
+        where: condition,
+        select: databaseSelector("channels_admins", selectedFields),
+      });
+    return admins;
   }
   async findOneChannelAdmin({
     condition,

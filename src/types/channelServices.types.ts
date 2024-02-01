@@ -63,6 +63,14 @@ export type FindOneChannelParametersTypes = {
     messages?: string[];
   };
 };
+export type FindAllChannelAdminsParametersTypes = {
+  condition: {
+    channelId: string;
+  };
+  selectedFields: {
+    channels_admins: string[];
+  };
+};
 export type FindOneChannelQueryConditionTypes = {
   channelId: string;
   ownerId?: string;
