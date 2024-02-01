@@ -181,6 +181,58 @@ const channelDocs = {
       },
     },
   },
+  "/channel/get-channels": {
+    get: {
+      tags: ["Channel"],
+      summary: "Get all channels by ID of the user that logged in.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "owner",
+          in: "query",
+          description:
+            "If true, the response will include information about the owner of the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "admins",
+          in: "query",
+          description:
+            "If true, the response will include information about the admins of the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "members",
+          in: "query",
+          description:
+            "If true, the response will include information about the members of the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
