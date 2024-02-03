@@ -61,3 +61,9 @@ export type GetOneChannelAdminTypes = {
   channel?: string;
   user?: string;
 };
+export type GetOneChannelMemberTypes = {
+  channelId: string;
+  userId: string;
+  channel?: string;
+  user?: string;
+};

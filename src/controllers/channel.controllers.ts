@@ -10,6 +10,7 @@ import {
   MemberType,
   GetChannelByIdRequestQueryTypes,
   GetOneChannelAdminTypes,
+  GetOneChannelMemberTypes,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
@@ -357,6 +358,45 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         admin,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getOneMember(
+    request: FastifyRequest<{ Querystring: GetOneChannelMemberTypes }>,
+    reply: FastifyReply
+  ) {
+    const { channelId, userId } = request.query;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+      // Get keys of object that was 'true' in request query
+      const queryKeys: string[] = getQueryKeys<GetOneChannelAdminTypes>(
+        request.query
+      );
+      const member: MemberType | null =
+        await channelServices.findOneChannelMember({
+          condition: {
+            channelId,
+            userId,
+          },
+          selectedFields: {
+            channels_members: ["memberId", "channelId", "userId", ...queryKeys],
+          },
+        });
+      if (!member) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any member with such channel ID and user ID.",
+        });
+      }
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        member,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
