@@ -123,9 +123,10 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     url: "/get-one-member",
     method: "GET",
     preHandler: [
-      isLogged
+      isLogged,
+      validate({target: "query",schema: getOneAdminOrMemberSchema})
     ],
-  handler: () => {},
+    handler: () => {},
   })
 };
 
