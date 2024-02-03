@@ -375,6 +375,70 @@ const channelDocs = {
       },
     },
   },
+  "/channel/get-one-admin": {
+    get: {
+      tags: ["Channel"],
+      summary: "Get one of the admin of channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channelId",
+          in: "query",
+          description: "ID of channel.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "userId",
+          in: "query",
+          description: "ID of user.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channel",
+          in: "query",
+          description:
+            "If true, the response will include information about the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "user",
+          in: "query",
+          description:
+            "If true, the response will include information about the member.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        404: {
+          description: "Lack of existence of admin.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
