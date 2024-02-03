@@ -39,7 +39,13 @@ const isChannelOrOwnerOrAdmin: preHandlerHookHandler = async (
         channels: ["channelId", "admins", "ownerId"],
       },
     });
-
+    if (!channel) {
+      return sendResponse(reply, {
+        status: "error",
+        statusCode: 404,
+        message: "There is not any channel with such ID.",
+      });
+    }
     // Check if user is owner of channel or not
     const isUserOwnerOfChannel: boolean =
       channel?.ownerId === user?.userId && true;
@@ -49,7 +55,7 @@ const isChannelOrOwnerOrAdmin: preHandlerHookHandler = async (
       (admin) => admin.userId === user?.userId
     );
     // Send error response when user is not owner or admin of channel
-    if (!isUserOwnerOfChannel || !isUserAdminOfChannel) {
+    if (!isUserOwnerOfChannel && !isUserAdminOfChannel) {
       return sendResponse(reply, {
         status: "error",
         statusCode: 400,
