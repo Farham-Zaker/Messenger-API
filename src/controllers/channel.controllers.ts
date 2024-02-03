@@ -11,6 +11,7 @@ import {
   GetChannelByIdRequestQueryTypes,
   GetOneChannelAdminTypes,
   GetOneChannelMemberTypes,
+  UpdateChannelTypes,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
@@ -397,6 +398,33 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         member,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async update(
+    request: FastifyRequest<{ Body: UpdateChannelTypes }>,
+    reply: FastifyReply
+  ) {
+    const { channelId, title, bio, updatedAt } = request.body;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+      await channelServices.updateChannel({
+        condition: {
+          channelId,
+        },
+        data: {
+          title,
+          bio,
+          updatedAt,
+        },
+      });
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target channel updated successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);

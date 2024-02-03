@@ -140,7 +140,7 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       isChannelOwnerOrAdmin,
       validate({ target: "body", schema: updateChannelSchema }),
     ],
-    handler: () => {},
+    handler: channelControllers.update,
   });
 };
 

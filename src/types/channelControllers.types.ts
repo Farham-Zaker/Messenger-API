@@ -67,3 +67,9 @@ export type GetOneChannelMemberTypes = {
   channel?: string;
   user?: string;
 };
+export type UpdateChannelTypes = {
+  channelId: string;
+  title?: string;
+  bio?: string;
+  updatedAt?: Date;
+};
