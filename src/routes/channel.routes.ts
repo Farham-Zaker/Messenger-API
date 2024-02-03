@@ -131,6 +131,12 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/update",
+    method: "PUT",
+    preHandler: [isLogged, isChannelOrOwnerOrAdmin],
+    handler: () => {},
+  });
 };
 
 export default channelRoutesPlugin;
