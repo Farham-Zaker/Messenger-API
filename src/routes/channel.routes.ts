@@ -8,9 +8,10 @@ import {
   getChannelSchema,
   getAllAdminsOrMembersShcema,
   getOneAdminOrMemberSchema,
+  updateChannelSchema,
 } from "../schemas/channel.schemas";
 import channelControllers from "../controllers/channel.controllers";
-import isChannelOrOwnerOrAdmin from "../middlewares/channel/isChannelOwnerOrAdmin";
+import isChannelOwnerOrAdmin from "../middlewares/channel/isChannelOwnerOrAdmin";
 const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify,
   options,
@@ -44,7 +45,7 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     url: "/upload-profile-photo/:channelId",
     method: "POST",
-    preHandler: [isLogged, isChannelOrOwnerOrAdmin],
+    preHandler: [isLogged, isChannelOwnerOrAdmin],
     handler: channelControllers.uploadProfilePhoto,
     schema: {
       hide: true,
@@ -134,7 +135,11 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
   fastify.route({
     url: "/update",
     method: "PUT",
-    preHandler: [isLogged, isChannelOrOwnerOrAdmin],
+    preHandler: [
+      isLogged,
+      isChannelOwnerOrAdmin,
+      validate({ target: "body", schema: updateChannelSchema }),
+    ],
     handler: () => {},
   });
 };

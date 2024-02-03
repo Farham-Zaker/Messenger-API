@@ -1,6 +1,7 @@
 import Joi from "joi";
 import stringValidationErrorsExtractor from "../utils/stringValidationErrorsExtractor";
 import validateTrueOrFalse from "../utils/validateTrueOrFalse";
+import dateValidationErrorsExtractor from "../utils/dateValidationErrorsExtractor";
 
 export const createChannelShcema = Joi.object({
   title: Joi.string()
@@ -92,4 +93,26 @@ export const getOneAdminOrMemberSchema = Joi.object({
       stringValidationErrorsExtractor({ field: "channel", required: false })
     )
     .custom((value, helper) => validateTrueOrFalse(value, helper)),
+});
+export const updateChannelSchema = Joi.object({
+  channelId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "channelId", required: true })
+    ),
+  title: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "title", required: false })
+    ),
+  bio: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "bio", required: false })
+    ),
+  updatedAt: Joi.string()
+    .optional()
+    .messages(
+      dateValidationErrorsExtractor({ field: "updatedat", required: false })
+    ),
 });
