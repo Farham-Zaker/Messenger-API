@@ -106,6 +106,12 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get-one-admin",
+    method: "GET",
+    preHandler: [isLogged],
+    handler: () => {},
+  });
 };
 
 export default channelRoutesPlugin;
