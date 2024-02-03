@@ -503,6 +503,64 @@ const channelDocs = {
       },
     },
   },
+  "/channel/update": {
+    put: {
+      tags: ["Channel"],
+      summary: "Update channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "body",
+          in: "body",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              channelId: {
+                type: "string",
+                description: "ID of channel that want to update.",
+              },
+              title: {
+                type: "string",
+                description: "Title of channel.",
+              },
+              bio: {
+                type: "string",
+                description: "Bio of channel.",
+              },
+              updatedAt: {
+                type: "string",
+                description: "The date that channel was updated.",
+              },
+            },
+            required: ["channelId"],
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        400: {
+          description: "Just owner or admin of channel access to this route.",
+        },
+        404: {
+          description: "Lack of existence of channel.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
