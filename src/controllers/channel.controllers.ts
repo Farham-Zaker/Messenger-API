@@ -9,6 +9,7 @@ import {
   AdminTypes,
   MemberType,
   GetChannelByIdRequestQueryTypes,
+  GetOneChannelAdminTypes,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
@@ -317,6 +318,45 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         channel,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getOneAdmin(
+    request: FastifyRequest<{ Querystring: GetOneChannelAdminTypes }>,
+    reply: FastifyReply
+  ) {
+    const { channelId, userId } = request.query;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+      // Get keys of object that was 'true' in request query
+      const queryKeys: string[] = getQueryKeys<GetOneChannelAdminTypes>(
+        request.query
+      );
+      const admin: AdminTypes | null =
+        await channelServices.findOneChannelAdmin({
+          condition: {
+            channelId,
+            userId,
+          },
+          selectedFields: {
+            channels_admins: ["adminId", "channelId", "userId", ...queryKeys],
+          },
+        });
+      if (!admin) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any admin with such channel ID and user ID.",
+        });
+      }
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        admin,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);

@@ -55,3 +55,9 @@ export type GetChannelByIdRequestQueryTypes = {
   admins?: string;
   members?: string;
 };
+export type GetOneChannelAdminTypes = {
+  channelId: string;
+  userId: string;
+  channel?: string;
+  user?: string;
+};
