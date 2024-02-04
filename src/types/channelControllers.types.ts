@@ -39,11 +39,13 @@ export type AdminTypes = {
   adminId?: string;
   userId?: string;
   channelId?: string;
+  createdAt?: Date;
 };
 export type MemberType = {
   memberId?: string;
   userId?: string;
   channelId?: string;
+  createdAt?: Date;
 };
 export type GetAllAdminsORMembersRequestQueryTypes = {
   channelId: string;
