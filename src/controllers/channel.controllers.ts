@@ -17,6 +17,7 @@ import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
 import upload from "../utils/upload";
 import getQueryKeys from "../utils/getQueryKeys";
+import removeFile from "../utils/removeFile";
 
 export default new (class channelController {
   async createChannel(
@@ -425,6 +426,35 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         message: "The target channel updated successfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async removeProfilePhoto(
+    request: FastifyRequest<{ Params: { channelId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { channelId } = request.params;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+      removeFile({
+        reply,
+        directoryPath: "./src/uploads",
+        nameStartWith: channelId,
+      });
+
+      await channelServices.updateChannel({
+        condition: { channelId },
+        data: { imagePath: "" },
+      });
+
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target photo removed successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
