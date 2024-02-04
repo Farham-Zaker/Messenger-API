@@ -145,6 +145,12 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/remove-profile-photo/:channelId",
+    method: "DELETE",
+    preHandler: [isLogged, isChannelOwnerOrAdmin],
+    handler: () => {},
+  });
 };
 
 export default channelRoutesPlugin;
