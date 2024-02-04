@@ -460,4 +460,124 @@ export default new (class channelController {
       return sendErrorResponse(reply, error);
     }
   }
+  async leftChannel(
+    request: FastifyRequest<{ Params: { channelId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { channelId } = request.params;
+    const user = request.user;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+      const channel: ChannelTypes | null = await channelServices.findOneChannel(
+        {
+          condition: {
+            channelId,
+          },
+          selectedFields: {
+            channels: ["channelId", "ownerId", "admins", "members"],
+          },
+        }
+      );
+      const isUserMemberOfGroup: boolean = !!channel?.members?.find(
+        (channel) => {
+          return channel.userId === user?.userId;
+        }
+      );
+      const isUserAdmin: boolean = !!channel?.admins?.find((admin) => {
+        return admin.userId === user?.userId;
+      });
+      if (!isUserMemberOfGroup) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 403,
+          message: "This user is not member of channel.",
+        });
+      }
+
+      // Delete channel if owner is just member of channel
+      const membersCount: number = channel?.members?.length!;
+      if (membersCount === 1) {
+        await channelServices.deleteChannel({ channelId });
+        return sendResponse(reply, {
+          status: "success",
+          statusCode: 200,
+          message:
+            "The target user left this channel and also channel was deleted due to lack of existence of member.",
+        });
+      }
+
+      const isUserOwner: boolean =
+        channel?.ownerId === user?.userId ? true : false;
+      const adminsCount: number = channel?.admins?.length!;
+      // Check if user is owner
+      if (isUserOwner) {
+        if (adminsCount > 1) {
+          await channelServices.removeAdmin({
+            channelId,
+            userId: user?.userId,
+          });
+          await channelServices.removeMember({
+            channelId,
+            userId: user?.userId,
+          });
+          // Sort user base on date that was created
+          const sortedAdminsBasedOnCreatedDate = channel?.admins?.sort(
+            (a, b) => {
+              const dateA =
+                a.createdAt instanceof Date ? a.createdAt : new Date();
+              const dateB =
+                b.createdAt instanceof Date ? b.createdAt : new Date();
+              return dateA.getTime() - dateB.getTime();
+            }
+          ) as AdminTypes[];
+          // Make oldest admin owner of channel
+          await channelServices.updateChannel({
+            condition: { channelId },
+            data: {
+              ownerId: sortedAdminsBasedOnCreatedDate[0].userId,
+            },
+          });
+        } else {
+          // Sort member base on date was created
+          const sortedMembersBasedOnCreatedDate = channel?.members?.sort(
+            (a, b) => {
+              const dateA =
+                a.createdAt instanceof Date ? a.createdAt : new Date();
+              const dateB =
+                b.createdAt instanceof Date ? b.createdAt : new Date();
+              return dateA.getTime() - dateB.getTime();
+            }
+          ) as MemberType[];
+          await channelServices.updateChannel({
+            condition: { channelId },
+            data: { ownerId: sortedMembersBasedOnCreatedDate[1].userId },
+          });
+
+          await channelServices.removeMember({
+            channelId,
+            userId: user?.userId,
+          });
+        }
+      }
+      // Delete admin and user if user is admin
+      else if (isUserAdmin) {
+        await channelServices.removeAdmin({ channelId, userId: user?.userId });
+        await channelServices.removeMember({ channelId, userId: user?.userId });
+      }
+      // Delete member if user is just member
+      else {
+        await channelServices.removeMember({ channelId, userId: user?.userId });
+      }
+
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target user left this channel.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
 })();
