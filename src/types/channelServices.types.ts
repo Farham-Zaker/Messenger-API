@@ -74,7 +74,7 @@ export type FindAllChannelAdminsParametersTypes = {
 export type FindOneChannelQueryConditionTypes = {
   channelId: string;
   ownerId?: string;
-  member?: {
+  members?: {
     userId: string;
     relation: "one to many" | "one to one";
   };
@@ -137,4 +137,12 @@ export type UpdateChannelParametersTypes = {
     imagePath?: string;
     updatedAt?: Date;
   };
+};
+export type DeleteOneAdminParametersTypes = {
+  userId: string;
+  channelId: string;
+};
+export type DeleteOneMemberParametersTypes = {
+  userId?: string;
+  channelId?: string;
 };

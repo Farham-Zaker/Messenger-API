@@ -16,6 +16,8 @@ import {
   UpdateChannelParametersTypes,
   GetAllChannelsParametersTypes,
   GetAllChannelQueryConditionTypes,
+  DeleteOneAdminParametersTypes,
+  DeleteOneMemberParametersTypes,
 } from "../types/channelServices.types";
 import databaseSelector from "../utils/databaseSelector";
 import prismaWhereInputExtractor from "../utils/prismaWhereInputExtractor";
@@ -123,6 +125,36 @@ class ChannelServices {
       where: condition,
     });
     return updatedChannel;
+  }
+  async removeAdmin({
+    userId,
+    channelId,
+  }: DeleteOneAdminParametersTypes): Promise<void> {
+    const deletedAdmin = await prismaServices.channels_admins.deleteMany({
+      where: {
+        userId,
+        channelId,
+      },
+    });
+    if (deletedAdmin.count === 0) {
+      throw Error("There is no any admin with such user ID and channel ID.");
+    }
+  }
+  async removeMember({ userId, channelId }: DeleteOneMemberParametersTypes) {
+    const deletedMember = await prismaServices.channels_members.deleteMany({
+      where: {
+        userId,
+        channelId,
+      },
+    });
+    if (deletedMember.count === 0) {
+      throw Error("There is no any member with such user ID and channel ID.");
+    }
+  }
+  async deleteChannel(condition: { channelId: string }): Promise<void> {
+    await prismaServices.channels.delete({
+      where: condition,
+    });
   }
 }
 
