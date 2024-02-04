@@ -150,6 +150,9 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     method: "DELETE",
     preHandler: [isLogged, isChannelOwnerOrAdmin],
     handler: channelControllers.removeProfilePhoto,
+    schema: {
+      hide: true,
+    },
   });
 };
 

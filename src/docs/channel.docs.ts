@@ -561,6 +561,43 @@ const channelDocs = {
       },
     },
   },
+  "/remove-profile-photot/:{channelId}": {
+    delete: {
+      tags: ["Channel"],
+      summary: "Remove profile phtoto.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channelId",
+          in: "query",
+          description: "ID of channel",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        404: {
+          description: "Lack of existence of file.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
