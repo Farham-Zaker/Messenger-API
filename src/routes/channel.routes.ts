@@ -154,6 +154,12 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/left/:channelId",
+    method: "DELETE",
+    preHandler: [isLogged],
+    handler: () => {},
+  });
 };
 
 export default channelRoutesPlugin;
