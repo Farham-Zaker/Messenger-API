@@ -3,6 +3,10 @@ import ChannelServices from "../../services/channel.services";
 import sendResponse from "../../utils/sendResponse";
 import sendErrorResponse from "../../utils/sendErrorResponse";
 
+type ChannelType = {
+  channelId?: string;
+  ownerId?: string;
+};
 const isChannelOwner: preHandlerHookHandler = async (request, reply, done) => {
   let channelId: string | undefined;
   switch (request.method) {
@@ -23,20 +27,26 @@ const isChannelOwner: preHandlerHookHandler = async (request, reply, done) => {
     const channelServices: ChannelServices =
       request.diScope.resolve("channelServices");
 
-    const isChannelOwner: boolean = !!(await channelServices.findOneChannel({
+    const channel: ChannelType | null = await channelServices.findOneChannel({
       condition: {
         channelId: channelId as string,
-        ownerId: user?.userId,
       },
       selectedFields: {
-        channels: ["channelId"],
+        channels: ["channelId", "ownerId"],
       },
-    }));
-    if (!isChannelOwner) {
+    });
+    if (!channel) {
+      return sendResponse(reply, {
+        status: "error",
+        statusCode: 403,
+        message: "There is no any channel with such ID.",
+      });
+    }
+    if (channel.ownerId !== user?.userId) {
       return sendResponse(reply, {
         status: "error",
         statusCode: 400,
-        message: "Just owner of group can access to this route.",
+        message: "Just owner of this channel can access to this route.",
       });
     }
   } catch (error) {
