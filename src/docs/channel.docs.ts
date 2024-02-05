@@ -598,6 +598,43 @@ const channelDocs = {
       },
     },
   },
+  "/channel/left/{channelId}": {
+    delete: {
+      tags: ["Channel"],
+      summary: "Left a channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channelId",
+          in: "query",
+          description: "ID of channel",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        403: {
+          description: "Lack of excistence of user in channel.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
