@@ -12,6 +12,7 @@ import {
   GetOneChannelAdminTypes,
   GetOneChannelMemberTypes,
   UpdateChannelTypes,
+  RemoveAdminRequestQueryTypes,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
@@ -575,6 +576,26 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         message: "The target user left this channel.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async removeAdmin(
+    request: FastifyRequest<{ Querystring: RemoveAdminRequestQueryTypes }>,
+    reply: FastifyReply
+  ) {
+    const { channelId, userId } = request.query;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+      await channelServices.removeAdmin({ channelId, userId });
+
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target admin removed successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);

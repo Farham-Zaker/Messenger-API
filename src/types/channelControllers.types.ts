@@ -75,3 +75,7 @@ export type UpdateChannelTypes = {
   bio?: string;
   updatedAt?: Date;
 };
+export type RemoveAdminRequestQueryTypes = {
+  channelId: string;
+  userId: string;
+};
