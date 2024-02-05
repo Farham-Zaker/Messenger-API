@@ -163,6 +163,15 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       hide: true,
     },
   });
+  fastify.route({
+    url: "/remove-admin",
+    method: "DELETE",
+    preHandler: [
+      isLogged,
+      isChannelOwner,
+    ],
+    handler: () => {},
+  });
 };
 
 export default channelRoutesPlugin;
