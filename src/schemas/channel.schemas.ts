@@ -116,3 +116,15 @@ export const updateChannelSchema = Joi.object({
       dateValidationErrorsExtractor({ field: "updatedat", required: false })
     ),
 });
+export const removeAdminOrMemberSchema = Joi.object({
+  channelId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "channelId", required: true })
+    ),
+  userId: Joi.string()
+    .required()
+    .messages(
+      stringValidationErrorsExtractor({ field: "userId", required: true })
+    ),
+});

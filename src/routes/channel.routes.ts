@@ -9,6 +9,7 @@ import {
   getAllAdminsOrMembersShcema,
   getOneAdminOrMemberSchema,
   updateChannelSchema,
+  removeAdminOrMemberSchema,
 } from "../schemas/channel.schemas";
 import channelControllers from "../controllers/channel.controllers";
 import isChannelOwnerOrAdmin from "../middlewares/channel/isChannelOwnerOrAdmin";
@@ -169,6 +170,7 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     preHandler: [
       isLogged,
       isChannelOwner,
+      validate({ target: "query", schema: removeAdminOrMemberSchema }),
     ],
     handler: () => {},
   });
