@@ -169,13 +169,19 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     method: "DELETE",
     preHandler: [
       isLogged,
-      isChannelOwner,
       validate({ target: "query", schema: removeAdminOrMemberSchema }),
+      isChannelOwner,
     ],
     handler: channelControllers.removeAdmin,
     schema: {
       hide: true,
     },
+  });
+  fastify.route({
+    url: "/remove-member",
+    method: "DELETE",
+    preHandler: [isLogged, isChannelOwnerOrAdmin],
+    handler: () => {},
   });
 };
 
