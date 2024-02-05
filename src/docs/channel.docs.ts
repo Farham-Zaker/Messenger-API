@@ -635,6 +635,55 @@ const channelDocs = {
       },
     },
   },
+  "/channel/remove-admin": {
+    delete: {
+      tags: ["Channel"],
+      summary: "Remove a admin of channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channelId",
+          in: "query",
+          description: "ID of channel.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "userId",
+          in: "query",
+          description: "ID of target user.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response.",
+        },
+        400: {
+          description: "Just owner of channel can access to this route.",
+        },
+        404: {
+          description: "Lack of existence of channel with such ID.",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;

@@ -173,6 +173,9 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
       validate({ target: "query", schema: removeAdminOrMemberSchema }),
     ],
     handler: channelControllers.removeAdmin,
+    schema: {
+      hide: true,
+    },
   });
 };
 
