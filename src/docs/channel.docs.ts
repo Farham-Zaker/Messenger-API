@@ -561,7 +561,7 @@ const channelDocs = {
       },
     },
   },
-  "/remove-profile-photot/:{channelId}": {
+  "/channel/remove-profile-photot/{channelId}": {
     delete: {
       tags: ["Channel"],
       summary: "Remove profile phtoto.",
