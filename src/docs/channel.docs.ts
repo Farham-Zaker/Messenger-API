@@ -684,6 +684,64 @@ const channelDocs = {
       },
     },
   },
+  "/channel/remove-member": {
+    delete: {
+      tags: ["Channel"],
+      summary: "Remove a member of channel.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channelId",
+          in: "query",
+          description: "ID of channel.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "userId",
+          in: "query",
+          description: "ID of target user.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        "200": {
+          description: "Successful response.",
+        },
+        "400(1)": {
+          description: "Just owner of channel can access to this route.",
+        },
+        "400(2)": {
+          description: "The logged user can not remove itself.",
+        },
+        "400(3)": {
+          description: "The admin can not be removed by admin.",
+        },
+        "403": {
+          description: "The owner of channel can not be removed.",
+        },
+        "404": {
+          description: "Lack of existence of channel with such ID.",
+        },
+        "500": {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 
 export default channelDocs;
