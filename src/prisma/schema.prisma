@@ -78,6 +78,7 @@ model private_chats {
     createdAt     DateTime       @default(now())
     messages      messages[]
     pinned        pinned_items[]
+    medias        medias[]
 }
 
 model messages {
@@ -102,10 +103,17 @@ model messages {
 }
 
 model medias {
-    mediaId  String     @id @default(uuid()) @db.VarChar(55)
-    filePath String     @db.VarChar(255)
-    fileType String     @db.VarChar(10)
-    message  messages[]
+    mediaId       String         @id @default(uuid()) @db.VarChar(55)
+    filePath      String         @db.VarChar(255)
+    fileType      String         @db.VarChar(10)
+    message       messages?
+    privateChat   private_chats? @relation(fields: [privateChatId], references: [privateChatId])
+    privateChatId String?        @db.VarChar(55)
+    group         groups?        @relation(fields: [groupId], references: [groupId])
+    groupId       String?        @db.VarChar(55)
+    channel       channels?      @relation(fields: [channelId], references: [channelId])
+    channelId     String?        @db.VarChar(55)
+    createdAt     DateTime       @default(now())
 }
 
 model groups {
@@ -121,6 +129,7 @@ model groups {
     members   groups_members[]
     admins    groups_admins[]
     pinneds   pinned_items[]
+    medias    medias[]
 }
 
 model groups_members {
@@ -154,6 +163,7 @@ model channels {
     members   channels_members[]
     admins    channels_admins[]
     pinned    pinned_items[]
+    medias    medias[]
 }
 
 model channels_admins {
@@ -169,7 +179,7 @@ model channels_members {
     memberId  String   @id @default(uuid()) @db.VarChar(55)
     user      users    @relation(fields: [userId], references: [userId])
     userId    String   @db.VarChar(55)
-    channel  channels @relation(fields: [channelId], references: [channelId])
+    channel   channels @relation(fields: [channelId], references: [channelId])
     channelId String   @db.VarChar(55)
     createdAt DateTime @default(now())
 }
