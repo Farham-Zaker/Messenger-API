@@ -62,6 +62,10 @@ const isChannelOrOwnerOrAdmin: preHandlerHookHandler = async (
         message: "Just owner or admin of channel can access to this route.",
       });
     }
+    request.user = {
+      ...request.user,
+      role: isUserOwnerOfChannel ? "owner" : "admin",
+    };
   } catch (error) {
     return sendErrorResponse(reply, error);
   }
