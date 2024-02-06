@@ -195,6 +195,9 @@ const channelRoutesPlugin: FastifyPluginCallback = async (
     method: "DELETE",
     preHandler: [isLogged, isChannelOwner],
     handler: channelControllers.deleteChannel,
+    schema: {
+      hide: true,
+    },
   });
 };
 
