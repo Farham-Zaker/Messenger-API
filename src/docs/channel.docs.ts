@@ -113,6 +113,15 @@ const channelDocs = {
           },
         },
         {
+          name: "channelId",
+          in: "params",
+          description: "ID of channel.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
           name: "body",
           in: "body",
           required: true,
