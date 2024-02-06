@@ -78,4 +78,7 @@ export type UpdateChannelTypes = {
 export type RemoveAdminRequestQueryTypes = {
   channelId: string;
   userId: string;
+};export type RemoveMemberRequestQueryTypes = {
+  channelId: string;
+  userId: string;
 };

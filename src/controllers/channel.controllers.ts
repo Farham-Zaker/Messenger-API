@@ -13,6 +13,7 @@ import {
   GetOneChannelMemberTypes,
   UpdateChannelTypes,
   RemoveAdminRequestQueryTypes,
+  RemoveMemberRequestQueryTypes,
 } from "../types/channelControllers.types";
 import sendResponse from "../utils/sendResponse";
 import sendErrorResponse from "../utils/sendErrorResponse";
@@ -596,6 +597,80 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         message: "The target admin removed successfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async removeMember(
+    request: FastifyRequest<{ Querystring: RemoveMemberRequestQueryTypes }>,
+    reply: FastifyReply
+  ) {
+    const { channelId, userId } = request.query;
+    const user = request.user;
+    console.log(user);
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+      // Check if target user is admin or not
+      const isTargetUserAdmin: boolean =
+        !!(await channelServices.findOneChannelAdmin({
+          condition: {
+            channelId,
+            userId,
+          },
+          selectedFields: {
+            channels_admins: ["adminId"],
+          },
+        }));
+      // Check if target user is owner or not
+      const isTargetUserOwner: boolean =
+        !!(await channelServices.findOneChannel({
+          condition: {
+            channelId,
+            ownerId: userId,
+          },
+          selectedFields: {
+            channels: ["channelId"],
+          },
+        }));
+      if (isTargetUserOwner) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 403,
+          message: "The owner of channel can not be removed.",
+        });
+      }
+      // Send response if target user ID was equal to logged user ID.
+      if (user?.userId === userId) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 400,
+          message: "You can not remove yourself.",
+        });
+      }
+      // Check if logged user was owner
+      if (user?.role === "owner") {
+        await channelServices.removeMember({ channelId, userId });
+        // Remove admin if target user was admin
+        if (isTargetUserAdmin)
+          await channelServices.removeAdmin({ channelId, userId });
+      } else if (user?.role === "admin") {
+        // Send error response if admin want to delete a admin
+        if (isTargetUserAdmin)
+          return sendResponse(reply, {
+            status: "error",
+            statusCode: 400,
+            message: "The admin can not be removed by admin.",
+          });
+
+        await channelServices.removeMember({ channelId, userId });
+      }
+
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target user removed successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
