@@ -608,7 +608,6 @@ export default new (class channelController {
   ) {
     const { channelId, userId } = request.query;
     const user = request.user;
-    console.log(user);
     try {
       const channelServices: ChannelServices =
         request.diScope.resolve("channelServices");
@@ -671,6 +670,28 @@ export default new (class channelController {
         status: "success",
         statusCode: 200,
         message: "The target user removed successfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async deleteChannel(
+    request: FastifyRequest<{ Params: { channelId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { channelId } = request.params;
+    try {
+      const channelServices: ChannelServices =
+        request.diScope.resolve("channelServices");
+
+        await channelServices.removeAllAdmins({ channelId });
+        await channelServices.removeAllMember({ channelId });
+        await channelServices.deleteChannel({ channelId });
+
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target channel deleted successfully.",
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
