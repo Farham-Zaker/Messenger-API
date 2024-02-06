@@ -126,6 +126,11 @@ class ChannelServices {
     });
     return updatedChannel;
   }
+  async removeAllAdmins(condition: { channelId: string }): Promise<void> {
+    await prismaServices.channels_admins.deleteMany({
+      where: condition,
+    });
+  }
   async removeAdmin({
     userId,
     channelId,
@@ -139,6 +144,11 @@ class ChannelServices {
     if (deletedAdmin.count === 0) {
       throw Error("There is no any admin with such user ID and channel ID.");
     }
+  }
+  async removeAllMember(condition: { channelId: string }): Promise<void> {
+    await prismaServices.channels_members.deleteMany({
+      where: condition,
+    });
   }
   async removeMember({ userId, channelId }: DeleteOneMemberParametersTypes) {
     const deletedMember = await prismaServices.channels_members.deleteMany({
