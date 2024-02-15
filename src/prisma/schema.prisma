@@ -91,8 +91,7 @@ model messages {
     messages      messages[]     @relation("messages")
     replies       messages?      @relation("messages", fields: [replyOf], references: [messageId])
     replyOf       String?        @db.VarChar(55)
-    media         medias[]
-    mediaId       String?        @unique @db.VarChar(55)
+    medias        medias[]
     privateChat   private_chats? @relation(fields: [privateChatId], references: [privateChatId])
     privateChatId String?        @db.VarChar(55)
     group         groups?        @relation(fields: [groupId], references: [groupId])
@@ -106,13 +105,15 @@ model medias {
     mediaId       String         @id @default(uuid()) @db.VarChar(55)
     filePath      String         @db.VarChar(255)
     fileType      String         @db.VarChar(10)
-    message       messages       @relation(fields: [mediaId], references: [mediaId])
+    message       messages?      @relation(fields: [messageId], references: [messageId])
+    messageId     String?        @db.VarChar(55)
     privateChat   private_chats? @relation(fields: [privateChatId], references: [privateChatId])
     privateChatId String?        @db.VarChar(55)
     group         groups?        @relation(fields: [groupId], references: [groupId])
     groupId       String?        @db.VarChar(55)
     channel       channels?      @relation(fields: [channelId], references: [channelId])
     channelId     String?        @db.VarChar(55)
+    updatedAt     DateTime       @default(now())
     createdAt     DateTime       @default(now())
 }
 
@@ -196,4 +197,6 @@ model pinned_items {
     channelId     String?        @db.VarChar(55)
     messages      messages?      @relation(fields: [messageId], references: [messageId])
     messageId     String?        @db.VarChar(55)
+    updatedAt     DateTime       @default(now())
+    createdAt     DateTime       @default(now())
 }
