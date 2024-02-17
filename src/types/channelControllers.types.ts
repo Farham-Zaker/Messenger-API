@@ -12,6 +12,12 @@ export type GetAllChannelsRequestQueryTypes = {
   admins?: string;
   members?: string;
 };
+export type UploadedFileTypes = {
+  status: string;
+  fileName: string;
+  filePath: string;
+  fileType: string;
+};
 export type ChannelTypes = {
   channelId?: string;
   title?: string;
@@ -78,7 +84,8 @@ export type UpdateChannelTypes = {
 export type RemoveAdminRequestQueryTypes = {
   channelId: string;
   userId: string;
-};export type RemoveMemberRequestQueryTypes = {
+};
+export type RemoveMemberRequestQueryTypes = {
   channelId: string;
   userId: string;
 };

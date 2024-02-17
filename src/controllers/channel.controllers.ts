@@ -3,6 +3,7 @@ import ChannelServices from "../services/channel.services";
 import {
   AddAdminRequestBodyTypes,
   CreateChannelRequestBodyTypes,
+  UploadedFileTypes,
   GetAllChannelsRequestQueryTypes,
   ChannelTypes,
   GetAllAdminsORMembersRequestQueryTypes,
@@ -110,13 +111,16 @@ export default new (class channelController {
     try {
       const channelServices: ChannelServices =
         request.diScope.resolve("channelServices");
-      const uploadedImage = await upload({
+      const uploadedImage = (await upload({
         request,
         reply,
+        uploadType: "single",
         acceptableFormats: ["png", "jpeg", "jpg"],
-        desiredName: request.params.channelId,
-        uploadDestination: "./src/uploads",
-      });
+        uploadFileName: request.params.channelId,
+        destination: "./src/uploads",
+        category: "channels",
+      })) as UploadedFileTypes;
+
       if (typeof uploadedImage === "object") {
         await channelServices.updateChannel({
           condition: { channelId },
@@ -684,9 +688,9 @@ export default new (class channelController {
       const channelServices: ChannelServices =
         request.diScope.resolve("channelServices");
 
-        await channelServices.removeAllAdmins({ channelId });
-        await channelServices.removeAllMember({ channelId });
-        await channelServices.deleteChannel({ channelId });
+      await channelServices.removeAllAdmins({ channelId });
+      await channelServices.removeAllMember({ channelId });
+      await channelServices.deleteChannel({ channelId });
 
       return sendResponse(reply, {
         status: "success",
