@@ -12,6 +12,9 @@ const mediaRoutePlugin: FastifyPluginCallback = (fastify, option, done) => {
       validate({ target: "query", schema: sendMediaSchema }),
     ],
     handler: mediaController.sendMedia,
+    schema: {
+      hide: true,
+    },
   });
 
   done();

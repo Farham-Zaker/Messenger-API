@@ -8,6 +8,7 @@ import privateChatDocs from "../docs/privateChat.docs";
 import messageDocs from "../docs/message.docs";
 import groupDocs from "../docs/group.docs";
 import channelDocs from "../docs/channel.docs";
+import mediaDocs from "../docs/media.docs";
 
 const swaggerConfig = (server: FastifyInstance) => {
   const swaggerOptions = {
@@ -25,6 +26,7 @@ const swaggerConfig = (server: FastifyInstance) => {
         ...messageDocs,
         ...groupDocs,
         ...channelDocs,
+        ...mediaDocs,
       },
     },
     exposeRoute: false,
