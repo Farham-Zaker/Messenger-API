@@ -74,7 +74,7 @@ const upload = async ({
       if (!fs.existsSync(uploadPathWithCategoryNameAndID)) {
         fs.mkdirSync(uploadPathWithCategoryNameAndID);
       }
-      
+
       // Upload
       await pump(part.file, fs.createWriteStream(uploadPath));
 
@@ -112,14 +112,25 @@ const upload = async ({
       });
     }
 
+    // Create folder if upload destination is not exist
     if (!fs.existsSync(destination)) {
       fs.mkdirSync(destination);
     }
+
+    // Create if a folder with category name was not existed
+    const uploadPathWithCategoryName = path.join(destination, category || "");
+    if (!fs.existsSync(uploadPathWithCategoryName)) {
+      fs.mkdirSync(uploadPathWithCategoryName);
+    }
+
+    // Upload path
     const uploadPath = path.join(
       destination,
+      category || "",
       `${uploadFileName}.${fileFromat}`
     );
 
+    // Upload path
     await pump(file.file, fs.createWriteStream(uploadPath));
     return {
       status: "success",
