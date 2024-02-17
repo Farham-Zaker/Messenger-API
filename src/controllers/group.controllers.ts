@@ -5,6 +5,7 @@ import {
   GroupMemberTypes,
   AddMemberToGroupRequestBodyTypes,
   CreateGroupRequestBodyTypes,
+  UploadFileTypes,
   GetAllGroupsRequestQueryTypes,
   GetAdminsRequestQueryTypes,
   GroupAdminTypes,
@@ -67,10 +68,12 @@ export default new (class groupControllers {
       const uploadedFile = await upload({
         request,
         reply,
+        uploadType: "single",
         acceptableFormats: ["png", "jpeg", "jpg"],
-        uploadDestination: "./src/uploads",
-        desiredName: `${groupId}_profile`,
-      });
+        destination: "./src/uploads",
+        uploadFileName: `${groupId}_profile`,
+        category: "groups",
+      }) as UploadFileTypes
       await groupServices.updateGroup({
         condition: {
           groupId,

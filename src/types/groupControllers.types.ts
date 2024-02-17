@@ -23,6 +23,12 @@ export type AddMemberToGroupRequestBodyTypes = {
   userId: string;
   groupId: string;
 };
+export type UploadFileTypes = {
+  status: string;
+  fileName: string;
+  filePath: string;
+  fileType: string;
+}
 export type GetAllGroupsRequestQueryTypes = {
   owner: string;
 };
