@@ -28,6 +28,14 @@ const mediaRoutePlugin: FastifyPluginCallback = (fastify, option, done) => {
       hide: true,
     },
   });
+  fastify.route({
+    url: "/get/:mediaId",
+    method: "GET",
+    preHandler: [
+      isLogged,
+    ],
+    handler: () => {},
+  })
   done();
 };
 
