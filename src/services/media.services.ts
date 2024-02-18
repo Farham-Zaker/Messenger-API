@@ -34,5 +34,8 @@ class MediaServices {
     });
     return media;
   }
+  async deleteMedia(condition: { mediaId: string }): Promise<void> {
+    await prismaServices.media.delete({ where: condition });
+  }
 }
 export default MediaServices;
