@@ -44,7 +44,12 @@ const mediaRoutePlugin: FastifyPluginCallback = (fastify, option, done) => {
       hide: true,
     },
   });
-
+  fastify.route({
+    url: "/delete/:mediaId",
+    method: "DELETE",
+    preHandler: isLogged,
+    handler: () => {},
+  });
   done();
 };
 
