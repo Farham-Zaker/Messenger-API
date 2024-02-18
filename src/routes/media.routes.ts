@@ -23,7 +23,7 @@ const mediaRoutePlugin: FastifyPluginCallback = (fastify, option, done) => {
       isLogged,
       validate({ target: "query", schema: getAllMediaSchema }),
     ],
-    handler: () => {},
+    handler: mediaController.getAllMedia,
   });
   done();
 };
