@@ -14,13 +14,17 @@ export default new (class MessageControllers {
     request: FastifyRequest<{ Body: SendMessageBodyRequest }>,
     reply: FastifyReply
   ) {
-    const { text, createdAt, updatedAt } = request.body;
+    const { text, createdAt, updatedAt, privateChatId, groupId, channelId } =
+      request.body;
 
     const messageServices: messageServices =
       request.diScope.resolve("messageServices");
 
     try {
       await messageServices.create({
+        privateChatId,
+        groupId,
+        channelId,
         text,
         createdAt,
         updatedAt,
@@ -73,7 +77,6 @@ export default new (class MessageControllers {
             "replyOf",
             "createdAt",
             "updatedAt",
-            "mediaId",
             "privateChatId",
             "groupId",
             "channelId",
