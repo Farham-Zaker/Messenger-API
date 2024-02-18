@@ -1,7 +1,11 @@
 import { FastifyPluginCallback } from "fastify";
 import isLogged from "../middlewares/islogged";
 import validate from "../middlewares/validation.middleware";
-import { getAllMediaSchema, sendMediaSchema } from "../schemas/media.schemas";
+import {
+  getAllMediaSchema,
+  getMediaByIdSchema,
+  sendMediaSchema,
+} from "../schemas/media.schemas";
 import mediaController from "../controllers/media.controller";
 const mediaRoutePlugin: FastifyPluginCallback = (fastify, option, done) => {
   fastify.route({
@@ -33,9 +37,11 @@ const mediaRoutePlugin: FastifyPluginCallback = (fastify, option, done) => {
     method: "GET",
     preHandler: [
       isLogged,
+      validate({ target: "query", schema: getMediaByIdSchema }),
     ],
     handler: () => {},
-  })
+  });
+
   done();
 };
 

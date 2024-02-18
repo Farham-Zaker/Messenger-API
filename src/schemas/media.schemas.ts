@@ -103,3 +103,30 @@ export const getAllMediaSchema = Joi.object({
     "object.missing":
       "At least one of the values of 'privateChatId' or 'groupId' or 'channelId' must be sent.",
   });
+
+export const getMediaByIdSchema = Joi.object({
+  privateChat: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "privateChat", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  group: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "group", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  channel: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "channel", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+  message: Joi.string()
+    .optional()
+    .messages(
+      stringValidationErrorsExtractor({ field: "message", required: false })
+    )
+    .custom((value, helper) => validateTrueOrFalse(value, helper)),
+});
