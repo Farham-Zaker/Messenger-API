@@ -6,7 +6,7 @@ export type CreateMessageParametersTypes = {
   createdAt: Date;
   replyOf?: string | null;
   mediaId?: string | null;
-  privateChatId?: null;
+  privateChatId?: string | null;
   groupId?: string | null;
   channelId?: string | null;
 };
