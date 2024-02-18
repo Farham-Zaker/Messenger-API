@@ -78,7 +78,7 @@ model private_chats {
     createdAt     DateTime       @default(now())
     messages      messages[]
     pinned        pinned_items[]
-    medias        medias[]
+    media        media[]
 }
 
 model messages {
@@ -91,7 +91,7 @@ model messages {
     messages      messages[]     @relation("messages")
     replies       messages?      @relation("messages", fields: [replyOf], references: [messageId])
     replyOf       String?        @db.VarChar(55)
-    medias        medias[]
+    media        media[]
     privateChat   private_chats? @relation(fields: [privateChatId], references: [privateChatId])
     privateChatId String?        @db.VarChar(55)
     group         groups?        @relation(fields: [groupId], references: [groupId])
@@ -101,7 +101,7 @@ model messages {
     pinned        pinned_items[]
 }
 
-model medias {
+model media {
     mediaId       String         @id @default(uuid()) @db.VarChar(55)
     filePath      String         @db.VarChar(255)
     fileType      String         @db.VarChar(10)
@@ -130,7 +130,7 @@ model groups {
     members   groups_members[]
     admins    groups_admins[]
     pinneds   pinned_items[]
-    medias    medias[]
+    media    media[]
 }
 
 model groups_members {
@@ -164,7 +164,7 @@ model channels {
     members   channels_members[]
     admins    channels_admins[]
     pinned    pinned_items[]
-    medias    medias[]
+    media    media[]
 }
 
 model channels_admins {
