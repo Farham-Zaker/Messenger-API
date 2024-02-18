@@ -24,6 +24,9 @@ const mediaRoutePlugin: FastifyPluginCallback = (fastify, option, done) => {
       validate({ target: "query", schema: getAllMediaSchema }),
     ],
     handler: mediaController.getAllMedia,
+    schema: {
+      hide: true,
+    },
   });
   done();
 };
