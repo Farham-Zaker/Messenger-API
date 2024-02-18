@@ -152,4 +152,24 @@ export default new (class mediaController {
       return sendErrorResponse(reply, error);
     }
   }
+  async delete(
+    request: FastifyRequest<{ Params: { mediaId: string } }>,
+    reply: FastifyReply
+  ) {
+    const { mediaId } = request.params;
+    try {
+      const mediaServices: MediaServices =
+        request.diScope.resolve("mediaServices");
+
+      await mediaServices.deleteMedia({ mediaId });
+
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        message: "The target media deleted successfully.",
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
 })();
