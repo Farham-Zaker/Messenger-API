@@ -80,7 +80,7 @@ export default new (class mediaController {
       const allMedia: MediaType[] = await mediaServices.findAll({
         condition: { privateChatId, groupId, channelId },
         selectedFields: {
-          medias: [
+          media: [
             "mediaId",
             "filePath",
             "fileType",
@@ -120,7 +120,7 @@ export default new (class mediaController {
           mediaId,
         },
         selectedFields: {
-          medias: [
+          media: [
             "mediaId",
             "filePath",
             "fileType",

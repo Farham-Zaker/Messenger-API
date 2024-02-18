@@ -10,7 +10,7 @@ import databaseSelector from "../utils/databaseSelector";
 
 class MediaServices {
   async createMany(data: CreateMediaParamersTypes[]): Promise<void> {
-    await prismaServices.medias.createMany({
+    await prismaServices.media.createMany({
       data,
     });
   }
@@ -18,9 +18,9 @@ class MediaServices {
     condition,
     selectedFields,
   }: FindAllMediaParametersTypes): Promise<MediaType[]> {
-    const allMedia: MediaType[] = await prismaServices.medias.findMany({
+    const allMedia: MediaType[] = await prismaServices.media.findMany({
       where: condition,
-      select: databaseSelector("medias", selectedFields),
+      select: databaseSelector("media", selectedFields),
     });
     return allMedia;
   }
@@ -28,9 +28,9 @@ class MediaServices {
     condition,
     selectedFields,
   }: FindOneMediaPrametersTypes): Promise<MediaType | null> {
-    const media: MediaType | null = await prismaServices.medias.findFirst({
+    const media: MediaType | null = await prismaServices.media.findFirst({
       where: condition,
-      select: databaseSelector("medias", selectedFields),
+      select: databaseSelector("media", selectedFields),
     });
     return media;
   }

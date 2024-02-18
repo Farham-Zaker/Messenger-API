@@ -25,7 +25,7 @@ export type FindAllMediaParametersTypes = {
     channelId?: string;
   };
   selectedFields: {
-    medias: string[];
+    media: string[];
   };
 };
 export type MediaType = {
@@ -84,6 +84,6 @@ export type FindOneMediaPrametersTypes = {
     mediaId: string;
   };
   selectedFields: {
-    medias: string[];
+    media: string[];
   };
 };
