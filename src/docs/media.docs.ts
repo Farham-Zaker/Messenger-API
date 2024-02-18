@@ -142,5 +142,78 @@ const mediaDocs = {
       },
     },
   },
+  "/media/get/:mediaId": {
+    get: {
+      tags: ["Media"],
+      summary: "Get media by ID.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "mediaId",
+          in: "params",
+          description: "ID of media.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "privateChat",
+          in: "query",
+          description:
+            "If true, the response will include information about the private chat.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "group",
+          in: "query",
+          description:
+            "If true, the response will include information about the group.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "channel",
+          in: "query",
+          description:
+            "If true, the response will include information about the channel.",
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "message",
+          in: "query",
+          description:
+            "If true, the response will include information about the message.",
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successfull response.",
+        },
+        404: {
+          description: "Lack of existence of media with such ID",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
 };
 export default mediaDocs;
