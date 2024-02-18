@@ -41,7 +41,7 @@ export type MediaType = {
   groupId?: string;
   group?: GroupTypes;
   messageId?: string;
-  message?: MediaType | null;
+  message?: MessageTypes | null;
 };
 type PrivateChatTypes = {
   privateChatId: string;
@@ -78,4 +78,12 @@ type MessageTypes = {
   privateChatId?: string | null;
   groupId?: string | null;
   channelId?: string | null;
+};
+export type FindOneMediaPrametersTypes = {
+  condition: {
+    mediaId: string;
+  };
+  selectedFields: {
+    medias: string[];
+  };
 };
