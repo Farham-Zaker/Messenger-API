@@ -3,6 +3,7 @@ import sendErrorResponse from "../utils/sendErrorResponse";
 import upload from "../utils/upload";
 import {
   GetAllMediaRequestQueryTypes,
+  GetMediaByIdRequestQueryTypes,
   MediaType,
   SendMediaRequestQueryTypes,
   UploadedFileTypes,
@@ -94,6 +95,58 @@ export default new (class mediaController {
         status: "success",
         statusCode: 200,
         allMedia,
+      });
+    } catch (error) {
+      return sendErrorResponse(reply, error);
+    }
+  }
+  async getMediaById(
+    request: FastifyRequest<{
+      Params: { mediaId: string };
+      Querystring: GetMediaByIdRequestQueryTypes;
+    }>,
+    reply: FastifyReply
+  ) {
+    const { mediaId } = request.params;
+
+    const keys = getQueryKeys<GetMediaByIdRequestQueryTypes>(request.query);
+
+    try {
+      const mediaServices: MediaServices =
+        request.diScope.resolve("mediaServices");
+
+      const media: MediaType | null = await mediaServices.findOneMedia({
+        condition: {
+          mediaId,
+        },
+        selectedFields: {
+          medias: [
+            "mediaId",
+            "filePath",
+            "fileType",
+            "createdAt",
+            "updatedAt",
+            "privateChatId",
+            "groupId",
+            "channelId",
+            "messageId",
+            ...keys,
+          ],
+        },
+      });
+
+      if (!media) {
+        return sendResponse(reply, {
+          status: "error",
+          statusCode: 404,
+          message: "There is no any media with such ID.",
+        });
+      }
+
+      return sendResponse(reply, {
+        status: "success",
+        statusCode: 200,
+        media,
       });
     } catch (error) {
       return sendErrorResponse(reply, error);
