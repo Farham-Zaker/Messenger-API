@@ -142,7 +142,7 @@ const mediaDocs = {
       },
     },
   },
-  "/media/get/:mediaId": {
+  "/media/get/{mediaId}": {
     get: {
       tags: ["Media"],
       summary: "Get media by ID.",
@@ -208,6 +208,40 @@ const mediaDocs = {
         },
         404: {
           description: "Lack of existence of media with such ID",
+        },
+        500: {
+          description: "Internal Server Error.",
+        },
+      },
+    },
+  },
+  "/media/delete/{mediaId}": {
+    delete: {
+      tags: ["Media"],
+      summary: "Delete a media.",
+      parameters: [
+        {
+          name: "token",
+          in: "header",
+          description: "Authentication token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+        {
+          name: "mediaId",
+          in: "params",
+          description: "ID of media.",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successful response",
         },
         500: {
           description: "Internal Server Error.",
