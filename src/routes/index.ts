@@ -5,6 +5,7 @@ import messageRoutesPlugin from "./message.routes";
 import groupRoutesPlugin from "./group.routes";
 import channelRoutesPlugin from "./channel.routes";
 import mediaRoutePlugin from "./media.routes";
+import userRoutePlugin from "./user.routes";
 
 const plugin: FastifyPluginCallback = (fastify, options, done) => {
   fastify.register(authRoutes, {
@@ -19,6 +20,7 @@ const plugin: FastifyPluginCallback = (fastify, options, done) => {
   });
   fastify.register(channelRoutesPlugin, { prefix: "/channel" });
   fastify.register(mediaRoutePlugin, { prefix: "/media" });
+  fastify.register(userRoutePlugin, { prefix: "/user" });
   done();
 };
 
