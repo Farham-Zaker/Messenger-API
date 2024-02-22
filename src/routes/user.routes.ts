@@ -14,7 +14,7 @@ const userRoutePlugin: FastifyPluginCallback = async (
       isLogged,
       validate({ target: "body", schema: setPasswordShcema }),
     ],
-    method: "POST",
+    method: "PUT",
     handler: userControllers.setPassword,
   });
 };
