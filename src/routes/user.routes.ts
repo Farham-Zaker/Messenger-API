@@ -16,6 +16,9 @@ const userRoutePlugin: FastifyPluginCallback = async (
     ],
     method: "PUT",
     handler: userControllers.setPassword,
+    schema: {
+      hide: true,
+    },
   });
 };
 

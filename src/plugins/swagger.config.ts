@@ -9,6 +9,7 @@ import messageDocs from "../docs/message.docs";
 import groupDocs from "../docs/group.docs";
 import channelDocs from "../docs/channel.docs";
 import mediaDocs from "../docs/media.docs";
+import userDocs from "../docs/user.docs";
 
 const swaggerConfig = (server: FastifyInstance) => {
   const swaggerOptions = {
@@ -27,6 +28,7 @@ const swaggerConfig = (server: FastifyInstance) => {
         ...groupDocs,
         ...channelDocs,
         ...mediaDocs,
+        ...userDocs,
       },
     },
     exposeRoute: false,
