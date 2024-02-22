@@ -1,6 +1,7 @@
 import { FastifyPluginCallback } from "fastify";
 import validate from "../middlewares/validation.middleware";
 import isLogged from "../middlewares/islogged";
+import userControllers from "../controllers/user.controllers";
 import { setPasswordShcema } from "../schemas/user.schemas";
 const userRoutePlugin: FastifyPluginCallback = async (
   fastify,
@@ -14,7 +15,7 @@ const userRoutePlugin: FastifyPluginCallback = async (
       validate({ target: "body", schema: setPasswordShcema }),
     ],
     method: "POST",
-    handler: () => {},
+    handler: userControllers.setPassword,
   });
 };
 
