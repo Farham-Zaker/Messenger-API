@@ -1,6 +1,7 @@
 import { FastifyPluginCallback } from "fastify";
 import validate from "../middlewares/validation.middleware";
 import isLogged from "../middlewares/islogged";
+import { setPasswordShcema } from "../schemas/user.schemas";
 const userRoutePlugin: FastifyPluginCallback = async (
   fastify,
   options,
@@ -10,6 +11,7 @@ const userRoutePlugin: FastifyPluginCallback = async (
     url: "/set-password",
     preHandler: [
       isLogged,
+      validate({ target: "body", schema: setPasswordShcema }),
     ],
     method: "POST",
     handler: () => {},
