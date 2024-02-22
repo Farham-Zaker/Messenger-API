@@ -6,6 +6,14 @@ const userRoutePlugin: FastifyPluginCallback = async (
   options,
   done
 ) => {
+  fastify.route({
+    url: "/set-password",
+    preHandler: [
+      isLogged,
+    ],
+    method: "POST",
+    handler: () => {},
+  });
 };
 
 export default userRoutePlugin;
